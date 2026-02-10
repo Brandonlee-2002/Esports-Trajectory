@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+data/__pycache__/
+data/stages/__pycache__/
+.cache_html/
+*.pyc
+*.sqlite
+.DS_Store

@@ -1,0 +1,21 @@
+{
+  "db_path": "liquipedia.sqlite",
+  "user_agent": "Esports-Trajectory/1.0 (brandon.lee01@sjsu.edu)",
+
+  "wiki_base": "https://liquipedia.net/leagueoflegends",
+  "mw_api": "https://liquipedia.net/leagueoflegends/api.php",
+
+  "players_category": "Category:League of Legends Players",
+  "max_players": 200,
+  "player_index_pages": ["Portal:Players", "Players"],
+
+
+  "request_timeout_s": 30,
+  "throttle_s": 65,
+
+  "cache_dir": ".cache_html"
+
+
+
+  
+}
