@@ -6,3 +6,4 @@ data/stages/__pycache__/
 *.pyc
 *.sqlite
 .DS_Store
+player*
