@@ -1,4 +1,40 @@
+# Esports Career Trajectory Analysis
+# Python Dependencies
+
+# Data Collection
 requests>=2.31.0
 beautifulsoup4>=4.12.0
-lxml>=5.0.0
-python-dateutil>=2.9.0
+lxml>=4.9.0
+mwclient>=0.10.1  # MediaWiki API client for Leaguepedia
+
+# Data Processing
+pandas>=2.1.0
+numpy>=1.26.0
+sqlalchemy>=2.0.0
+openpyxl>=3.1.0  # For reading Excel files
+
+# Statistical Analysis
+scipy>=1.11.0
+statsmodels>=0.14.0
+lifelines>=0.27.0  # Survival analysis
+scikit-learn>=1.3.0
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+plotly>=5.18.0
+
+
+# Jupyter & Development
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+ipywidgets>=8.1.0
+
+# Code Quality
+black>=23.11.0
+flake8>=6.1.0
+pytest>=7.4.0
+
+# Utilities
+python-dateutil>=2.8.0
+tqdm>=4.66.0  # Progress bars

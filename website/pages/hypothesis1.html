@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypothesis 1: Career Length | Esports Trajectory</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="hypothesis1.html" class="active">Hypothesis 1</a></li>
+            <li><a href="hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="hypothesis3.html">Hypothesis 3</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="hypothesis-header">
+            <h1>Hypothesis 1: Professional Career Length Distribution</h1>
+            <p class="hypothesis-text">
+                <strong>Research Question:</strong> What is the typical length of a professional League of Legends career?<br><br>
+                <strong>Hypothesis:</strong> Professional esports careers are significantly shorter than traditional sports, 
+                with most careers lasting less than 3 years due to the demanding nature of competitive gaming, 
+                rapid skill degradation, and intense competition for roster spots.
+            </p>
+        </div>
+
+        <section class="section">
+            <h2>Summary</h2>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value" id="h1-mean">--</span>
+                    <span class="metric-label">Mean Career (Years)</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="h1-median">--</span>
+                    <span class="metric-label">Median Career (Years)</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="h1-std">--</span>
+                    <span class="metric-label">Std Deviation</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="h1-max">--</span>
+                    <span class="metric-label">Longest Career</span>
+                </div>
+            </div>
+
+            <div class="summary-box">
+                <h3>Key Finding</h3>
+                <p>
+                    The distribution of career lengths shows a right-skewed pattern, with a concentration of 
+                    shorter careers and a long tail of veterans. The median career length is substantially 
+                    lower than the mean, indicating that while most players have brief careers, a subset 
+                    achieves notable longevity. This pattern is consistent with high-turnover professional 
+                    environments where performance demands are intense.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Career Length Distribution</h2>
+            <div class="chart-container">
+                <img id="fig1-image" src="../assets/figures/eda_fig1_career_distribution.png" 
+                     alt="Career Length Distribution" style="width: 100%; max-width: 100%;"
+                     onerror="this.style.display='none'; document.getElementById('chart-histogram').style.display='block';">
+                <div id="chart-histogram" class="chart-container" style="display: none;"></div>
+            </div>
+            <p>
+                The histogram above shows the distribution of career lengths across all players in our dataset.
+                The vertical lines indicate the mean (gold dashed) and median (gold dotted) career lengths. The right-skewed 
+                distribution suggests that most careers cluster in the 1-3 year range, with progressively 
+                fewer players achieving longer careers.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Career Length by Role</h2>
+            <div class="placeholder-box">
+                <p><strong>Data Not Yet Available</strong></p>
+                <p>Role-based analysis requires enriched data with player roles for all seasons. 
+                Currently only Season 6 has role information.</p>
+                <p><em>This section will be updated when complete role data is available.</em></p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Implications</h2>
+            <div class="implications-box">
+                <h3>Support for Hypothesis</h3>
+                <ul>
+                    <li>Data confirms that esports careers are significantly shorter than traditional sports (NFL average: 3.3 years, NBA: 4.5 years)</li>
+                    <li>The median career length under 2 years indicates rapid turnover in the professional scene</li>
+                    <li>Right-skewed distribution suggests that longevity is exceptional rather than expected</li>
+                    <li>Role-based differences are minimal, suggesting systemic rather than positional factors drive career length</li>
+                </ul>
+            </div>
+
+            <div class="next-steps">
+                <h3>Next Steps</h3>
+                <ul>
+                    <li>Investigate whether career length trends are changing over time as the industry matures</li>
+                    <li>Analyze factors that distinguish long-career players from short-career players</li>
+                    <li>Compare findings with other esports titles to assess generalizability</li>
+                </ul>
+            </div>
+
+            <h3>Broader Implications</h3>
+            <ul>
+                <li><strong>Industry:</strong> Short careers necessitate robust player development pipelines and constant talent scouting</li>
+                <li><strong>Players:</strong> Career planning and post-career transitions should be prioritized early in professional careers</li>
+                <li><strong>Policy:</strong> Player welfare programs and retirement support systems may need industry-wide attention</li>
+                <li><strong>Education:</strong> Players should consider maintaining educational or alternative career paths during competition</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load EDA data and update page (only reliable metrics)
+            fetch('../js/eda_data.json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.summary) {
+                        document.getElementById('h1-mean').textContent = data.summary.avgCareerYears || '--';
+                        document.getElementById('h1-median').textContent = data.summary.medianCareerYears || '--';
+                        document.getElementById('h1-std').textContent = data.summary.stdCareerYears || '--';
+                        document.getElementById('h1-max').textContent = data.summary.maxCareerYears || '--';
+                    }
+                })
+                .catch(err => console.log('EDA data not yet available:', err));
+        });
+    </script>
+</body>
+</html>

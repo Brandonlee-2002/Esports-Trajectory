@@ -1,0 +1,17 @@
+{
+  "summary": {
+    "totalPlayers": 1570,
+    "avgCareerYears": 3.09,
+    "medianCareerYears": 2.0,
+    "stdCareerYears": 2.37,
+    "maxCareerYears": 10.0,
+    "skewness": 1.08,
+    "activeRate": 23.4,
+    "retiredRate": 70.3
+  },
+  "dataGaps": {
+    "unknownRegionPct": 91.4,
+    "unknownRolePct": 91.4,
+    "note": "Regional, role, and tier data only available for Season 6 players"
+  }
+}
