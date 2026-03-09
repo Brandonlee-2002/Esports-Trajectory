@@ -217,15 +217,62 @@ def run_eda():
     plt.close()
     print("Saved: eda_fig1_career_distribution.png")
     
-    # Skip tier/role/region visualizations if data is incomplete (>50% unknown)
+    # Generate regional/role visualizations with available data (labeled as subset)
     tier2_df = None
     promo_rate = None
     
-    if unknown_region_pct > 50:
-        print("Skipped: Regional analysis (insufficient region data - needs enriched data for all seasons)")
-    if unknown_role_pct > 50:
-        print("Skipped: Role analysis (insufficient role data - needs enriched data for all seasons)")
-    print("Skipped: Tier transitions (tier data only available for S6 - not reliable for analysis)")
+    # Filter to known regions/roles for subset analysis
+    known_region_df = df[df['primary_region'] != 'Unknown']
+    known_role_df = df[df['primary_role'] != 'Unknown']
+    
+    if len(known_region_df) >= 50:
+        # Figure 3: Regional Analysis (subset)
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        
+        region_order = known_region_df.groupby('primary_region')['career_length_years'].median().sort_values(ascending=False).index
+        sns.boxplot(data=known_region_df, x='primary_region', y='career_length_years', order=region_order,
+                    palette=[COLORS['gold'] if i < 2 else COLORS['blue'] for i in range(len(region_order))], ax=axes[0])
+        axes[0].set_xlabel('Region')
+        axes[0].set_ylabel('Career Length (Seasons)')
+        axes[0].set_title(f'Career Length by Region (n={len(known_region_df)} players with known region)')
+        axes[0].tick_params(axis='x', rotation=45)
+        
+        region_means = known_region_df.groupby('primary_region')['career_length_years'].mean().sort_values(ascending=False)
+        region_stds = known_region_df.groupby('primary_region')['career_length_years'].std()
+        colors_bar = [COLORS['gold'] if i < 2 else COLORS['blue'] for i in range(len(region_means))]
+        axes[1].bar(region_means.index, region_means.values, yerr=region_stds[region_means.index], 
+                    color=colors_bar, edgecolor='white', capsize=5)
+        axes[1].set_xlabel('Region')
+        axes[1].set_ylabel('Mean Career Length (Seasons)')
+        axes[1].set_title('Mean Career Length by Region')
+        axes[1].tick_params(axis='x', rotation=45)
+        
+        plt.tight_layout()
+        plt.savefig(REPORTS_PATH / 'eda_fig3_regional_analysis.png', dpi=150, bbox_inches='tight')
+        plt.close()
+        print(f"Saved: eda_fig3_regional_analysis.png (n={len(known_region_df)} players)")
+    else:
+        print(f"Skipped: Regional analysis (only {len(known_region_df)} players with known region)")
+    
+    if len(known_role_df) >= 50:
+        # Figure 4: Role Analysis (subset)
+        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+        
+        role_order = known_role_df.groupby('primary_role')['career_length_years'].median().sort_values(ascending=False).index
+        sns.boxplot(data=known_role_df, x='primary_role', y='career_length_years', order=role_order,
+                    palette=[COLORS['blue'], COLORS['gold'], COLORS['blue'], COLORS['gold'], COLORS['blue']], ax=ax)
+        ax.set_xlabel('Role')
+        ax.set_ylabel('Career Length (Seasons)')
+        ax.set_title(f'Career Length by Role (n={len(known_role_df)} players with known role)')
+        
+        plt.tight_layout()
+        plt.savefig(REPORTS_PATH / 'eda_fig4_role_analysis.png', dpi=150, bbox_inches='tight')
+        plt.close()
+        print(f"Saved: eda_fig4_role_analysis.png (n={len(known_role_df)} players)")
+    else:
+        print(f"Skipped: Role analysis (only {len(known_role_df)} players with known role)")
+    
+    print("Skipped: Tier transitions (tier data incomplete across seasons)")
     
     # Figure 5: Temporal Trends
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -304,7 +351,7 @@ Key Observations (from reliable data):
 
 
 def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
-    """Export EDA results to dashboard JSON and copy figures (only reliable data)."""
+    """Export EDA results to dashboard JSON and copy figures."""
     import json
     import shutil
     
@@ -316,7 +363,11 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
     ASSETS_PATH = WEBSITE_PATH / 'assets' / 'figures'
     ASSETS_PATH.mkdir(parents=True, exist_ok=True)
     
-    # Only export reliable summary data (from season appearances)
+    # Filter to known regions/roles
+    known_region_df = df[df['primary_region'] != 'Unknown']
+    known_role_df = df[df['primary_role'] != 'Unknown']
+    
+    # Summary data
     dashboard_data = {
         'summary': {
             'totalPlayers': int(len(df)),
@@ -331,9 +382,37 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
         'dataGaps': {
             'unknownRegionPct': round((df['primary_region'] == 'Unknown').mean() * 100, 1),
             'unknownRolePct': round((df['primary_role'] == 'Unknown').mean() * 100, 1),
-            'note': 'Regional, role, and tier data only available for Season 6 players'
+            'knownRegionCount': len(known_region_df),
+            'knownRoleCount': len(known_role_df),
+            'note': 'Partial enriched data available; subset analysis shown'
         }
     }
+    
+    # Regional stats (from known subset)
+    if len(known_region_df) >= 50:
+        region_stats_known = known_region_df.groupby('primary_region')['career_length_years'].agg(['mean', 'median', 'std', 'count'])
+        region_stats_known = region_stats_known.sort_values('mean', ascending=False).round(2)
+        dashboard_data['regions'] = {
+            'sampleSize': len(known_region_df),
+            'labels': region_stats_known.index.tolist(),
+            'means': region_stats_known['mean'].tolist(),
+            'medians': region_stats_known['median'].tolist(),
+            'stds': region_stats_known['std'].tolist(),
+            'counts': region_stats_known['count'].astype(int).tolist()
+        }
+    
+    # Role stats (from known subset)
+    if len(known_role_df) >= 50:
+        role_stats = known_role_df.groupby('primary_role')['career_length_years'].agg(['mean', 'median', 'std', 'count'])
+        role_stats = role_stats.sort_values('mean', ascending=False).round(2)
+        dashboard_data['roles'] = {
+            'sampleSize': len(known_role_df),
+            'labels': role_stats.index.tolist(),
+            'means': role_stats['mean'].tolist(),
+            'medians': role_stats['median'].tolist(),
+            'stds': role_stats['std'].tolist(),
+            'counts': role_stats['count'].astype(int).tolist()
+        }
     
     # Save JSON data
     json_path = WEBSITE_PATH / 'js' / 'eda_data.json'
@@ -341,9 +420,11 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
         json.dump(dashboard_data, f, indent=2)
     print(f"Saved: {json_path}")
     
-    # Copy only reliable figures to website assets
+    # Copy figures to website assets
     figure_files = [
         'eda_fig1_career_distribution.png',
+        'eda_fig3_regional_analysis.png',
+        'eda_fig4_role_analysis.png',
         'eda_fig5_temporal_trends.png'
     ]
     
@@ -354,7 +435,7 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
             shutil.copy2(src, dst)
             print(f"Copied: {fig_file} -> website/assets/figures/")
     
-    print("\nDashboard data updated (reliable data only)!")
+    print("\nDashboard data updated!")
 
 
 if __name__ == "__main__":

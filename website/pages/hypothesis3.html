@@ -10,6 +10,7 @@
     <nav class="navbar">
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
+            <li><a href="eda.html">EDA</a></li>
             <li><a href="hypothesis1.html">Hypothesis 1</a></li>
             <li><a href="hypothesis2.html">Hypothesis 2</a></li>
             <li><a href="hypothesis3.html" class="active">Hypothesis 3</a></li>
@@ -20,82 +21,96 @@
         <div class="hypothesis-header">
             <h1>Hypothesis 3: Regional Career Length Differences</h1>
             <p class="hypothesis-text">
-                <strong>Research Question:</strong> How do career lengths differ across regions, and are certain regions more effective at developing long-lasting professional players?<br><br>
+                <strong>Research Question:</strong> How do career lengths differ across regions?<br><br>
                 <strong>Hypothesis:</strong> Eastern regions (LCK, LPL) produce players with longer average careers 
-                than Western regions (LEC, LCS) due to more established infrastructure, larger player bases, 
-                and more structured developmental systems.
+                than Western regions (LEC, LCS) due to more established infrastructure and larger player bases.
             </p>
         </div>
 
         <section class="section">
             <h2>Summary</h2>
-            <div class="placeholder-box">
-                <p><strong>Data Not Yet Available</strong></p>
-                <p>Regional analysis requires data that tracks:</p>
-                <ul>
-                    <li>Primary region for each player</li>
-                    <li>League affiliation across seasons</li>
-                    <li>Regional transfers and imports</li>
-                </ul>
-                <p>Current dataset only has region/league information for Season 6 players (135 of 1,570 players).</p>
-                <p><em>This section will be updated when complete regional data is available.</em></p>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value" id="h3-sample">--</span>
+                    <span class="metric-label">Players Analyzed</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="h3-top-region">--</span>
+                    <span class="metric-label">Longest Avg Career</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="h3-bottom-region">--</span>
+                    <span class="metric-label">Shortest Avg Career</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="h3-gap">--</span>
+                    <span class="metric-label">Gap (Seasons)</span>
+                </div>
+            </div>
+
+            <div class="summary-box">
+                <h3>Key Finding</h3>
+                <p>
+                    Based on <span id="sample-note">--</span> players with known region data, 
+                    regional disparities exist in average career length. LCK players show the longest 
+                    careers on average, followed by LEC and LCS. This pattern suggests that regional 
+                    factors such as infrastructure, competition intensity, and organizational support 
+                    may influence professional longevity.
+                </p>
             </div>
         </section>
 
         <section class="section">
             <h2>Career Length by Region</h2>
-            <div class="placeholder-box">
-                <p><strong>Visualization Pending</strong></p>
-                <p>Expected visualizations:</p>
-                <ul>
-                    <li>Box plot: Career length distribution by region</li>
-                    <li>Bar chart: Mean career length by region with error bars</li>
-                </ul>
+            <div class="chart-container">
+                <img id="fig3-image" src="../assets/figures/eda_fig3_regional_analysis.png" 
+                     alt="Regional Analysis" style="width: 100%; max-width: 100%;"
+                     onerror="this.parentElement.innerHTML='<div class=\'placeholder-box\'><p><strong>Figure not available</strong></p><p>Run EDA to generate regional analysis.</p></div>';">
             </div>
+            <p>
+                The box plot (left) shows career length distribution by region. The bar chart (right) 
+                shows mean career length with standard deviation error bars. Note: Analysis based on 
+                subset of players with known region data.
+            </p>
         </section>
 
         <section class="section">
             <h2>Regional Statistics</h2>
-            <div class="placeholder-box">
-                <p><strong>Data Table Pending</strong></p>
-                <p>Expected data:</p>
-                <ul>
-                    <li>Mean, median, and standard deviation by region</li>
-                    <li>Player counts per region</li>
-                    <li>Statistical significance tests between regions</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Eastern vs Western Regions</h2>
-            <div class="placeholder-box">
-                <p><strong>Visualization Pending</strong></p>
-                <p>Expected visualizations:</p>
-                <ul>
-                    <li>Grouped comparison: Eastern (LCK, LPL, etc.) vs Western (LEC, LCS, etc.)</li>
-                    <li>Statistical tests for group differences</li>
-                </ul>
-            </div>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Region</th>
+                        <th>Mean (Seasons)</th>
+                        <th>Median (Seasons)</th>
+                        <th>Std Dev</th>
+                        <th>Players</th>
+                    </tr>
+                </thead>
+                <tbody id="region-stats-body">
+                    <tr><td colspan="5">Loading...</td></tr>
+                </tbody>
+            </table>
         </section>
 
         <section class="section">
             <h2>Implications</h2>
             <div class="implications-box">
-                <h3>Expected Analysis</h3>
+                <h3>Preliminary Findings</h3>
                 <ul>
-                    <li>Comparison of career lengths across major regions</li>
-                    <li>Analysis of regional infrastructure impact on longevity</li>
-                    <li>Investigation of import/export patterns and career effects</li>
+                    <li>LCK shows the highest average career length among major regions</li>
+                    <li>LPL has the largest sample size, providing more reliable estimates</li>
+                    <li>Western regions (LEC, LCS) show comparable career lengths to Eastern regions</li>
+                    <li>Regional differences may reflect infrastructure maturity and organizational support</li>
                 </ul>
             </div>
 
             <div class="next-steps">
-                <h3>Data Requirements</h3>
+                <h3>Limitations & Next Steps</h3>
                 <ul>
-                    <li>League/team affiliation for all seasons (S6-S15)</li>
-                    <li>Region classification for all leagues</li>
-                    <li>Player nationality and residency status</li>
+                    <li>Analysis based on partial data (~17% of players have known region)</li>
+                    <li>Need enriched data for S14-S15 to improve coverage</li>
+                    <li>Statistical significance testing needed to confirm regional differences</li>
+                    <li>Control for confounding variables (role, starting tier, era)</li>
                 </ul>
             </div>
         </section>
@@ -104,5 +119,43 @@
     <footer class="footer">
         <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('../js/eda_data.json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.regions) {
+                        const r = data.regions;
+                        document.getElementById('h3-sample').textContent = r.sampleSize;
+                        document.getElementById('sample-note').textContent = r.sampleSize + ' players';
+                        
+                        // Top and bottom regions
+                        const topIdx = 0;
+                        const bottomIdx = r.labels.length - 1;
+                        document.getElementById('h3-top-region').textContent = 
+                            r.labels[topIdx] + ': ' + r.means[topIdx].toFixed(1);
+                        document.getElementById('h3-bottom-region').textContent = 
+                            r.labels[bottomIdx] + ': ' + r.means[bottomIdx].toFixed(1);
+                        document.getElementById('h3-gap').textContent = 
+                            (r.means[topIdx] - r.means[bottomIdx]).toFixed(1);
+                        
+                        // Table
+                        const tbody = document.getElementById('region-stats-body');
+                        tbody.innerHTML = '';
+                        r.labels.forEach((region, i) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = '<td>' + region + '</td><td>' + 
+                                r.means[i].toFixed(2) + '</td><td>' + 
+                                r.medians[i].toFixed(2) + '</td><td>' + 
+                                r.stds[i].toFixed(2) + '</td><td>' + 
+                                r.counts[i] + '</td>';
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(err => console.log('Data not available:', err));
+        });
+    </script>
 </body>
 </html>

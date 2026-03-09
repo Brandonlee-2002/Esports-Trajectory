@@ -10,8 +10,86 @@
     "retiredRate": 70.3
   },
   "dataGaps": {
-    "unknownRegionPct": 91.4,
-    "unknownRolePct": 91.4,
-    "note": "Regional, role, and tier data only available for Season 6 players"
+    "unknownRegionPct": 83.8,
+    "unknownRolePct": 82.9,
+    "knownRegionCount": 254,
+    "knownRoleCount": 268,
+    "note": "Partial enriched data available; subset analysis shown"
+  },
+  "regions": {
+    "sampleSize": 254,
+    "labels": [
+      "LCK",
+      "LEC",
+      "LCS",
+      "LPL",
+      "PCS"
+    ],
+    "means": [
+      4.83,
+      4.56,
+      4.56,
+      4.16,
+      3.94
+    ],
+    "medians": [
+      4.5,
+      4.0,
+      3.0,
+      4.0,
+      3.0
+    ],
+    "stds": [
+      2.76,
+      2.96,
+      3.21,
+      2.51,
+      2.79
+    ],
+    "counts": [
+      64,
+      50,
+      9,
+      114,
+      17
+    ]
+  },
+  "roles": {
+    "sampleSize": 268,
+    "labels": [
+      "Mid",
+      "Top",
+      "ADC",
+      "Support",
+      "Jungle"
+    ],
+    "means": [
+      4.48,
+      4.39,
+      4.33,
+      4.32,
+      4.29
+    ],
+    "medians": [
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ],
+    "stds": [
+      3.07,
+      2.47,
+      2.66,
+      2.75,
+      2.69
+    ],
+    "counts": [
+      50,
+      54,
+      49,
+      53,
+      62
+    ]
   }
 }

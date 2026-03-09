@@ -11,6 +11,7 @@
     <nav class="navbar">
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
+            <li><a href="eda.html">EDA</a></li>
             <li><a href="hypothesis1.html" class="active">Hypothesis 1</a></li>
             <li><a href="hypothesis2.html">Hypothesis 2</a></li>
             <li><a href="hypothesis3.html">Hypothesis 3</a></li>
@@ -79,12 +80,30 @@
 
         <section class="section">
             <h2>Career Length by Role</h2>
-            <div class="placeholder-box">
-                <p><strong>Data Not Yet Available</strong></p>
-                <p>Role-based analysis requires enriched data with player roles for all seasons. 
-                Currently only Season 6 has role information.</p>
-                <p><em>This section will be updated when complete role data is available.</em></p>
+            <div class="chart-container">
+                <img id="fig4-image" src="../assets/figures/eda_fig4_role_analysis.png" 
+                     alt="Role Analysis" style="width: 100%; max-width: 100%;"
+                     onerror="this.parentElement.innerHTML='<div class=\'placeholder-box\'><p><strong>Figure not available</strong></p><p>Run EDA to generate role analysis.</p></div>';">
             </div>
+            <p>
+                Role-based analysis based on <span id="role-sample">--</span> players with known role data.
+                Differences between roles are relatively small, suggesting systemic factors 
+                (region, era, organization) may have more impact than positional role.
+            </p>
+            
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Mean (Seasons)</th>
+                        <th>Median (Seasons)</th>
+                        <th>Players</th>
+                    </tr>
+                </thead>
+                <tbody id="role-stats-body">
+                    <tr><td colspan="4">Loading...</td></tr>
+                </tbody>
+            </table>
         </section>
 
         <section class="section">
@@ -124,15 +143,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Load EDA data and update page (only reliable metrics)
             fetch('../js/eda_data.json')
                 .then(response => response.json())
                 .then(data => {
+                    // Summary metrics
                     if (data.summary) {
                         document.getElementById('h1-mean').textContent = data.summary.avgCareerYears || '--';
                         document.getElementById('h1-median').textContent = data.summary.medianCareerYears || '--';
                         document.getElementById('h1-std').textContent = data.summary.stdCareerYears || '--';
                         document.getElementById('h1-max').textContent = data.summary.maxCareerYears || '--';
+                    }
+                    
+                    // Role data
+                    if (data.roles) {
+                        document.getElementById('role-sample').textContent = data.roles.sampleSize + ' players';
+                        
+                        const tbody = document.getElementById('role-stats-body');
+                        tbody.innerHTML = '';
+                        data.roles.labels.forEach((role, i) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = '<td>' + role + '</td><td>' + 
+                                data.roles.means[i].toFixed(2) + '</td><td>' + 
+                                data.roles.medians[i].toFixed(2) + '</td><td>' + 
+                                data.roles.counts[i] + '</td>';
+                            tbody.appendChild(row);
+                        });
                     }
                 })
                 .catch(err => console.log('EDA data not yet available:', err));
