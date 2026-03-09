@@ -10,48 +10,63 @@
     "retiredRate": 70.3
   },
   "dataGaps": {
-    "unknownRegionPct": 83.8,
+    "unknownRegionPct": 82.8,
     "unknownRolePct": 82.9,
-    "knownRegionCount": 254,
+    "knownRegionCount": 270,
     "knownRoleCount": 268,
     "note": "Partial enriched data available; subset analysis shown"
   },
   "regions": {
-    "sampleSize": 254,
+    "sampleSize": 270,
     "labels": [
+      "VCS",
       "LCK",
       "LEC",
       "LCS",
+      "CBLOL",
       "LPL",
-      "PCS"
+      "PCS",
+      "LLA"
     ],
     "means": [
+      6.0,
       4.83,
       4.56,
       4.56,
+      4.25,
       4.16,
-      3.94
+      3.94,
+      1.75
     ],
     "medians": [
+      7.0,
       4.5,
       4.0,
       3.0,
       4.0,
-      3.0
+      4.0,
+      3.0,
+      2.0
     ],
     "stds": [
+      3.46,
       2.76,
       2.96,
       3.21,
+      3.01,
       2.51,
-      2.79
+      2.79,
+      0.5
     ],
     "counts": [
+      4,
       64,
       50,
       9,
+      8,
       114,
-      17
+      17,
+      4
     ]
   },
   "roles": {

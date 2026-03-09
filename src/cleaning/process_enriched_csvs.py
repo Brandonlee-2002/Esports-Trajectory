@@ -23,6 +23,9 @@ LEAGUE_TO_REGION = {
     # Older league names
     'NA LCS': 'LCS', 'EU LCS': 'LEC', 'OGN': 'LCK', 'GPL': 'PCS',
     'LMS': 'PCS', 'CBLoL': 'CBLOL', 'NALCS': 'LCS', 'EULCS': 'LEC',
+    # Regional naming variations in data
+    'Brazil': 'CBLOL', 'Vietnam': 'VCS', 
+    'Latin America': 'LLA', 'LAN': 'LLA', 'LAS': 'LLA',
     # Tier 2 leagues
     'LCK CL': 'LCK', 'LDL': 'LPL', 'EUM': 'LEC', 'LTAN': 'LCS',
     'NLC': 'LEC', 'LFL': 'LEC', 'PRM': 'LEC', 'SL': 'LEC',
