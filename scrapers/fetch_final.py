@@ -274,11 +274,13 @@ for season, (date_start, date_end) in SEASONS.items():
         if isinstance(all_teams, list):
             rec["AllTeams"] = " → ".join(all_teams)
 
-    promotions  = sum(1 for r in all_data[season].values() if r.get("MidSeasonMove") == "Promotion")
-    relegations = sum(1 for r in all_data[season].values() if r.get("MidSeasonMove") == "Relegation")
-    transfers   = sum(1 for r in all_data[season].values() if r.get("MidSeasonMove") == "Transfer")
+    season_total = len(all_data[season])
+    pct          = season_total / len(csv_players) * 100
+    promotions   = sum(1 for r in all_data[season].values() if r.get("MidSeasonMove") == "Promotion")
+    relegations  = sum(1 for r in all_data[season].values() if r.get("MidSeasonMove") == "Relegation")
+    rosters      = sum(1 for r in all_data[season].values() if r.get("MidSeasonMove") == "Roster")
     print(f"  Season {season} total: {season_total}/{len(csv_players)} ({pct:.1f}%) | "
-          f"Promotions: {promotions} | Relegations: {relegations} | Transfers: {transfers}\n")
+          f"Promotions: {promotions} | Relegations: {relegations} | Roster moves: {rosters}\n")
 
     # Save after each season
     all_records = []
