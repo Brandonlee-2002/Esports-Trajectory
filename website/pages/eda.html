@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploratory Data Analysis | Esports Trajectory</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="eda.html" class="active">EDA</a></li>
+            <li><a href="hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="hypothesis3.html">Hypothesis 3</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <h1 class="page-title">Exploratory Data Analysis</h1>
+        <p class="group-info">Understanding the Dataset Before Hypothesis Testing</p>
+
+        <!-- Section 1: Dataset Summary -->
+        <section class="section">
+            <h2>Dataset Summary</h2>
+            
+            <h3>Target Variable</h3>
+            <div class="summary-box">
+                <p><strong>career_length_years</strong> (continuous, float)</p>
+                <p>Duration of professional career measured in seasons. Derived from the number of 
+                seasons a player appeared in professional play (S6-S15, where each season ≈ 1 year).</p>
+            </div>
+
+            <h3>Features</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>player_id</td><td>string</td><td>Unique player identifier (in-game name)</td></tr>
+                    <tr><td>primary_region</td><td>categorical</td><td>Main competitive region (LCK, LPL, LEC, LCS, PCS)</td></tr>
+                    <tr><td>primary_role</td><td>categorical</td><td>Main position (Top, Jungle, Mid, ADC, Support)</td></tr>
+                    <tr><td>career_start_year</td><td>integer</td><td>Year player first appeared professionally</td></tr>
+                    <tr><td>career_end_year</td><td>integer</td><td>Year of last professional appearance</td></tr>
+                    <tr><td>num_teams</td><td>integer</td><td>Number of unique teams played for</td></tr>
+                    <tr><td>num_regions</td><td>integer</td><td>Number of unique regions played in</td></tr>
+                    <tr><td>total_games</td><td>integer</td><td>Total professional games played</td></tr>
+                    <tr><td>avg_winrate</td><td>float</td><td>Average win rate across career</td></tr>
+                    <tr><td>avg_kda</td><td>float</td><td>Average KDA ratio across career</td></tr>
+                    <tr><td>current_status</td><td>categorical</td><td>Active, Inactive, or Retired</td></tr>
+                    <tr><td>nationality</td><td>categorical</td><td>Player's country of origin</td></tr>
+                    <tr><td>starting_tier</td><td>integer</td><td>Initial competitive tier (1=Tier 1, 2=Tier 2)</td></tr>
+                    <tr><td>peak_tier</td><td>integer</td><td>Highest tier reached</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Dataset Shape</h3>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value" id="eda-total">--</span>
+                    <span class="metric-label">Total Players</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">20</span>
+                    <span class="metric-label">Features</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">10</span>
+                    <span class="metric-label">Seasons Covered</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">S6-S15</span>
+                    <span class="metric-label">Time Period</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Data Quality -->
+        <section class="section">
+            <h2>Data Quality Assessment</h2>
+            
+            <h3>Missing Values</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Missing Count</th>
+                        <th>Percentage</th>
+                        <th>Handling Strategy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>primary_region</td>
+                        <td id="missing-region">--</td>
+                        <td id="missing-region-pct">--</td>
+                        <td>Labeled as "Unknown"; subset analysis for known values</td>
+                    </tr>
+                    <tr>
+                        <td>primary_role</td>
+                        <td id="missing-role">--</td>
+                        <td id="missing-role-pct">--</td>
+                        <td>Labeled as "Unknown"; subset analysis for known values</td>
+                    </tr>
+                    <tr>
+                        <td>time_to_tier1_months</td>
+                        <td>~99%</td>
+                        <td>99.75%</td>
+                        <td>Excluded from analysis (insufficient tier data)</td>
+                    </tr>
+                    <tr>
+                        <td>avg_kda</td>
+                        <td>2</td>
+                        <td>0.13%</td>
+                        <td>Excluded those rows from KDA-based analysis</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Duplicate Check</h3>
+            <div class="summary-box">
+                <p><strong>Duplicate player_ids:</strong> 0</p>
+                <p>Each player appears exactly once in the processed dataset. Players are uniquely 
+                identified by their in-game name, with career metrics aggregated across all seasons.</p>
+            </div>
+
+            <h3>Data Consistency</h3>
+            <ul>
+                <li><strong>Career length validation:</strong> All values between 1-10 seasons (valid range for S6-S15)</li>
+                <li><strong>Role standardization:</strong> Mapped variations (Bot/ADC, Sup/Support) to 5 standard roles</li>
+                <li><strong>Region mapping:</strong> Legacy league names (NA LCS, EU LCS) mapped to current names (LCS, LEC)</li>
+                <li><strong>Status derivation:</strong> Active if appeared in S15, Inactive if S14 only, Retired otherwise</li>
+            </ul>
+        </section>
+
+        <!-- Section 3: Descriptive Statistics -->
+        <section class="section">
+            <h2>Descriptive Statistics</h2>
+            
+            <h3>Target Variable: Career Length (Seasons)</h3>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value" id="eda-mean">--</span>
+                    <span class="metric-label">Mean</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="eda-median">--</span>
+                    <span class="metric-label">Median</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="eda-std">--</span>
+                    <span class="metric-label">Std Deviation</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="eda-skew">--</span>
+                    <span class="metric-label">Skewness</span>
+                </div>
+            </div>
+
+            <div class="summary-box">
+                <h4>Interpretation</h4>
+                <p>The positive skewness (<span id="skew-note">--</span>) indicates a right-skewed distribution 
+                where most careers are short (1-3 seasons) with a long tail of veteran players. 
+                The median being lower than the mean confirms this asymmetry.</p>
+            </div>
+
+            <h3>Career Length by Region (n=<span id="region-n">--</span> players with known region)</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Region</th>
+                        <th>Mean</th>
+                        <th>Median</th>
+                        <th>Std Dev</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody id="region-stats-eda">
+                    <tr><td colspan="5">Loading...</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Career Length by Role (n=<span id="role-n">--</span> players with known role)</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Mean</th>
+                        <th>Median</th>
+                        <th>Std Dev</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody id="role-stats-eda">
+                    <tr><td colspan="5">Loading...</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Correlation Matrix</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Career Length</th>
+                        <th>Num Teams</th>
+                        <th>Num Regions</th>
+                        <th>Starting Tier</th>
+                        <th>Start Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Career Length</strong></td>
+                        <td>1.000</td>
+                        <td>0.207</td>
+                        <td>0.130</td>
+                        <td>-0.245</td>
+                        <td>-0.278</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Num Teams</strong></td>
+                        <td>0.207</td>
+                        <td>1.000</td>
+                        <td>0.477</td>
+                        <td>-0.313</td>
+                        <td>-0.107</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Num Regions</strong></td>
+                        <td>0.130</td>
+                        <td>0.477</td>
+                        <td>1.000</td>
+                        <td>-0.183</td>
+                        <td>-0.072</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Starting Tier</strong></td>
+                        <td>-0.245</td>
+                        <td>-0.313</td>
+                        <td>-0.183</td>
+                        <td>1.000</td>
+                        <td>0.281</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Start Year</strong></td>
+                        <td>-0.278</td>
+                        <td>-0.107</td>
+                        <td>-0.072</td>
+                        <td>0.281</td>
+                        <td>1.000</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><em>Key correlations: Negative correlation between career start year and career length (-0.278) 
+            suggests players who started earlier have longer careers (expected due to observation window). 
+            Moderate positive correlation between num_teams and num_regions (0.477) indicates players who 
+            switch teams often also tend to play in multiple regions.</em></p>
+        </section>
+
+        <!-- Section 4: Visualizations -->
+        <section class="section">
+            <h2>Visualizations</h2>
+            
+            <h3>Career Length Distribution</h3>
+            <div class="chart-container">
+                <img src="../assets/figures/eda_fig1_career_distribution.png" 
+                     alt="Career Length Distribution" style="width: 100%; max-width: 800px;">
+            </div>
+            <p><strong>Observation:</strong> Right-skewed distribution with most careers lasting 1-3 seasons. 
+            The mean (dashed line) is pulled higher than the median (dotted line) by long-career outliers. 
+            This confirms that professional esports careers are typically short, with longevity being exceptional.</p>
+
+            <h3>Regional Career Length Comparison</h3>
+            <div class="chart-container">
+                <img src="../assets/figures/eda_fig3_regional_analysis.png" 
+                     alt="Regional Analysis" style="width: 100%; max-width: 100%;"
+                     onerror="this.style.display='none';">
+            </div>
+            <p><strong>Observation:</strong> LCK shows the highest average career length among major regions, 
+            followed by LEC and LCS. LPL, despite having the largest sample size, shows slightly lower 
+            average career length. Regional infrastructure and competition intensity may influence longevity.</p>
+
+            <h3>Role-Based Career Length</h3>
+            <div class="chart-container">
+                <img src="../assets/figures/eda_fig4_role_analysis.png" 
+                     alt="Role Analysis" style="width: 100%; max-width: 800px;"
+                     onerror="this.style.display='none';">
+            </div>
+            <p><strong>Observation:</strong> Career lengths are relatively similar across roles, with Mid 
+            showing slightly higher average. This suggests that role-specific factors have less impact on 
+            career longevity than systemic factors like region, era, or organizational support.</p>
+
+            <h3>Temporal Trends</h3>
+            <div class="chart-container">
+                <img src="../assets/figures/eda_fig5_temporal_trends.png" 
+                     alt="Temporal Trends" style="width: 100%; max-width: 100%;">
+            </div>
+            <p><strong>Observation:</strong> Left panel shows player entry rates by season. Right panel shows 
+            mean career length by start year for retired players. Earlier cohorts show longer careers, 
+            which is expected since they had more time to accumulate seasons. Recent cohorts' careers 
+            are still developing.</p>
+        </section>
+
+        <!-- Section 5: Preliminary Insights -->
+        <section class="section">
+            <h2>Preliminary Insights & Hypothesis Formation</h2>
+            
+            <div class="implications-box">
+                <h3>Key Findings</h3>
+                <ol>
+                    <li><strong>Career Length Distribution:</strong> Right-skewed with median of 2 seasons, 
+                    mean of 3.09 seasons. Most careers are brief, with longevity being exceptional.</li>
+                    
+                    <li><strong>Regional Differences:</strong> LCK players show longest careers (4.83 seasons avg), 
+                    suggesting regional infrastructure may support career longevity.</li>
+                    
+                    <li><strong>Role Similarity:</strong> Minimal differences between roles (4.29-4.48 seasons), 
+                    indicating systemic factors dominate over positional factors.</li>
+                    
+                    <li><strong>Temporal Effect:</strong> Negative correlation between start year and career length, 
+                    partly due to observation window but may also reflect industry maturation.</li>
+                    
+                    <li><strong>Team Movement:</strong> Moderate correlation between num_teams and career length, 
+                    suggesting career longevity involves multiple team stints.</li>
+                </ol>
+            </div>
+
+            <div class="next-steps">
+                <h3>Questions for Future Analysis</h3>
+                <ul>
+                    <li>Are regional differences statistically significant after controlling for era and role?</li>
+                    <li>Does starting in Tier 1 vs Tier 2 significantly affect career longevity?</li>
+                    <li>Is there a survival curve pattern - when do most careers end?</li>
+                    <li>Do performance metrics (KDA, win rate) predict career length?</li>
+                    <li>How has career length distribution changed as the esports industry matured?</li>
+                </ul>
+            </div>
+
+            <div class="summary-box">
+                <h3>Hypotheses Formed</h3>
+                <p><strong>H1:</strong> Professional esports careers are significantly shorter than traditional sports, 
+                with most careers lasting less than 3 seasons.</p>
+                <p><strong>H2:</strong> Players starting in Tier 2 have lower probability of reaching Tier 1 and 
+                shorter overall careers than those starting in Tier 1.</p>
+                <p><strong>H3:</strong> Eastern regions (LCK, LPL) produce players with longer careers than 
+                Western regions (LEC, LCS) due to infrastructure differences.</p>
+            </div>
+        </section>
+
+        <!-- Major Results Summary -->
+        <section class="section">
+            <h2>Major EDA Results Summary</h2>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Result</th>
+                        <th>Finding</th>
+                        <th>Usefulness</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Career Distribution</strong></td>
+                        <td>Median: 2 seasons, Mean: 3.09 seasons, Skewness: 1.08</td>
+                        <td>Establishes baseline career expectations; informs survival analysis approach</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Regional Variation</strong></td>
+                        <td>LCK highest (4.83), PCS lowest (3.94) among known regions</td>
+                        <td>Suggests regional infrastructure impacts longevity; guides comparative analysis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Role Consistency</strong></td>
+                        <td>All roles within 4.29-4.48 seasons range</td>
+                        <td>Indicates role is not a major factor; focus analysis on other variables</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Data Gaps</strong></td>
+                        <td>83.8% unknown region, 82.9% unknown role</td>
+                        <td>Identifies need for data enrichment; guides subset analysis approach</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. Temporal Pattern</strong></td>
+                        <td>Negative correlation between start year and career length</td>
+                        <td>Reveals observation window effect; suggests cohort-based analysis needed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('../js/eda_data.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Summary stats
+                    if (data.summary) {
+                        document.getElementById('eda-total').textContent = data.summary.totalPlayers;
+                        document.getElementById('eda-mean').textContent = data.summary.avgCareerYears;
+                        document.getElementById('eda-median').textContent = data.summary.medianCareerYears;
+                        document.getElementById('eda-std').textContent = data.summary.stdCareerYears;
+                        document.getElementById('eda-skew').textContent = data.summary.skewness;
+                        document.getElementById('skew-note').textContent = data.summary.skewness;
+                    }
+                    
+                    // Data gaps
+                    if (data.dataGaps) {
+                        const total = data.summary.totalPlayers;
+                        const unknownRegion = Math.round(total * data.dataGaps.unknownRegionPct / 100);
+                        const unknownRole = Math.round(total * data.dataGaps.unknownRolePct / 100);
+                        
+                        document.getElementById('missing-region').textContent = unknownRegion;
+                        document.getElementById('missing-region-pct').textContent = data.dataGaps.unknownRegionPct + '%';
+                        document.getElementById('missing-role').textContent = unknownRole;
+                        document.getElementById('missing-role-pct').textContent = data.dataGaps.unknownRolePct + '%';
+                    }
+                    
+                    // Regional stats
+                    if (data.regions) {
+                        document.getElementById('region-n').textContent = data.regions.sampleSize;
+                        const tbody = document.getElementById('region-stats-eda');
+                        tbody.innerHTML = '';
+                        data.regions.labels.forEach((region, i) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = '<td>' + region + '</td><td>' + 
+                                data.regions.means[i].toFixed(2) + '</td><td>' + 
+                                data.regions.medians[i].toFixed(2) + '</td><td>' + 
+                                data.regions.stds[i].toFixed(2) + '</td><td>' + 
+                                data.regions.counts[i] + '</td>';
+                            tbody.appendChild(row);
+                        });
+                    }
+                    
+                    // Role stats
+                    if (data.roles) {
+                        document.getElementById('role-n').textContent = data.roles.sampleSize;
+                        const tbody = document.getElementById('role-stats-eda');
+                        tbody.innerHTML = '';
+                        data.roles.labels.forEach((role, i) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = '<td>' + role + '</td><td>' + 
+                                data.roles.means[i].toFixed(2) + '</td><td>' + 
+                                data.roles.medians[i].toFixed(2) + '</td><td>' + 
+                                data.roles.stds[i].toFixed(2) + '</td><td>' + 
+                                data.roles.counts[i] + '</td>';
+                            tbody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(err => console.log('Data not available:', err));
+        });
+    </script>
+</body>
+</html>

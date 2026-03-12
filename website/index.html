@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esports Career Trajectory Analysis</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="pages/eda.html">EDA</a></li>
+            <li><a href="pages/hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="pages/hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="pages/hypothesis3.html">Hypothesis 3</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <h1 class="page-title">Modeling Professional Player Career Trajectories in League of Legends Esports</h1>
+        
+        <p class="group-info">CS163 Senior Capstone Project</p>
+
+        <section class="section">
+            <h2>Project Summary</h2>
+            <p>
+                This project analyzes career trajectories of professional League of Legends players across 
+                regions and competitive tiers. Using publicly available esports records from Leaguepedia, 
+                we study how long professional careers last, how players progress from lower-tier leagues 
+                to top-tier competition, and what factors are associated with career longevity.
+            </p>
+            <p>
+                Through survival analysis, regression modeling, and statistical testing, we quantify 
+                career patterns and identify regional differences in player development systems. Our 
+                findings provide insights for players, teams, and league administrators.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Broader Impacts</h2>
+            <ul>
+                <li><strong>Player Career Planning:</strong> Help aspiring professionals understand realistic career expectations and make informed decisions about pursuing esports.</li>
+                <li><strong>Team Management:</strong> Provide data-driven insights for roster building, player development investment, and talent scouting strategies.</li>
+                <li><strong>League Development:</strong> Identify effective regional structures that support longer, more sustainable professional careers.</li>
+                <li><strong>Industry Growth:</strong> Contribute to the maturation of esports as a profession by establishing baseline career metrics comparable to traditional sports.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Data Sources</h2>
+            <ul>
+                <li><a href="https://lol.fandom.com/wiki/League_of_Legends_Esports_Wiki" target="_blank">Leaguepedia (lol.fandom.com)</a> - Primary source for player profiles, career timelines, and team history</li>
+                <li><a href="https://liquipedia.net/leagueoflegends/" target="_blank">Liquipedia</a> - Supplementary tournament and roster data</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Dataset Overview</h2>
+            <p>
+                Our dataset covers professional League of Legends players across Seasons 6-15 (2016-2025),
+                tracking player appearances, performance metrics, and career duration.
+            </p>
+            <p>
+                <strong>Data includes:</strong> Player name, games played, win rate, KDA, and 20+ performance 
+                statistics per season. Career length is derived from the number of seasons a player appears in.
+            </p>
+            <p>
+                <strong>Note:</strong> Regional and role data is currently limited to Season 6 players only. 
+                Full regional breakdown will be available when enriched data is added for all seasons.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Key Metrics Summary</h2>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value" id="metric-total">--</span>
+                    <span class="metric-label">Total Players</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="metric-avg-career">--</span>
+                    <span class="metric-label">Avg Career (Seasons)</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="metric-median-career">--</span>
+                    <span class="metric-label">Median Career (Seasons)</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="metric-max-career">--</span>
+                    <span class="metric-label">Max Career (Seasons)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Research Questions</h2>
+            <ol>
+                <li><strong>Hypothesis 1 - Career Length:</strong> What is the typical length of a professional League of Legends career, and how does it compare to traditional sports?</li>
+                <li><strong>Hypothesis 2 - Tier Transitions:</strong> How often do players successfully transition from Tier 2 developmental leagues to Tier 1 professional play?</li>
+                <li><strong>Hypothesis 3 - Regional Differences:</strong> Do career lengths and development patterns differ significantly across competitive regions?</li>
+            </ol>
+        </section>
+
+        <section class="section">
+            <h2>Major Findings Preview</h2>
+            <ul>
+                <li>Professional esports careers show a right-skewed distribution, with median career length of 2 seasons.</li>
+                <li>Most players (70%+) have careers lasting 1-3 seasons, with few achieving 5+ season longevity.</li>
+                <li><em>Regional and tier transition analysis pending additional data enrichment.</em></li>
+            </ul>
+            <p>
+                <em>See Hypothesis 1 for career length analysis. Hypotheses 2 and 3 are pending complete data.</em>
+            </p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
+        <p>Data sourced from <a href="https://lol.fandom.com" target="_blank">Leaguepedia</a></p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Load EDA data and update dashboard
+        fetch('js/eda_data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Update homepage metrics (only data directly from Excel)
+                if (data.summary) {
+                    document.getElementById('metric-total').textContent = data.summary.totalPlayers || '--';
+                    document.getElementById('metric-avg-career').textContent = data.summary.avgCareerYears || '--';
+                    document.getElementById('metric-median-career').textContent = data.summary.medianCareerYears || '--';
+                    document.getElementById('metric-max-career').textContent = data.summary.maxCareerYears || '--';
+                }
+            })
+            .catch(err => console.log('EDA data not yet available:', err));
+    </script>
+</body>
+</html>

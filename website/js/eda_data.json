@@ -1,0 +1,110 @@
+{
+  "summary": {
+    "totalPlayers": 1570,
+    "avgCareerYears": 3.09,
+    "medianCareerYears": 2.0,
+    "stdCareerYears": 2.37,
+    "maxCareerYears": 10.0,
+    "skewness": 1.08,
+    "activeRate": 23.4,
+    "retiredRate": 70.3
+  },
+  "dataGaps": {
+    "unknownRegionPct": 82.8,
+    "unknownRolePct": 82.9,
+    "knownRegionCount": 270,
+    "knownRoleCount": 268,
+    "note": "Partial enriched data available; subset analysis shown"
+  },
+  "regions": {
+    "sampleSize": 270,
+    "labels": [
+      "VCS",
+      "LCK",
+      "LEC",
+      "LCS",
+      "CBLOL",
+      "LPL",
+      "PCS",
+      "LLA"
+    ],
+    "means": [
+      6.0,
+      4.83,
+      4.56,
+      4.56,
+      4.25,
+      4.16,
+      3.94,
+      1.75
+    ],
+    "medians": [
+      7.0,
+      4.5,
+      4.0,
+      3.0,
+      4.0,
+      4.0,
+      3.0,
+      2.0
+    ],
+    "stds": [
+      3.46,
+      2.76,
+      2.96,
+      3.21,
+      3.01,
+      2.51,
+      2.79,
+      0.5
+    ],
+    "counts": [
+      4,
+      64,
+      50,
+      9,
+      8,
+      114,
+      17,
+      4
+    ]
+  },
+  "roles": {
+    "sampleSize": 268,
+    "labels": [
+      "Mid",
+      "Top",
+      "ADC",
+      "Support",
+      "Jungle"
+    ],
+    "means": [
+      4.48,
+      4.39,
+      4.33,
+      4.32,
+      4.29
+    ],
+    "medians": [
+      4.0,
+      4.0,
+      4.0,
+      4.0,
+      4.0
+    ],
+    "stds": [
+      3.07,
+      2.47,
+      2.66,
+      2.75,
+      2.69
+    ],
+    "counts": [
+      50,
+      54,
+      49,
+      53,
+      62
+    ]
+  }
+}
