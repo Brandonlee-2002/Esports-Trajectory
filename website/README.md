@@ -2,6 +2,12 @@
 
 Static HTML dashboard for displaying analysis results from the Esports Career Trajectory project.
 
+## Production URL
+
+**Hosted on Google App Engine:** [https://esport-trajectories.wl.r.appspot.com](https://esport-trajectories.wl.r.appspot.com)
+
+Update this link in the root [`README.md`](../README.md) if the deployment URL changes.
+
 ## Structure
 
 ```
@@ -22,7 +28,7 @@ website/
 
 ## Running Locally
 
-Simply open `index.html` in a web browser, or use a local server:
+Use a local server (recommended so `fetch()` for JSON works). Production stays on App Engine, not localhost.
 
 ```bash
 # Python
@@ -32,7 +38,7 @@ python -m http.server 8000
 npx serve .
 ```
 
-Then visit `http://localhost:8000`
+Then visit `http://localhost:8000` (or the port your tool prints).
 
 ## Deployment
 
@@ -51,23 +57,27 @@ This is a static site that can be deployed to:
 
 ### Google App Engine
 
-Create `app.yaml` in website folder:
+`app.yaml` is already in this folder. Deploy from **this** directory (`website/`), not the repo root.
 
-```yaml
-runtime: python39
-handlers:
-- url: /
-  static_files: index.html
-  upload: index.html
-- url: /(.*)
-  static_files: \1
-  upload: .*
-```
+If Cloud Build keeps failing with only “step 2 … non-zero status: 1”, see **`DEPLOY.md`** (how to pull the real log) and **Firebase Hosting** as a static alternative.
 
-Then deploy:
-```bash
+**Windows (project path has spaces — always quote it):**
+
+```powershell
+cd "C:\Users\pixls\cs163 - senior cap\Esports-Trajectory\website"
 gcloud app deploy
 ```
+
+If you see **“The system cannot find the path specified”**:
+
+1. **Wrong folder** — `cd` failed. Use the full quoted path above (or your actual user folder).
+2. **`gcloud` not found** — Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install), then **close and reopen** the terminal (PATH updates only in new sessions). Or run `gcloud` from its install folder, e.g.  
+   `& "$env:LOCALAPPDATA\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd" app deploy`
+3. **First time** — Run `gcloud init`, pick your project, then enable App Engine if prompted.
+
+After deploy, open the URL shown (e.g. `https://YOUR-PROJECT-ID.uc.r.appspot.com`).
+
+**Cloud Build fails (e.g. step 2, `python_*_lightweight` builder):** App Engine still needs a small Python process when you use static handlers. This folder uses **`runtime: python311`**, an explicit **`entrypoint`** (`gunicorn … main:app`), **`main.py`** as a tiny stdlib WSGI app, and **`requirements.txt`** with only **`gunicorn`** (no Flask) to keep the build simple. If deploy still fails, open the Cloud Build log link and search for the first `ERROR` line (often `pip` or permissions).
 
 ## Theme
 

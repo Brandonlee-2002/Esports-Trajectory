@@ -1,0 +1,3 @@
+# Only dependency needed to run main:app (stdlib WSGI in main.py)
+# Pin slightly older gunicorn for broader wheel compatibility in Cloud Build
+gunicorn==21.2.0

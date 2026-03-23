@@ -1,0 +1,30 @@
+# Google App Engine — static site (run `gcloud app deploy` from this folder)
+# python310: often fewer buildpack issues than python311/312 RC builders
+runtime: python310
+
+instance_class: F1
+
+# Explicit process (avoids script:auto + buildpack edge cases)
+entrypoint: gunicorn -b :$PORT --workers 1 --threads 8 --timeout 0 main:app
+
+# Avoid March 2025 default warning; static site needs few instances
+automatic_scaling:
+  max_instances: 10
+
+handlers:
+  - url: /assets
+    static_dir: assets
+
+  - url: /css
+    static_dir: css
+
+  - url: /js
+    static_dir: js
+
+  - url: /pages
+    static_dir: pages
+
+  # Home page
+  - url: /
+    static_files: index.html
+    upload: index.html

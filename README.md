@@ -7,6 +7,12 @@
 
 This project analyzes and models the career trajectories of professional League of Legends players across regions and competitive tiers. Using publicly available esports records, we study how long professional careers last, how players progress from lower-tier leagues to top-tier competition, and what factors are associated with career longevity.
 
+## Live dashboard
+
+**Production (Google App Engine):** [https://esport-trajectories.wl.r.appspot.com](https://esport-trajectories.wl.r.appspot.com)
+
+For local development, see [`website/README.md`](website/README.md).
+
 ## Research Questions
 
 1. What is the typical length of a professional League of Legends career?
