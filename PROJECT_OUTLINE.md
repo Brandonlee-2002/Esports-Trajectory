@@ -184,7 +184,7 @@ PLAYER_TOURNAMENTS TABLE
 - LCK Challengers League
 - LDL (China Development League)
 - EMEA Regional Leagues
-- NA Academy / Proving Grounds
+- NACL / Proving Grounds
 
 ### 2.5 Data Collection Milestones
 - [ ] Week 3: Scraper prototypes working
