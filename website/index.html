@@ -125,19 +125,51 @@
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
     <script>
-        // Load EDA data and update dashboard
-        fetch('js/eda_data.json')
-            .then(response => response.json())
-            .then(data => {
-                // Update homepage metrics (only data directly from Excel)
-                if (data.summary) {
-                    document.getElementById('metric-total').textContent = data.summary.totalPlayers || '--';
-                    document.getElementById('metric-avg-career').textContent = data.summary.avgCareerYears || '--';
-                    document.getElementById('metric-median-career').textContent = data.summary.medianCareerYears || '--';
-                    document.getElementById('metric-max-career').textContent = data.summary.maxCareerYears || '--';
-                }
-            })
-            .catch(err => console.log('EDA data not yet available:', err));
+        (function () {
+            function applySummary(s) {
+                if (!s) return;
+                var fmt = function (v) {
+                    if (v == null || v === '') return '--';
+                    if (typeof v === 'number' && v % 1 !== 0) return v.toFixed(2);
+                    return String(v);
+                };
+                var el = document.getElementById('metric-total');
+                if (el) el.textContent = s.totalPlayers != null ? String(s.totalPlayers) : '--';
+                el = document.getElementById('metric-avg-career');
+                if (el) el.textContent = fmt(s.avgCareerYears);
+                el = document.getElementById('metric-median-career');
+                if (el) el.textContent = fmt(s.medianCareerYears);
+                el = document.getElementById('metric-max-career');
+                if (el) el.textContent = s.maxCareerYears != null ? String(s.maxCareerYears) : '--';
+            }
+
+            function loadHomeMetrics() {
+                var url = new URL('js/eda_data.json', window.location.href).href;
+                fetch(url)
+                    .then(function (response) {
+                        if (!response.ok) throw new Error('EDA fetch failed: ' + response.status);
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        if (data && data.summary) applySummary(data.summary);
+                        else throw new Error('EDA JSON missing summary');
+                    })
+                    .catch(function (err) {
+                        console.warn('Homepage EDA metrics (using fallback if available):', err);
+                        // file:// often blocks fetch; local preview still shows sample numbers from data.js
+                        if (typeof SAMPLE_DATA !== 'undefined' && SAMPLE_DATA.summary) {
+                            applySummary(SAMPLE_DATA.summary);
+                        }
+                    });
+            }
+
+            // If DOMContentLoaded already fired (late script / fragments), still run.
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadHomeMetrics);
+            } else {
+                loadHomeMetrics();
+            }
+        })();
     </script>
 </body>
 </html>

@@ -1,0 +1,43 @@
+# Deploy static site to Google App Engine when website files change on main.
+#
+# Required GitHub repository secrets:
+#   GCP_PROJECT_ID   — Google Cloud project ID (e.g. esport-trajectories)
+#   GCP_SA_KEY       — JSON key for a service account with App Engine deploy permissions
+#
+# Service account roles (minimum useful set):
+#   - App Engine Deploy Admin (roles/appengine.deployAdmin)
+#   - Cloud Build Editor (roles/cloudbuild.builds.editor)
+#   - Service Account User on the App Engine default SA (roles/iam.serviceAccountUser)
+
+name: Deploy website to App Engine
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "website/**"
+      - ".github/workflows/deploy-appspot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to App Engine
+        run: gcloud app deploy website/app.yaml --quiet --project="${{ secrets.GCP_PROJECT_ID }}"

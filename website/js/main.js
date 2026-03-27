@@ -14,27 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
         goldLight: '#e8d4a0'
     };
 
-    // Update homepage metrics (placeholder values - replace with real data)
-    const metrics = {
-        total: '--',
-        avgCareer: '--',
-        medianCareer: '--',
-        promotion: '--'
-    };
-
-    // Update metric elements if they exist
-    if (document.getElementById('metric-total')) {
-        document.getElementById('metric-total').textContent = metrics.total;
-    }
-    if (document.getElementById('metric-avg-career')) {
-        document.getElementById('metric-avg-career').textContent = metrics.avgCareer;
-    }
-    if (document.getElementById('metric-median-career')) {
-        document.getElementById('metric-median-career').textContent = metrics.medianCareer;
-    }
-    if (document.getElementById('metric-promotion')) {
-        document.getElementById('metric-promotion').textContent = metrics.promotion;
-    }
+    // Homepage metrics are loaded from js/eda_data.json in index.html.
+    // Do not set placeholder '--' here — it races with fetch and wipes real values.
 
     // Initialize region chart on homepage if element exists
     const regionChartEl = document.getElementById('region-chart');

@@ -1,4 +1,5 @@
 # Google App Engine — static site (run `gcloud app deploy` from this folder)
+# CI: from repo root, `gcloud app deploy website/app.yaml --project=YOUR_PROJECT_ID`
 # python310: often fewer buildpack issues than python311/312 RC builders
 runtime: python310
 

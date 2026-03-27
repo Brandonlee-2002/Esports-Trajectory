@@ -57,7 +57,11 @@ This is a static site that can be deployed to:
 
 ### Google App Engine
 
-`app.yaml` is already in this folder. Deploy from **this** directory (`website/`), not the repo root.
+`app.yaml`, **`main.py`**, and **`requirements.txt`** are in this folder. Deploy from **`website/`** (recommended), or from the repo root:
+
+```bash
+gcloud app deploy website/app.yaml --project=YOUR_PROJECT_ID
+```
 
 If Cloud Build keeps failing with only “step 2 … non-zero status: 1”, see **`DEPLOY.md`** (how to pull the real log) and **Firebase Hosting** as a static alternative.
 
@@ -77,7 +81,15 @@ If you see **“The system cannot find the path specified”**:
 
 After deploy, open the URL shown (e.g. `https://YOUR-PROJECT-ID.uc.r.appspot.com`).
 
-**Cloud Build fails (e.g. step 2, `python_*_lightweight` builder):** App Engine still needs a small Python process when you use static handlers. This folder uses **`runtime: python311`**, an explicit **`entrypoint`** (`gunicorn … main:app`), **`main.py`** as a tiny stdlib WSGI app, and **`requirements.txt`** with only **`gunicorn`** (no Flask) to keep the build simple. If deploy still fails, open the Cloud Build log link and search for the first `ERROR` line (often `pip` or permissions).
+**Cloud Build fails (e.g. step 2, `python_*_lightweight` builder):** App Engine still needs a small Python process when you use static handlers. This folder uses **`runtime: python310`**, an explicit **`entrypoint`** (`gunicorn … main:app`), **`main.py`** as a tiny stdlib WSGI app, and **`requirements.txt`** with only **`gunicorn`**. If deploy still fails, open the Cloud Build log link and search for the first `ERROR` line (often `pip` or permissions).
+
+#### Auto-deploy on git push (GitHub Actions)
+
+On pushes to `main` that change files under `website/`, [.github/workflows/deploy-appspot.yml](../.github/workflows/deploy-appspot.yml) deploys to App Engine.
+
+**Repository admin:** add **`GCP_PROJECT_ID`** and **`GCP_SA_KEY`** under **Settings → Secrets and variables → Actions** (see workflow file comments for IAM). Without these, the workflow will not authenticate.
+
+Optional: manually run **Actions → Deploy website to App Engine → Run workflow**.
 
 ## Theme
 
