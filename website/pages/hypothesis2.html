@@ -5,7 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 2: Tier Transitions | Esports Trajectory</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <!-- Chart.js loaded in head so it is available before any canvas renders -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <style>
+        /* Chart.js requires position:relative + explicit height on the wrapper div.
+           The .chart-container class only sets min-height so we override here. */
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+        .chart-wrapper-sm {
+            position: relative;
+            width: 100%;
+            height: 240px;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -84,24 +99,24 @@
             <div class="chart-row">
                 <div>
                     <p class="chart-title">Tier 2 Player Outcomes</p>
-                    <div class="chart-container">
+                    <div class="chart-container chart-wrapper">
                         <canvas id="pieChart"></canvas>
                     </div>
                 </div>
                 <div>
                     <p class="chart-title">Seasons Until Promotion</p>
-                    <p style="font-size: 0.85rem; color: var(--text-light); text-align: center;">Among the 4 players who reached Tier 1</p>
-                    <div class="chart-container">
+                    <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Among the 4 players who reached Tier 1</p>
+                    <div class="chart-container chart-wrapper">
                         <canvas id="timeChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <h3 style="margin: 1.5rem 0 0.75rem;">Promoted Players Detail</h3>
+            <h3 style="margin:1.5rem 0 0.75rem;">Promoted Players Detail</h3>
             <table class="stats-table">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">Player</th>
+                        <th style="text-align:left;">Player</th>
                         <th>League</th>
                         <th>Debut Season</th>
                         <th>First T1 Season</th>
@@ -110,38 +125,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Blaber</td>
-                        <td>LCS</td>
-                        <td>S8</td>
-                        <td>S15</td>
-                        <td>7</td>
-                        <td>A → A → S</td>
-                    </tr>
-                    <tr>
-                        <td>Lira</td>
-                        <td>LCK</td>
-                        <td>S9</td>
-                        <td>S15</td>
-                        <td>6</td>
-                        <td>A → S</td>
-                    </tr>
-                    <tr>
-                        <td>Treatz</td>
-                        <td>LCS</td>
-                        <td>S10</td>
-                        <td>S11</td>
-                        <td>1</td>
-                        <td>A → S → S</td>
-                    </tr>
-                    <tr>
-                        <td>Fleshy</td>
-                        <td>TCL</td>
-                        <td>S13</td>
-                        <td>S15</td>
-                        <td>2</td>
-                        <td>A → S</td>
-                    </tr>
+                    <tr><td>Blaber</td><td>LCS</td><td>S8</td><td>S15</td><td>7</td><td>A → A → S</td></tr>
+                    <tr><td>Lira</td><td>LCK</td><td>S9</td><td>S15</td><td>6</td><td>A → S</td></tr>
+                    <tr><td>Treatz</td><td>LCS</td><td>S10</td><td>S11</td><td>1</td><td>A → S → S</td></tr>
+                    <tr><td>Fleshy</td><td>TCL</td><td>S13</td><td>S15</td><td>2</td><td>A → S</td></tr>
                 </tbody>
             </table>
         </section>
@@ -154,13 +141,13 @@
             <div class="chart-row">
                 <div>
                     <p class="chart-title">Promotion Rate by League</p>
-                    <div class="chart-container">
+                    <div class="chart-container chart-wrapper">
                         <canvas id="leagueChart"></canvas>
                     </div>
                 </div>
                 <div>
                     <p class="chart-title">Promotion Rate by Role</p>
-                    <div class="chart-container">
+                    <div class="chart-container chart-wrapper">
                         <canvas id="roleChart"></canvas>
                     </div>
                 </div>
@@ -169,28 +156,18 @@
             <table class="stats-table">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">League</th>
+                        <th style="text-align:left;">League</th>
                         <th>T2 Players</th>
                         <th>Promoted</th>
                         <th>Promotion Rate</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>LCK</td><td>2</td><td>1</td><td>50.0%</td>
-                    </tr>
-                    <tr>
-                        <td>TCL</td><td>2</td><td>1</td><td>50.0%</td>
-                    </tr>
-                    <tr>
-                        <td>LCS</td><td>83</td><td>2</td><td>2.4%</td>
-                    </tr>
-                    <tr>
-                        <td>OCE</td><td>1</td><td>0</td><td>0.0%</td>
-                    </tr>
-                    <tr>
-                        <td>VCS</td><td>1</td><td>0</td><td>0.0%</td>
-                    </tr>
+                    <tr><td>LCK</td><td>2</td><td>1</td><td>50.0%</td></tr>
+                    <tr><td>TCL</td><td>2</td><td>1</td><td>50.0%</td></tr>
+                    <tr><td>LCS</td><td>83</td><td>2</td><td>2.4%</td></tr>
+                    <tr><td>OCE</td><td>1</td><td>0</td><td>0.0%</td></tr>
+                    <tr><td>VCS</td><td>1</td><td>0</td><td>0.0%</td></tr>
                 </tbody>
             </table>
         </section>
@@ -204,14 +181,14 @@
             </p>
 
             <p class="chart-title">Key Performance Metrics Comparison</p>
-            <div class="chart-container">
+            <div class="chart-container chart-wrapper" style="max-width:680px;margin:0 auto 1.5rem;">
                 <canvas id="perfChart"></canvas>
             </div>
 
-            <table class="stats-table" style="margin-top: 1.5rem;">
+            <table class="stats-table">
                 <thead>
                     <tr>
-                        <th style="text-align: left;">Metric</th>
+                        <th style="text-align:left;">Metric</th>
                         <th>Promoted (avg T2)</th>
                         <th>Never Promoted (avg)</th>
                         <th>p-value</th>
@@ -219,28 +196,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>KDA</td><td>3.99</td><td>2.72</td><td>0.094</td><td>No</td>
-                    </tr>
-                    <tr>
-                        <td>Win Rate %</td><td>49.5%</td><td>35.0%</td><td>0.145</td><td>No</td>
-                    </tr>
-                    <tr style="background-color: var(--secondary-light);">
+                    <tr><td>KDA</td><td>3.99</td><td>2.72</td><td>0.094</td><td>No</td></tr>
+                    <tr><td>Win Rate %</td><td>49.5%</td><td>35.0%</td><td>0.145</td><td>No</td></tr>
+                    <tr style="background-color:var(--secondary-light);">
                         <td><strong>CSM</strong></td>
                         <td><strong>3.19</strong></td>
                         <td><strong>6.14</strong></td>
                         <td><strong>0.041</strong></td>
                         <td><strong>Yes ✓</strong></td>
                     </tr>
-                    <tr>
-                        <td>DPM</td><td>212.75</td><td>339.39</td><td>0.125</td><td>No</td>
-                    </tr>
-                    <tr>
-                        <td>GPM</td><td>282.62</td><td>333.11</td><td>0.140</td><td>No</td>
-                    </tr>
+                    <tr><td>DPM</td><td>212.75</td><td>339.39</td><td>0.125</td><td>No</td></tr>
+                    <tr><td>GPM</td><td>282.62</td><td>333.11</td><td>0.140</td><td>No</td></tr>
                 </tbody>
             </table>
-            <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+            <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.5rem;">
                 * CSM row highlighted — only metric with p &lt; 0.05.
             </p>
         </section>
@@ -267,7 +236,7 @@
                     <li>Re-run analysis with the full dataset to validate preliminary findings.</li>
                     <li>Investigate whether mid-season promotions show different patterns than end-of-season transitions.</li>
                     <li>Analyze whether promotion rates have changed over time as the esports ecosystem matured.</li>
-                    <li>Examine whether performance metrics in the season immediately before promotion are stronger predictors than career averages.</li>
+                    <li>Examine whether performance in the season immediately before promotion is a stronger predictor than career averages.</li>
                 </ul>
             </div>
         </section>
@@ -281,11 +250,19 @@
     <script>
         const gridColor = 'rgba(0,0,0,0.06)';
         const tickColor = '#64748b';
-        const gold = '#d4a74a';
-        const blue = '#5b8bd4';
-        const muted = '#94a3b8';
+        const gold      = '#d4a74a';
+        const blue      = '#5b8bd4';
+        const muted     = '#94a3b8';
 
-        new Chart(document.getElementById('pieChart'), {
+        // Helper — waits for canvas to exist then draws
+        function makeChart(id, config) {
+            const el = document.getElementById(id);
+            if (!el) { console.warn('Canvas not found:', id); return; }
+            new Chart(el, config);
+        }
+
+        // Doughnut — Tier 2 outcomes
+        makeChart('pieChart', {
             type: 'doughnut',
             data: {
                 labels: ['Never reached Tier 1 (95.5%)', 'Promoted to Tier 1 (4.5%)'],
@@ -300,15 +277,19 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'bottom', labels: { color: tickColor, padding: 16, font: { size: 12 } } }
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: tickColor, padding: 16, font: { size: 12 } }
+                    }
                 }
             }
         });
 
-        new Chart(document.getElementById('timeChart'), {
+        // Bar — seasons until promotion
+        makeChart('timeChart', {
             type: 'bar',
             data: {
-                labels: ['1 season', '2 seasons', '3', '4', '5', '6 seasons', '7 seasons'],
+                labels: ['1 season','2 seasons','3','4','5','6 seasons','7 seasons'],
                 datasets: [{
                     label: 'Players promoted',
                     data: [1, 1, 0, 0, 0, 1, 1],
@@ -322,9 +303,9 @@
                 plugins: { legend: { display: false } },
                 scales: {
                     x: {
-                        title: { display: true, text: 'Seasons until promotion', color: tickColor, font: { size: 11 } },
                         grid: { color: gridColor },
-                        ticks: { color: tickColor, autoSkip: false, maxRotation: 30 }
+                        ticks: { color: tickColor, autoSkip: false, maxRotation: 30 },
+                        title: { display: true, text: 'Seasons until promotion', color: tickColor, font: { size: 11 } }
                     },
                     y: {
                         grid: { color: gridColor },
@@ -336,7 +317,8 @@
             }
         });
 
-        new Chart(document.getElementById('leagueChart'), {
+        // Bar — league promotion rate
+        makeChart('leagueChart', {
             type: 'bar',
             data: {
                 labels: ['LCK', 'TCL', 'LCS'],
@@ -363,7 +345,8 @@
             }
         });
 
-        new Chart(document.getElementById('roleChart'), {
+        // Bar — role promotion rate
+        makeChart('roleChart', {
             type: 'bar',
             data: {
                 labels: ['Support', 'Jungle', 'Top', 'Mid', 'Bot'],
@@ -390,7 +373,8 @@
             }
         });
 
-        new Chart(document.getElementById('perfChart'), {
+        // Grouped bar — performance comparison
+        makeChart('perfChart', {
             type: 'bar',
             data: {
                 labels: ['KDA', 'Win Rate %', 'CSM *'],
@@ -413,7 +397,10 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'bottom', labels: { color: tickColor, padding: 16, font: { size: 12 } } }
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: tickColor, padding: 16, font: { size: 12 } }
+                    }
                 },
                 scales: {
                     x: { grid: { color: gridColor }, ticks: { color: tickColor } },
