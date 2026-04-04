@@ -18,79 +18,412 @@
     </nav>
 
     <main class="container">
+
         <div class="hypothesis-header">
             <h1>Hypothesis 2: Tier 2 to Tier 1 Transition Rates</h1>
             <p class="hypothesis-text">
                 <strong>Research Question:</strong> How often do players successfully transition from Tier 2 developmental leagues to Tier 1 professional play?<br><br>
-                <strong>Hypothesis:</strong> The majority of Tier 2 players never reach Tier 1 competition. 
-                Those who do typically make the transition within their first 2 years, suggesting a critical 
+                <strong>Hypothesis:</strong> The majority of Tier 2 players never reach Tier 1 competition.
+                Those who do typically make the transition within their first 2 years, suggesting a critical
                 developmental window for player promotion.
             </p>
         </div>
 
+        <!-- Summary -->
         <section class="section">
             <h2>Summary</h2>
-            <div class="placeholder-box">
-                <p><strong>Data Not Yet Available</strong></p>
-                <p>Tier transition analysis requires data that tracks:</p>
-                <ul>
-                    <li>Starting tier for each player (Tier 1 vs Tier 2 league)</li>
-                    <li>Date of promotion to Tier 1 (if applicable)</li>
-                    <li>Time spent in each tier</li>
-                </ul>
-                <p>Current dataset only has tier information for Season 6 players.</p>
-                <p><em>This section will be updated when complete tier data is available.</em></p>
+
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value">89</span>
+                    <span class="metric-label">Tier 2 Starters</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">4.5%</span>
+                    <span class="metric-label">Reached Tier 1</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">4.0</span>
+                    <span class="metric-label">Median Seasons to Tier 1</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">50%</span>
+                    <span class="metric-label">Promoted Within 2 Seasons</span>
+                </div>
+            </div>
+
+            <div class="implications-box">
+                <h3>Key Finding</h3>
+                <p>
+                    Of 89 players who debuted in Tier 2 leagues across Seasons 6–15, only 4 (4.5%) ever reached
+                    Tier 1 competition — strongly supporting the hypothesis that the majority of developmental
+                    players never break into elite play. Among those promoted, 50% did so within 2 seasons while
+                    the other 50% took 6–7 seasons, suggesting two distinct pathways: rapid early promotion or
+                    long-term persistence. CSM (creep score per minute) was the only statistically significant
+                    differentiator (p = 0.041), with promoted players averaging lower CSM — potentially reflecting
+                    a team-oriented playstyle over individual farm efficiency.
+                </p>
+            </div>
+
+            <div class="next-steps">
+                <h3>⚠ Data Limitation</h3>
+                <p>
+                    Current analysis covers 57% of player-seasons (2,517 of 4,411). Missing data is concentrated
+                    in LCS and LEC — the most active Tier 2→Tier 1 pipeline leagues. Promotion rates are likely
+                    underestimated and should be considered preliminary pending full data coverage.
+                </p>
             </div>
         </section>
 
+        <!-- Promotion Outcomes -->
         <section class="section">
             <h2>Promotion Outcomes</h2>
-            <div class="placeholder-box">
-                <p><strong>Visualization Pending</strong></p>
-                <p>Expected visualizations:</p>
-                <ul>
-                    <li>Pie chart: Tier 2 player outcomes (promoted vs not promoted)</li>
-                    <li>Histogram: Time to promotion distribution</li>
-                </ul>
+            <p>Overall breakdown of career outcomes for players who debuted in Tier 2 leagues (Seasons 6–15).</p>
+
+            <div class="chart-row">
+                <div>
+                    <p class="chart-title">Tier 2 Player Outcomes</p>
+                    <div class="chart-container">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p class="chart-title">Seasons Until Promotion</p>
+                    <p style="font-size: 0.85rem; color: var(--text-light); text-align: center;">Among the 4 players who reached Tier 1</p>
+                    <div class="chart-container">
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
             </div>
+
+            <h3 style="margin: 1.5rem 0 0.75rem;">Promoted Players Detail</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">Player</th>
+                        <th>League</th>
+                        <th>Debut Season</th>
+                        <th>First T1 Season</th>
+                        <th>Seasons Taken</th>
+                        <th>Tier Path</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Blaber</td>
+                        <td>LCS</td>
+                        <td>S8</td>
+                        <td>S15</td>
+                        <td>7</td>
+                        <td>A → A → S</td>
+                    </tr>
+                    <tr>
+                        <td>Lira</td>
+                        <td>LCK</td>
+                        <td>S9</td>
+                        <td>S15</td>
+                        <td>6</td>
+                        <td>A → S</td>
+                    </tr>
+                    <tr>
+                        <td>Treatz</td>
+                        <td>LCS</td>
+                        <td>S10</td>
+                        <td>S11</td>
+                        <td>1</td>
+                        <td>A → S → S</td>
+                    </tr>
+                    <tr>
+                        <td>Fleshy</td>
+                        <td>TCL</td>
+                        <td>S13</td>
+                        <td>S15</td>
+                        <td>2</td>
+                        <td>A → S</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
+        <!-- Promotion Rates by League & Role -->
         <section class="section">
-            <h2>Promotion Rates by Region</h2>
-            <div class="placeholder-box">
-                <p><strong>Visualization Pending</strong></p>
-                <p>Expected visualizations:</p>
-                <ul>
-                    <li>Bar chart: Promotion rates by region</li>
-                    <li>Table: Regional breakdown of Tier 2 players, promotions, and rates</li>
-                </ul>
+            <h2>Promotion Rates by League &amp; Role</h2>
+            <p>Promotion rate from Tier 2 to Tier 1, broken down by debut league and role (minimum 2 players per group).</p>
+
+            <div class="chart-row">
+                <div>
+                    <p class="chart-title">Promotion Rate by League</p>
+                    <div class="chart-container">
+                        <canvas id="leagueChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p class="chart-title">Promotion Rate by Role</p>
+                    <div class="chart-container">
+                        <canvas id="roleChart"></canvas>
+                    </div>
+                </div>
             </div>
+
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">League</th>
+                        <th>T2 Players</th>
+                        <th>Promoted</th>
+                        <th>Promotion Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>LCK</td><td>2</td><td>1</td><td>50.0%</td>
+                    </tr>
+                    <tr>
+                        <td>TCL</td><td>2</td><td>1</td><td>50.0%</td>
+                    </tr>
+                    <tr>
+                        <td>LCS</td><td>83</td><td>2</td><td>2.4%</td>
+                    </tr>
+                    <tr>
+                        <td>OCE</td><td>1</td><td>0</td><td>0.0%</td>
+                    </tr>
+                    <tr>
+                        <td>VCS</td><td>1</td><td>0</td><td>0.0%</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
+        <!-- Performance Comparison -->
+        <section class="section">
+            <h2>Performance: Promoted vs. Never Promoted</h2>
+            <p>
+                Average stats during Tier 2 seasons, comparing players who eventually reached Tier 1 vs. those who never did.
+                Statistical significance tested using the Mann-Whitney U test (two-sided, α = 0.05).
+            </p>
+
+            <p class="chart-title">Key Performance Metrics Comparison</p>
+            <div class="chart-container">
+                <canvas id="perfChart"></canvas>
+            </div>
+
+            <table class="stats-table" style="margin-top: 1.5rem;">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">Metric</th>
+                        <th>Promoted (avg T2)</th>
+                        <th>Never Promoted (avg)</th>
+                        <th>p-value</th>
+                        <th>Significant?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>KDA</td><td>3.99</td><td>2.72</td><td>0.094</td><td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Win Rate %</td><td>49.5%</td><td>35.0%</td><td>0.145</td><td>No</td>
+                    </tr>
+                    <tr style="background-color: var(--secondary-light);">
+                        <td><strong>CSM</strong></td>
+                        <td><strong>3.19</strong></td>
+                        <td><strong>6.14</strong></td>
+                        <td><strong>0.041</strong></td>
+                        <td><strong>Yes ✓</strong></td>
+                    </tr>
+                    <tr>
+                        <td>DPM</td><td>212.75</td><td>339.39</td><td>0.125</td><td>No</td>
+                    </tr>
+                    <tr>
+                        <td>GPM</td><td>282.62</td><td>333.11</td><td>0.140</td><td>No</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+                * CSM row highlighted — only metric with p &lt; 0.05.
+            </p>
+        </section>
+
+        <!-- Implications -->
         <section class="section">
             <h2>Implications</h2>
+
             <div class="implications-box">
-                <h3>Expected Analysis</h3>
+                <h3>Support for Hypothesis</h3>
                 <ul>
-                    <li>Comparison of promotion rates across regions</li>
-                    <li>Identification of factors associated with successful promotion</li>
-                    <li>Analysis of optimal developmental pathways</li>
+                    <li>95.5% of Tier 2 starters never reached Tier 1 — strongly supporting the hypothesis that the majority of developmental players do not break into elite play.</li>
+                    <li>Of those who were promoted, 50% did so within 2 seasons, supporting the "critical developmental window" prediction.</li>
+                    <li>The remaining 50% took 6–7 seasons, suggesting a secondary pathway of long-term persistence.</li>
+                    <li>CSM was the only statistically significant differentiator (p = 0.041) — promoted players had lower CSM, possibly indicating that team-first playstyles are valued over individual farming efficiency.</li>
+                    <li>Support and Jungle roles had the only non-zero promotion rates, which may reflect the high impact and visibility of these positions in the competitive meta.</li>
                 </ul>
             </div>
 
             <div class="next-steps">
-                <h3>Data Requirements</h3>
+                <h3>Next Steps &amp; Limitations</h3>
                 <ul>
-                    <li>Player tier history across all seasons</li>
-                    <li>League tier classifications (Tier 1 vs Tier 2)</li>
-                    <li>Promotion dates and circumstances</li>
+                    <li>Complete Leaguepedia data fetch to improve coverage from 57% to ~90%+ (especially LCS and LEC data).</li>
+                    <li>Re-run analysis with the full dataset to validate preliminary findings.</li>
+                    <li>Investigate whether mid-season promotions show different patterns than end-of-season transitions.</li>
+                    <li>Analyze whether promotion rates have changed over time as the esports ecosystem matured.</li>
+                    <li>Examine whether performance metrics in the season immediately before promotion are stronger predictors than career averages.</li>
                 </ul>
             </div>
         </section>
+
     </main>
 
     <footer class="footer">
         <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
     </footer>
+
+    <script>
+        const gridColor = 'rgba(0,0,0,0.06)';
+        const tickColor = '#64748b';
+        const gold = '#d4a74a';
+        const blue = '#5b8bd4';
+        const muted = '#94a3b8';
+
+        new Chart(document.getElementById('pieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Never reached Tier 1 (95.5%)', 'Promoted to Tier 1 (4.5%)'],
+                datasets: [{
+                    data: [85, 4],
+                    backgroundColor: [muted, gold],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: tickColor, padding: 16, font: { size: 12 } } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('timeChart'), {
+            type: 'bar',
+            data: {
+                labels: ['1 season', '2 seasons', '3', '4', '5', '6 seasons', '7 seasons'],
+                datasets: [{
+                    label: 'Players promoted',
+                    data: [1, 1, 0, 0, 0, 1, 1],
+                    backgroundColor: gold,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Seasons until promotion', color: tickColor, font: { size: 11 } },
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor, autoSkip: false, maxRotation: 30 }
+                    },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor, stepSize: 1, precision: 0 },
+                        min: 0, max: 2,
+                        title: { display: true, text: 'Players', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('leagueChart'), {
+            type: 'bar',
+            data: {
+                labels: ['LCK', 'TCL', 'LCS'],
+                datasets: [{
+                    label: 'Promotion rate %',
+                    data: [50.0, 50.0, 2.4],
+                    backgroundColor: [gold, gold, blue],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor, callback: v => v + '%' },
+                        min: 0, max: 60,
+                        title: { display: true, text: 'Promotion rate %', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('roleChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Support', 'Jungle', 'Top', 'Mid', 'Bot'],
+                datasets: [{
+                    label: 'Promotion rate %',
+                    data: [10.5, 8.0, 0, 0, 0],
+                    backgroundColor: [gold, gold, muted, muted, muted],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor, callback: v => v + '%' },
+                        min: 0, max: 15,
+                        title: { display: true, text: 'Promotion rate %', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('perfChart'), {
+            type: 'bar',
+            data: {
+                labels: ['KDA', 'Win Rate %', 'CSM *'],
+                datasets: [
+                    {
+                        label: 'Promoted (avg T2 seasons)',
+                        data: [3.99, 49.51, 3.19],
+                        backgroundColor: gold,
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Never promoted (avg)',
+                        data: [2.72, 35.02, 6.14],
+                        backgroundColor: blue,
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: tickColor, padding: 16, font: { size: 12 } } }
+                },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        title: { display: true, text: 'Value', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
