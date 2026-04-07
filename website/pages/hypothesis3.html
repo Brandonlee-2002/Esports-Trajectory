@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 3: Regional Differences | Esports Trajectory</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <style>
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 320px;
+        }
+        .chart-wrapper-sm {
+            position: relative;
+            width: 100%;
+            height: 260px;
+        }
+        .sig-yes  { color: #3d6cb3; font-weight: 600; }
+        .sig-no   { color: #94a3b8; }
+        .highlight-row { background-color: var(--secondary-light); }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -18,102 +34,301 @@
     </nav>
 
     <main class="container">
+
         <div class="hypothesis-header">
             <h1>Hypothesis 3: Regional Career Length Differences</h1>
             <p class="hypothesis-text">
                 <strong>Research Question:</strong> How do career lengths differ across regions?<br><br>
-                <strong>Hypothesis:</strong> Eastern regions (LCK, LPL) produce players with longer average careers 
+                <strong>Hypothesis:</strong> Eastern regions (LCK, LPL) produce players with longer average careers
                 than Western regions (LEC, LCS) due to more established infrastructure and larger player bases.
             </p>
         </div>
 
+        <!-- Summary -->
         <section class="section">
             <h2>Summary</h2>
+
             <div class="metrics-grid">
                 <div class="metric-box">
-                    <span class="metric-value" id="h3-sample">--</span>
+                    <span class="metric-value">992</span>
                     <span class="metric-label">Players Analyzed</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value" id="h3-top-region">--</span>
-                    <span class="metric-label">Longest Avg Career</span>
+                    <span class="metric-value">LCK</span>
+                    <span class="metric-label">Longest Avg Career (3.34 seasons)</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value" id="h3-bottom-region">--</span>
-                    <span class="metric-label">Shortest Avg Career</span>
+                    <span class="metric-value">LCS</span>
+                    <span class="metric-label">Shortest Major League (1.63 seasons)</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value" id="h3-gap">--</span>
-                    <span class="metric-label">Gap (Seasons)</span>
+                    <span class="metric-value">1.71</span>
+                    <span class="metric-label">LCK vs LCS Gap (seasons)</span>
                 </div>
             </div>
 
-            <div class="summary-box">
+            <div class="implications-box">
                 <h3>Key Finding</h3>
                 <p>
-                    Based on <span id="sample-note">--</span> players with known region data, 
-                    regional disparities exist in average career length. LCK players show the longest 
-                    careers on average, followed by LEC and LCS. This pattern suggests that regional 
-                    factors such as infrastructure, competition intensity, and organizational support 
-                    may influence professional longevity.
+                    Analysis of 992 players across 10 leagues confirms significant regional differences in
+                    career length (Kruskal-Wallis H = 74.27, p &lt; 0.0001). LCK players have the longest
+                    average careers at 3.34 seasons, followed by LEC (2.80) and LPL (2.55). LCS has the
+                    shortest major league average at just 1.63 seasons. The East vs. West gap is statistically
+                    significant (p = 0.020), partially supporting the hypothesis — however, LEC outperforms
+                    LPL, meaning the East/West divide is not as clean as predicted. LCK's advantage is
+                    significant against every other major league.
+                </p>
+            </div>
+
+            <div class="next-steps">
+                <h3>⚠ Data Limitation</h3>
+                <p>
+                    Coverage is 57% of all player-seasons. LCS is notably underrepresented (83 players vs.
+                    the expected ~200+), which may compress its career length estimate. Results for LCS
+                    should be interpreted with caution.
                 </p>
             </div>
         </section>
 
+        <!-- Career Length by League -->
         <section class="section">
-            <h2>Career Length by Region</h2>
-            <div class="chart-container">
-                <img id="fig3-image" src="../assets/figures/eda_fig3_regional_analysis.png" 
-                     alt="Regional Analysis" style="width: 100%; max-width: 100%;"
-                     onerror="this.parentElement.innerHTML='<div class=\'placeholder-box\'><p><strong>Figure not available</strong></p><p>Run EDA to generate regional analysis.</p></div>';">
-            </div>
-            <p>
-                The box plot (left) shows career length distribution by region. The bar chart (right) 
-                shows mean career length with standard deviation error bars. Note: Analysis based on 
-                subset of players with known region data.
-            </p>
-        </section>
+            <h2>Career Length by League</h2>
+            <p>Mean career length (in seasons) for all players whose primary league was identified, sorted by average career length.</p>
 
-        <section class="section">
-            <h2>Regional Statistics</h2>
+            <div class="chart-row">
+                <div>
+                    <p class="chart-title">Mean Career Length by League</p>
+                    <div class="chart-container chart-wrapper">
+                        <canvas id="leagueBarChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p class="chart-title">East vs. West Career Length</p>
+                    <div class="chart-container chart-wrapper">
+                        <canvas id="regionBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
             <table class="stats-table">
                 <thead>
                     <tr>
+                        <th style="text-align:left;">League</th>
                         <th>Region</th>
-                        <th>Mean (Seasons)</th>
-                        <th>Median (Seasons)</th>
-                        <th>Std Dev</th>
                         <th>Players</th>
+                        <th>Mean (seasons)</th>
+                        <th>Median</th>
+                        <th>Std Dev</th>
+                        <th>75th Pctile</th>
                     </tr>
                 </thead>
-                <tbody id="region-stats-body">
-                    <tr><td colspan="5">Loading...</td></tr>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>LCK</strong></td><td>East</td><td>202</td>
+                        <td><strong>3.34</strong></td><td>3.0</td><td>2.32</td><td>5.0</td>
+                    </tr>
+                    <tr>
+                        <td>LEC</td><td>West</td><td>190</td>
+                        <td>2.80</td><td>2.0</td><td>2.14</td><td>4.0</td>
+                    </tr>
+                    <tr>
+                        <td>LPL</td><td>East</td><td>334</td>
+                        <td>2.55</td><td>2.0</td><td>1.97</td><td>3.0</td>
+                    </tr>
+                    <tr>
+                        <td>LMS</td><td>Other</td><td>75</td>
+                        <td>1.95</td><td>1.0</td><td>1.33</td><td>2.5</td>
+                    </tr>
+                    <tr>
+                        <td>OCE</td><td>Other</td><td>21</td>
+                        <td>1.76</td><td>1.0</td><td>1.14</td><td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>VCS</td><td>Other</td><td>32</td>
+                        <td>1.72</td><td>1.0</td><td>0.99</td><td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>TCL</td><td>Other</td><td>29</td>
+                        <td>1.66</td><td>1.0</td><td>0.97</td><td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>LCS</td><td>West</td><td>83</td>
+                        <td>1.63</td><td>1.0</td><td>0.81</td><td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>LLA</td><td>Other</td><td>17</td>
+                        <td>1.47</td><td>1.0</td><td>0.80</td><td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>PCS</td><td>Other</td><td>9</td>
+                        <td>1.44</td><td>1.0</td><td>0.53</td><td>2.0</td>
+                    </tr>
                 </tbody>
             </table>
         </section>
 
+        <!-- Statistical Tests -->
+        <section class="section">
+            <h2>Statistical Significance</h2>
+            <p>
+                Pairwise Mann-Whitney U tests (two-sided, α = 0.05) between all major leagues.
+                The overall Kruskal-Wallis test confirms at least one league differs significantly
+                (H = 74.27, p &lt; 0.0001).
+            </p>
+
+            <div class="chart-row">
+                <div>
+                    <p class="chart-title">Pairwise p-values (Major Leagues)</p>
+                    <div class="chart-container chart-wrapper-sm">
+                        <canvas id="pvalChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <p class="chart-title">Career Length Distribution</p>
+                    <div class="chart-container chart-wrapper-sm">
+                        <canvas id="distChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Comparison</th>
+                        <th>League 1 Mean</th>
+                        <th>League 2 Mean</th>
+                        <th>p-value</th>
+                        <th>Significant?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>LCK vs LPL</td><td>3.34</td><td>2.55</td>
+                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                    </tr>
+                    <tr>
+                        <td>LCK vs LEC</td><td>3.34</td><td>2.80</td>
+                        <td>0.0145</td><td class="sig-yes">Yes ✓</td>
+                    </tr>
+                    <tr>
+                        <td>LCK vs LCS</td><td>3.34</td><td>1.63</td>
+                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                    </tr>
+                    <tr>
+                        <td>LPL vs LEC</td><td>2.55</td><td>2.80</td>
+                        <td>0.1231</td><td class="sig-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>LPL vs LCS</td><td>2.55</td><td>1.63</td>
+                        <td>0.0008</td><td class="sig-yes">Yes ✓</td>
+                    </tr>
+                    <tr>
+                        <td>LEC vs LCS</td><td>2.80</td><td>1.63</td>
+                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                    </tr>
+                    <tr>
+                        <td>East vs West (combined)</td><td>2.85</td><td>2.44</td>
+                        <td>0.0200</td><td class="sig-yes">Yes ✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Era Analysis -->
+        <section class="section">
+            <h2>Career Length by Debut Season</h2>
+            <p>
+                Players who debuted in earlier seasons naturally had more opportunities to accumulate seasons.
+                The decline in mean career length for later debut seasons reflects players who have not yet
+                had time to build long careers, not necessarily shorter careers overall.
+            </p>
+
+            <p class="chart-title">Mean Career Length by Debut Season</p>
+            <div class="chart-container chart-wrapper" style="max-width:680px;margin:0 auto;">
+                <canvas id="eraChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Veteran Players -->
+        <section class="section">
+            <h2>Veteran Players (7+ Seasons)</h2>
+            <p>Players with 7 or more seasons of professional play, showing the most durable careers in the dataset.</p>
+
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Player</th>
+                        <th>League</th>
+                        <th>Career Seasons</th>
+                        <th>Debut</th>
+                        <th>Last Season</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row"><td>Faker</td><td>LCK</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr class="highlight-row"><td>Bdd</td><td>LCK</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr class="highlight-row"><td>Peanut</td><td>LCK</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr class="highlight-row"><td>Ruler</td><td>LCK</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr><td>Hylissang</td><td>LEC</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr><td>Mikyx</td><td>LEC</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr><td>Scout</td><td>LPL</td><td>10</td><td>S6</td><td>S15</td></tr>
+                    <tr><td>Flandre</td><td>LPL</td><td>9</td><td>S6</td><td>S15</td></tr>
+                    <tr><td>Odoamne</td><td>LEC</td><td>9</td><td>S6</td><td>S14</td></tr>
+                    <tr><td>Jankos</td><td>LEC</td><td>9</td><td>S6</td><td>S14</td></tr>
+                    <tr><td>Wunder</td><td>LEC</td><td>9</td><td>S6</td><td>S14</td></tr>
+                    <tr><td>Crisp</td><td>LPL</td><td>9</td><td>S7</td><td>S15</td></tr>
+                    <tr><td>Cuzz</td><td>LCK</td><td>9</td><td>S7</td><td>S15</td></tr>
+                    <tr><td>Upset</td><td>LEC</td><td>9</td><td>S7</td><td>S15</td></tr>
+                    <tr><td>Teddy</td><td>LCK</td><td>9</td><td>S7</td><td>S15</td></tr>
+                    <tr><td>Kiin</td><td>LCK</td><td>9</td><td>S7</td><td>S15</td></tr>
+                    <tr><td>Caps</td><td>LEC</td><td>8</td><td>S7</td><td>S15</td></tr>
+                    <tr><td>Betty</td><td>LPL</td><td>8</td><td>S7</td><td>S14</td></tr>
+                    <tr><td>Perkz</td><td>LEC</td><td>8</td><td>S6</td><td>S14</td></tr>
+                    <tr><td>FoFo</td><td>LPL</td><td>9</td><td>S6</td><td>S14</td></tr>
+                </tbody>
+            </table>
+
+            <p class="chart-title" style="margin-top:1.5rem;">Veteran Players (7+) by League</p>
+            <div class="chart-container chart-wrapper-sm" style="max-width:500px;margin:0 auto;">
+                <canvas id="vetChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Implications -->
         <section class="section">
             <h2>Implications</h2>
+
             <div class="implications-box">
-                <h3>Preliminary Findings</h3>
+                <h3>Support for Hypothesis</h3>
                 <ul>
-                    <li>LCK shows the highest average career length among major regions</li>
-                    <li>LPL has the largest sample size, providing more reliable estimates</li>
-                    <li>Western regions (LEC, LCS) show comparable career lengths to Eastern regions</li>
-                    <li>Regional differences may reflect infrastructure maturity and organizational support</li>
+                    <li>The East vs. West career length gap is statistically significant (p = 0.020), providing partial support for the hypothesis.</li>
+                    <li>LCK has the longest career length of any major league (3.34 seasons) and is significantly longer than LPL, LEC, and LCS individually.</li>
+                    <li>LCS has the shortest major league career at 1.63 seasons — more than 2 seasons shorter than LCK on average.</li>
+                    <li>60 of the 157 players with 5+ season careers come from LCK (38%), despite LCK not having the most players.</li>
+                    <li>The overall Kruskal-Wallis test (H = 74.27, p &lt; 0.0001) confirms that regional differences in career length are highly significant across all leagues.</li>
+                </ul>
+            </div>
+
+            <div class="summary-box">
+                <h3>Nuance: LEC Outperforms LPL</h3>
+                <ul>
+                    <li>Contrary to the hypothesis, LEC (West, 2.80) has a longer average career than LPL (East, 2.55), and the difference is not statistically significant (p = 0.123).</li>
+                    <li>This suggests the East/West framing oversimplifies — LCK specifically has unique structural advantages (established franchising, strong fan support, longer organizational history) rather than Eastern leagues as a whole.</li>
+                    <li>LPL's large player pool (334 players — the largest in the dataset) may create higher turnover as more talent competes for spots, shortening average careers.</li>
                 </ul>
             </div>
 
             <div class="next-steps">
-                <h3>Limitations & Next Steps</h3>
+                <h3>Next Steps &amp; Limitations</h3>
                 <ul>
-                    <li>Analysis based on partial data (~17% of players have known region)</li>
-                    <li>Need enriched data for S14-S15 to improve coverage</li>
-                    <li>Statistical significance testing needed to confirm regional differences</li>
-                    <li>Control for confounding variables (role, starting tier, era)</li>
+                    <li>LCS sample (83 players) is likely underrepresented due to missing Leaguepedia data — re-run after full fetch completes.</li>
+                    <li>Control for confounding variables: debut era, role, and starting tier all correlate with career length.</li>
+                    <li>Investigate whether career length trends within each region are changing over time (e.g., has LCS improved?)</li>
+                    <li>Analyze import players — many LCK/LPL players are from the same country, which may inflate regional averages.</li>
                 </ul>
             </div>
         </section>
+
     </main>
 
     <footer class="footer">
@@ -121,40 +336,189 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('../js/eda_data.json')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.regions) {
-                        const r = data.regions;
-                        document.getElementById('h3-sample').textContent = r.sampleSize;
-                        document.getElementById('sample-note').textContent = r.sampleSize + ' players';
-                        
-                        // Top and bottom regions
-                        const topIdx = 0;
-                        const bottomIdx = r.labels.length - 1;
-                        document.getElementById('h3-top-region').textContent = 
-                            r.labels[topIdx] + ': ' + r.means[topIdx].toFixed(1);
-                        document.getElementById('h3-bottom-region').textContent = 
-                            r.labels[bottomIdx] + ': ' + r.means[bottomIdx].toFixed(1);
-                        document.getElementById('h3-gap').textContent = 
-                            (r.means[topIdx] - r.means[bottomIdx]).toFixed(1);
-                        
-                        // Table
-                        const tbody = document.getElementById('region-stats-body');
-                        tbody.innerHTML = '';
-                        r.labels.forEach((region, i) => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = '<td>' + region + '</td><td>' + 
-                                r.means[i].toFixed(2) + '</td><td>' + 
-                                r.medians[i].toFixed(2) + '</td><td>' + 
-                                r.stds[i].toFixed(2) + '</td><td>' + 
-                                r.counts[i] + '</td>';
-                            tbody.appendChild(row);
-                        });
+        const gridColor = 'rgba(0,0,0,0.06)';
+        const tickColor = '#64748b';
+        const gold      = '#d4a74a';
+        const blue      = '#5b8bd4';
+        const blueDark  = '#3d6cb3';
+        const muted     = '#94a3b8';
+        const green     = '#4caf7d';
+
+        function makeChart(id, config) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            new Chart(el, config);
+        }
+
+        // League bar chart
+        makeChart('leagueBarChart', {
+            type: 'bar',
+            data: {
+                labels: ['LCK','LEC','LPL','LMS','OCE','VCS','TCL','LCS','LLA','PCS'],
+                datasets: [{
+                    label: 'Mean career length (seasons)',
+                    data: [3.34, 2.80, 2.55, 1.95, 1.76, 1.72, 1.66, 1.63, 1.47, 1.44],
+                    backgroundColor: [gold, blue, gold, muted, muted, muted, muted, blue, muted, muted],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        min: 0, max: 4,
+                        title: { display: true, text: 'Mean seasons', color: tickColor, font: { size: 11 } }
                     }
-                })
-                .catch(err => console.log('Data not available:', err));
+                }
+            }
+        });
+
+        // Region bar chart
+        makeChart('regionBarChart', {
+            type: 'bar',
+            data: {
+                labels: ['East (LCK+LPL)', 'West (LEC+LCS)', 'Other'],
+                datasets: [{
+                    label: 'Mean career length',
+                    data: [2.85, 2.44, 1.77],
+                    backgroundColor: [gold, blue, muted],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    annotation: {}
+                },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        min: 0, max: 3.5,
+                        title: { display: true, text: 'Mean seasons', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Pairwise p-values
+        makeChart('pvalChart', {
+            type: 'bar',
+            data: {
+                labels: ['LCK/LPL','LCK/LEC','LCK/LCS','LPL/LEC','LPL/LCS','LEC/LCS'],
+                datasets: [{
+                    label: 'p-value',
+                    data: [0.0000, 0.0145, 0.0000, 0.1231, 0.0008, 0.0000],
+                    backgroundColor: [gold, gold, gold, muted, gold, gold],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor, maxRotation: 35 } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        min: 0, max: 0.15,
+                        title: { display: true, text: 'p-value', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Career length distribution
+        makeChart('distChart', {
+            type: 'bar',
+            data: {
+                labels: ['1','2','3','4','5','6','7','8','9','10'],
+                datasets: [{
+                    label: 'Players',
+                    data: [421, 216, 122, 76, 64, 36, 22, 18, 10, 7],
+                    backgroundColor: blue,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        title: { display: true, text: 'Career length (seasons)', color: tickColor, font: { size: 11 } }
+                    },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        title: { display: true, text: 'Players', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Era chart
+        makeChart('eraChart', {
+            type: 'line',
+            data: {
+                labels: ['S6','S7','S8','S9','S10','S11','S12','S13','S14','S15'],
+                datasets: [{
+                    label: 'Mean career length',
+                    data: [3.22, 2.82, 2.52, 2.52, 2.59, 2.42, 1.88, 2.04, 1.48, 1.00],
+                    borderColor: gold,
+                    backgroundColor: 'rgba(212,167,74,0.1)',
+                    pointBackgroundColor: gold,
+                    pointRadius: 5,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        min: 0, max: 4,
+                        title: { display: true, text: 'Mean seasons', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Veterans by league
+        makeChart('vetChart', {
+            type: 'bar',
+            data: {
+                labels: ['LCK','LPL','LEC','LMS','OCE','TCL'],
+                datasets: [{
+                    label: 'Players with 5+ seasons',
+                    data: [60, 55, 35, 5, 1, 1],
+                    backgroundColor: [gold, gold, blue, muted, muted, muted],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
+                    y: {
+                        grid: { color: gridColor },
+                        ticks: { color: tickColor },
+                        title: { display: true, text: 'Players', color: tickColor, font: { size: 11 } }
+                    }
+                }
+            }
         });
     </script>
 </body>
