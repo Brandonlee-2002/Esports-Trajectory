@@ -1,8 +1,12 @@
 # Deploy static site to Google App Engine when website files change on main.
 #
-# Required GitHub repository secrets:
+# Required GitHub repository secrets (Settings → Secrets and variables → Actions):
 #   GCP_PROJECT_ID   — Google Cloud project ID (e.g. esport-trajectories)
-#   GCP_SA_KEY       — JSON key for a service account with App Engine deploy permissions
+#   GCP_SA_KEY       — Full JSON body of a service account key (single line in secret is OK)
+#
+# If auth fails with "must specify workload_identity_provider or credentials_json":
+#   - Secrets are missing or empty on THIS repo (add them on the repo that runs the workflow).
+#   - Workflows triggered from a fork do NOT receive secrets; merge/run on the upstream repo instead.
 #
 # Service account roles (minimum useful set):
 #   - App Engine Deploy Admin (roles/appengine.deployAdmin)
@@ -26,18 +30,31 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # Quiets Node 20 deprecation until all actions default to Node 24 (see GitHub changelog)
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Verify GCP secrets are configured
+        if: ${{ secrets.GCP_SA_KEY == '' || secrets.GCP_PROJECT_ID == '' }}
+        run: |
+          echo "::error::GCP_SA_KEY and/or GCP_PROJECT_ID is missing."
+          echo "Add both under: Settings → Secrets and variables → Actions"
+          echo "GCP_SA_KEY = paste the full service account JSON key."
+          echo "GCP_PROJECT_ID = your GCP project id (e.g. esport-trajectories)."
+          echo "If this run is from a forked repo, secrets are not available—use the main repo or 'Run workflow' there."
+          exit 1
 
       - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Deploy to App Engine
         run: gcloud app deploy website/app.yaml --quiet --project="${{ secrets.GCP_PROJECT_ID }}"
