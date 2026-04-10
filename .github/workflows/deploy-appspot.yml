@@ -38,15 +38,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # secrets cannot be used in step `if:` — pass into env and check in shell (no secret values echoed).
       - name: Verify GCP secrets are configured
-        if: ${{ secrets.GCP_SA_KEY == '' || secrets.GCP_PROJECT_ID == '' }}
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: |
-          echo "::error::GCP_SA_KEY and/or GCP_PROJECT_ID is missing."
-          echo "Add both under: Settings → Secrets and variables → Actions"
-          echo "GCP_SA_KEY = paste the full service account JSON key."
-          echo "GCP_PROJECT_ID = your GCP project id (e.g. esport-trajectories)."
-          echo "If this run is from a forked repo, secrets are not available—use the main repo or 'Run workflow' there."
-          exit 1
+          if [ -z "${GCP_SA_KEY}" ] || [ -z "${GCP_PROJECT_ID}" ]; then
+            echo "::error::GCP_SA_KEY and/or GCP_PROJECT_ID is missing."
+            echo "Add both under: Settings → Secrets and variables → Actions"
+            echo "GCP_SA_KEY = paste the full service account JSON key."
+            echo "GCP_PROJECT_ID = your GCP project id (e.g. esport-trajectories)."
+            echo "If this run is from a forked repo, secrets are not available—use the main repo or 'Run workflow' there."
+            exit 1
+          fi
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
