@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 2: Tier Transitions | Esports Trajectory</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
     <nav class="navbar">
@@ -86,7 +86,7 @@
                 <div>
                     <p class="chart-title">Tier 2 debut — career outcomes</p>
                     <div class="chart-container">
-                        <img src="/assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes pie chart"
+                        <img src="../assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes pie chart"
                              style="width:100%;max-width:520px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p><p>Run <code>python src/analysis/h2_figures.py</code> after building the panel.</p></div>
@@ -96,7 +96,7 @@
                     <p class="chart-title">Years from Tier 2 debut to first Tier 1 season</p>
                     <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Among promoted players only (calendar-year difference; 0 = same year)</p>
                     <div class="chart-container">
-                        <img src="/assets/figures/h2_fig2_seasons_to_tier1.png" alt="Histogram of seasons to Tier 1"
+                        <img src="../assets/figures/h2_fig2_seasons_to_tier1.png" alt="Histogram of seasons to Tier 1"
                              style="width:100%;max-width:520px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
@@ -131,7 +131,7 @@
                 <div>
                     <p class="chart-title">Promotion rate by debut league</p>
                     <div class="chart-container">
-                        <img src="/assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion rate by league"
+                        <img src="../assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion rate by league"
                              style="width:100%;max-width:560px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
@@ -140,7 +140,7 @@
                 <div>
                     <p class="chart-title">Promotion rate by debut role</p>
                     <div class="chart-container">
-                        <img src="/assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion rate by role"
+                        <img src="../assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion rate by role"
                              style="width:100%;max-width:560px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
@@ -222,6 +222,8 @@
         <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
     </footer>
 
+    <!-- Synchronous summary so metrics/tables render for print/PDF (no wait on fetch). -->
+    <script src="../js/h2_summary.js"></script>
     <script>
         function fmtPct(x) {
             if (x == null || isNaN(x)) return '—';
@@ -234,10 +236,7 @@
                 return isNaN(d.getTime()) ? iso : d.toLocaleString();
             } catch (e) { return iso; }
         }
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('/js/h2_summary.json')
-                .then(function (r) { return r.json(); })
-                .then(function (d) {
+        function applyH2Summary(d) {
                     document.getElementById('h2-generated').textContent = 'Generated ' + fmtDate(d.generated_at);
                     if (d.roster_source) {
                         var rs = document.getElementById('h2-roster-source');
@@ -356,14 +355,28 @@
                         li.textContent = t;
                         imp.appendChild(li);
                     });
-                })
-                .catch(function () {
-                    document.getElementById('h2-key-finding').textContent =
-                        'Could not load /js/h2_summary.json. Run python src/analysis/h2_figures.py from the repo root.';
-                    document.getElementById('h2-limitations').textContent =
-                        'Summary JSON missing — generate it with the figure script after building the panel.';
-                });
-        });
+        }
+        function h2SummaryFailed() {
+            document.getElementById('h2-key-finding').textContent =
+                'Could not load summary data. Ensure website/js/h2_summary.js and h2_summary.json exist (run python src/analysis/h2_figures.py from the repo root).';
+            document.getElementById('h2-limitations').textContent =
+                'Summary data missing — generate with the figure script after building the panel.';
+        }
+        function runH2SummaryLoad() {
+            if (typeof window.H2_SUMMARY_DATA === 'object' && window.H2_SUMMARY_DATA !== null) {
+                applyH2Summary(window.H2_SUMMARY_DATA);
+            } else {
+                fetch('../js/h2_summary.json')
+                    .then(function (r) { return r.json(); })
+                    .then(applyH2Summary)
+                    .catch(h2SummaryFailed);
+            }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', runH2SummaryLoad);
+        } else {
+            runH2SummaryLoad();
+        }
     </script>
 </body>
 </html>
