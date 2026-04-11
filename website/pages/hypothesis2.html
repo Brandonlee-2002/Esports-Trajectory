@@ -5,22 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 2: Tier Transitions | Esports Trajectory</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <!-- Chart.js loaded in head so it is available before any canvas renders -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-    <style>
-        /* Chart.js requires position:relative + explicit height on the wrapper div.
-           The .chart-container class only sets min-height so we override here. */
-        .chart-wrapper {
-            position: relative;
-            width: 100%;
-            height: 300px;
-        }
-        .chart-wrapper-sm {
-            position: relative;
-            width: 100%;
-            height: 240px;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -40,7 +24,7 @@
             <p class="hypothesis-text">
                 <strong>Research Question:</strong> How often do players successfully transition from Tier 2 developmental leagues to Tier 1 professional play?<br><br>
                 <strong>Hypothesis:</strong> The majority of Tier 2 players never reach Tier 1 competition.
-                Those who do typically make the transition within their first 2 years, suggesting a critical
+                Those who do often make the transition within their first few professional seasons, suggesting a critical
                 developmental window for player promotion.
             </p>
         </div>
@@ -48,107 +32,118 @@
         <!-- Summary -->
         <section class="section">
             <h2>Summary</h2>
+            <p id="h2-roster-source" class="chart-title" style="margin-bottom:0.5rem;font-size:0.85rem;color:var(--text-light);display:none;"></p>
+            <p class="chart-title" style="margin-bottom:1rem;font-size:0.9rem;color:var(--text-light);">
+                Panel snapshot: <span id="h2-generated">—</span> ·
+                <span id="h2-cohort-size">—</span> unique players in roster pull ·
+                <span id="h2-t2-count">—</span> with Tier-2 debut (see methodology).
+            </p>
 
             <div class="metrics-grid">
                 <div class="metric-box">
-                    <span class="metric-value">89</span>
-                    <span class="metric-label">Tier 2 Starters</span>
+                    <span class="metric-value" id="h2-m-n-t2">—</span>
+                    <span class="metric-label">Tier 2 debuts</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value">4.5%</span>
+                    <span class="metric-value" id="h2-m-rate">—</span>
                     <span class="metric-label">Reached Tier 1</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value">4.0</span>
-                    <span class="metric-label">Median Seasons to Tier 1</span>
+                    <span class="metric-value" id="h2-m-median">—</span>
+                    <span class="metric-label">Median years to Tier 1</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value">50%</span>
-                    <span class="metric-label">Promoted Within 2 Seasons</span>
+                    <span class="metric-value" id="h2-m-within2">—</span>
+                    <span class="metric-label">Promoted within 2 years</span>
                 </div>
             </div>
 
             <div class="implications-box">
-                <h3>Key Finding</h3>
-                <p>
-                    Of 89 players who debuted in Tier 2 leagues across Seasons 6–15, only 4 (4.5%) ever reached
-                    Tier 1 competition — strongly supporting the hypothesis that the majority of developmental
-                    players never break into elite play. Among those promoted, 50% did so within 2 seasons while
-                    the other 50% took 6–7 seasons, suggesting two distinct pathways: rapid early promotion or
-                    long-term persistence. CSM (creep score per minute) was the only statistically significant
-                    differentiator (p = 0.041), with promoted players averaging lower CSM — potentially reflecting
-                    a team-oriented playstyle over individual farm efficiency.
+                <h3>Key finding</h3>
+                <p id="h2-key-finding">
+                    Loading summary from <code>h2_summary.json</code>…
                 </p>
             </div>
 
             <div class="next-steps">
-                <h3>⚠ Data Limitation</h3>
-                <p>
-                    Current analysis covers 57% of player-seasons (2,517 of 4,411). Missing data is concentrated
-                    in LCS and LEC — the most active Tier 2→Tier 1 pipeline leagues. Promotion rates are likely
-                    underestimated and should be considered preliminary pending full data coverage.
+                <h3>Data scope &amp; limitations</h3>
+                <p id="h2-limitations">
+                    Loading…
                 </p>
             </div>
         </section>
 
         <!-- Promotion Outcomes -->
         <section class="section">
-            <h2>Promotion Outcomes</h2>
-            <p>Overall breakdown of career outcomes for players who debuted in Tier 2 leagues (Seasons 6–15).</p>
+            <h2>Promotion outcomes</h2>
+            <p>
+                Cohort: players whose <strong>debut calendar year</strong> maps to a Tier 2 league under
+                <code>data/h2/h2_league_tier_map.csv</code>. “Reached Tier 1” means at least one later year appears in a Tier-1-mapped league.
+                Figures are rendered by <code>src/analysis/h2_figures.py</code> into <code>reports/</code> and copied to site assets.
+            </p>
 
             <div class="chart-row">
                 <div>
-                    <p class="chart-title">Tier 2 Player Outcomes</p>
-                    <div class="chart-container chart-wrapper">
-                        <canvas id="pieChart"></canvas>
+                    <p class="chart-title">Tier 2 debut — career outcomes</p>
+                    <div class="chart-container">
+                        <img src="/assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes pie chart"
+                             style="width:100%;max-width:520px;display:block;margin:0 auto;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p><p>Run <code>python src/analysis/h2_figures.py</code> after building the panel.</p></div>
                     </div>
                 </div>
                 <div>
-                    <p class="chart-title">Seasons Until Promotion</p>
-                    <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Among the 4 players who reached Tier 1</p>
-                    <div class="chart-container chart-wrapper">
-                        <canvas id="timeChart"></canvas>
+                    <p class="chart-title">Years from Tier 2 debut to first Tier 1 season</p>
+                    <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Among promoted players only (calendar-year difference; 0 = same year)</p>
+                    <div class="chart-container">
+                        <img src="/assets/figures/h2_fig2_seasons_to_tier1.png" alt="Histogram of seasons to Tier 1"
+                             style="width:100%;max-width:520px;display:block;margin:0 auto;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
                     </div>
                 </div>
             </div>
 
-            <h3 style="margin:1.5rem 0 0.75rem;">Promoted Players Detail</h3>
+            <h3 style="margin:1.5rem 0 0.75rem;">Promoted players (panel)</h3>
             <table class="stats-table">
                 <thead>
                     <tr>
                         <th style="text-align:left;">Player</th>
-                        <th>League</th>
-                        <th>Debut Season</th>
-                        <th>First T1 Season</th>
-                        <th>Seasons Taken</th>
-                        <th>Tier Path</th>
+                        <th>Debut league (T2)</th>
+                        <th>Debut season</th>
+                        <th>First T1 season</th>
+                        <th>Years to T1</th>
+                        <th>Path</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>Blaber</td><td>LCS</td><td>S8</td><td>S15</td><td>7</td><td>A → A → S</td></tr>
-                    <tr><td>Lira</td><td>LCK</td><td>S9</td><td>S15</td><td>6</td><td>A → S</td></tr>
-                    <tr><td>Treatz</td><td>LCS</td><td>S10</td><td>S11</td><td>1</td><td>A → S → S</td></tr>
-                    <tr><td>Fleshy</td><td>TCL</td><td>S13</td><td>S15</td><td>2</td><td>A → S</td></tr>
+                <tbody id="h2-promoted-body">
+                    <tr><td colspan="6">Loading…</td></tr>
                 </tbody>
             </table>
         </section>
 
         <!-- Promotion Rates by League & Role -->
         <section class="section">
-            <h2>Promotion Rates by League &amp; Role</h2>
-            <p>Promotion rate from Tier 2 to Tier 1, broken down by debut league and role (minimum 2 players per group).</p>
+            <h2>Promotion rates by league &amp; role</h2>
+            <p>Among Tier-2 debuts only. League and role charts include groups with at least two players (bar charts); the table lists the top leagues by sample size from the current JSON export.</p>
 
             <div class="chart-row">
                 <div>
-                    <p class="chart-title">Promotion Rate by League</p>
-                    <div class="chart-container chart-wrapper">
-                        <canvas id="leagueChart"></canvas>
+                    <p class="chart-title">Promotion rate by debut league</p>
+                    <div class="chart-container">
+                        <img src="/assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion rate by league"
+                             style="width:100%;max-width:560px;display:block;margin:0 auto;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
                     </div>
                 </div>
                 <div>
-                    <p class="chart-title">Promotion Rate by Role</p>
-                    <div class="chart-container chart-wrapper">
-                        <canvas id="roleChart"></canvas>
+                    <p class="chart-title">Promotion rate by debut role</p>
+                    <div class="chart-container">
+                        <img src="/assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion rate by role"
+                             style="width:100%;max-width:560px;display:block;margin:0 auto;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
                     </div>
                 </div>
             </div>
@@ -156,62 +151,44 @@
             <table class="stats-table">
                 <thead>
                     <tr>
-                        <th style="text-align:left;">League</th>
-                        <th>T2 Players</th>
+                        <th style="text-align:left;">League (T2 debut)</th>
+                        <th>T2 debuts</th>
                         <th>Promoted</th>
-                        <th>Promotion Rate</th>
+                        <th>Promotion rate</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr><td>LCK</td><td>2</td><td>1</td><td>50.0%</td></tr>
-                    <tr><td>TCL</td><td>2</td><td>1</td><td>50.0%</td></tr>
-                    <tr><td>LCS</td><td>83</td><td>2</td><td>2.4%</td></tr>
-                    <tr><td>OCE</td><td>1</td><td>0</td><td>0.0%</td></tr>
-                    <tr><td>VCS</td><td>1</td><td>0</td><td>0.0%</td></tr>
+                <tbody id="h2-league-body">
+                    <tr><td colspan="4">Loading…</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.25rem 0 0.5rem;">By debut role</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Role</th>
+                        <th>T2 debuts</th>
+                        <th>Promoted</th>
+                        <th>Promotion rate</th>
+                    </tr>
+                </thead>
+                <tbody id="h2-role-body">
+                    <tr><td colspan="4">Loading…</td></tr>
                 </tbody>
             </table>
         </section>
 
-        <!-- Performance Comparison -->
+        <!-- Methodology -->
         <section class="section">
-            <h2>Performance: Promoted vs. Never Promoted</h2>
+            <h2>Methodology &amp; in-game performance</h2>
             <p>
-                Average stats during Tier 2 seasons, comparing players who eventually reached Tier 1 vs. those who never did.
-                Statistical significance tested using the Mann-Whitney U test (two-sided, α = 0.05).
+                This hypothesis page is driven by the roster panel pipeline
+                (<code>scrapers/pull_h2_roster_panel.py</code> → <code>src/analysis/build_h2_panel.py</code> → <code>src/analysis/h2_figures.py</code>).
+                It does <strong>not</strong> yet merge game-level stats (KDA, CS/m, damage, gold). A prior exploratory pass used smaller curated samples;
+                those charts are removed here until we join the panel to a stats source (e.g. Games of Legends or Oracle’s Elixir) with clear season coverage.
             </p>
-
-            <p class="chart-title">Key Performance Metrics Comparison</p>
-            <div class="chart-container chart-wrapper" style="max-width:680px;margin:0 auto 1.5rem;">
-                <canvas id="perfChart"></canvas>
-            </div>
-
-            <table class="stats-table">
-                <thead>
-                    <tr>
-                        <th style="text-align:left;">Metric</th>
-                        <th>Promoted (avg T2)</th>
-                        <th>Never Promoted (avg)</th>
-                        <th>p-value</th>
-                        <th>Significant?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>KDA</td><td>3.99</td><td>2.72</td><td>0.094</td><td>No</td></tr>
-                    <tr><td>Win Rate %</td><td>49.5%</td><td>35.0%</td><td>0.145</td><td>No</td></tr>
-                    <tr style="background-color:var(--secondary-light);">
-                        <td><strong>CSM</strong></td>
-                        <td><strong>3.19</strong></td>
-                        <td><strong>6.14</strong></td>
-                        <td><strong>0.041</strong></td>
-                        <td><strong>Yes ✓</strong></td>
-                    </tr>
-                    <tr><td>DPM</td><td>212.75</td><td>339.39</td><td>0.125</td><td>No</td></tr>
-                    <tr><td>GPM</td><td>282.62</td><td>333.11</td><td>0.140</td><td>No</td></tr>
-                </tbody>
-            </table>
-            <p style="font-size:0.8rem;color:var(--text-light);margin-top:0.5rem;">
-                * CSM row highlighted — only metric with p &lt; 0.05.
-            </p>
+            <ul id="h2-methodology-list" style="font-size:0.95rem;color:var(--text);">
+            </ul>
         </section>
 
         <!-- Implications -->
@@ -219,29 +196,26 @@
             <h2>Implications</h2>
 
             <div class="implications-box">
-                <h3>Support for Hypothesis</h3>
-                <ul>
-                    <li>95.5% of Tier 2 starters never reached Tier 1 — strongly supporting the hypothesis that the majority of developmental players do not break into elite play.</li>
-                    <li>Of those who were promoted, 50% did so within 2 seasons, supporting the "critical developmental window" prediction.</li>
-                    <li>The remaining 50% took 6–7 seasons, suggesting a secondary pathway of long-term persistence.</li>
-                    <li>CSM was the only statistically significant differentiator (p = 0.041) — promoted players had lower CSM, possibly indicating that team-first playstyles are valued over individual farming efficiency.</li>
-                    <li>Support and Jungle roles had the only non-zero promotion rates, which may reflect the high impact and visibility of these positions in the competitive meta.</li>
+                <h3>Support for hypothesis (panel wording)</h3>
+                <ul id="h2-implications">
+                    <li>Loading…</li>
                 </ul>
             </div>
 
             <div class="next-steps">
-                <h3>Next Steps &amp; Limitations</h3>
+                <h3>Next steps</h3>
                 <ul>
-                    <li>Complete Leaguepedia data fetch to improve coverage from 57% to ~90%+ (especially LCS and LEC data).</li>
-                    <li>Re-run analysis with the full dataset to validate preliminary findings.</li>
-                    <li>Investigate whether mid-season promotions show different patterns than end-of-season transitions.</li>
-                    <li>Analyze whether promotion rates have changed over time as the esports ecosystem matured.</li>
-                    <li>Examine whether performance in the season immediately before promotion is a stronger predictor than career averages.</li>
-                    <li>With more seasons each year, there are a lot more roster shifts each year now if players don't perform, so it is harder to track all these roster moves in between seasons.</li>
+                    <li>Refresh <code>data/h2/h2_roster_panel.csv</code> with a full <code>pull_h2_roster_panel.py</code> run (expect rate limits), then <code>build_h2_panel.py</code> and <code>h2_figures.py</code>.</li>
+                    <li>Tighten league patterns in <code>h2_league_tier_map.csv</code> as you spot mis-classified tournaments.</li>
+                    <li>Merge Tier-2 season performance for promoted vs not-promoted players once a stats extract lines up on player-season keys.</li>
+                    <li>Compare calendar-year promotion to split-accurate promotion if tournament tables expose promotion timing.</li>
                 </ul>
             </div>
         </section>
 
+        <p style="font-size:0.8rem;color:var(--text-light);margin-top:2rem;">
+            Regenerate assets: <code>python scrapers/pull_h2_roster_panel.py</code> → <code>python src/analysis/build_h2_panel.py</code> → <code>python src/analysis/h2_figures.py</code>
+        </p>
     </main>
 
     <footer class="footer">
@@ -249,169 +223,146 @@
     </footer>
 
     <script>
-        const gridColor = 'rgba(0,0,0,0.06)';
-        const tickColor = '#64748b';
-        const gold      = '#d4a74a';
-        const blue      = '#5b8bd4';
-        const muted     = '#94a3b8';
-
-        // Helper — waits for canvas to exist then draws
-        function makeChart(id, config) {
-            const el = document.getElementById(id);
-            if (!el) { console.warn('Canvas not found:', id); return; }
-            new Chart(el, config);
+        function fmtPct(x) {
+            if (x == null || isNaN(x)) return '—';
+            return x.toFixed(1) + '%';
         }
+        function fmtDate(iso) {
+            if (!iso) return '—';
+            try {
+                var d = new Date(iso);
+                return isNaN(d.getTime()) ? iso : d.toLocaleString();
+            } catch (e) { return iso; }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/js/h2_summary.json')
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    document.getElementById('h2-generated').textContent = 'Generated ' + fmtDate(d.generated_at);
+                    if (d.roster_source) {
+                        var rs = document.getElementById('h2-roster-source');
+                        rs.style.display = 'block';
+                        rs.textContent = 'Roster file: ' + d.roster_source;
+                        if (d.roster_source.indexOf('fixture') !== -1) {
+                            rs.textContent += ' — small offline fixture for pipeline checks; run pull_h2_roster_panel.py for Leaguepedia-backed numbers.';
+                        }
+                    }
+                    document.getElementById('h2-cohort-size').textContent = (d.n_unique_players_panel != null ? d.n_unique_players_panel : '—') + '';
+                    document.getElementById('h2-t2-count').textContent = (d.n_tier2_debut != null ? d.n_tier2_debut : '—') + '';
 
-        // Doughnut — Tier 2 outcomes
-        makeChart('pieChart', {
-            type: 'doughnut',
-            data: {
-                labels: ['Never reached Tier 1 (95.5%)', 'Promoted to Tier 1 (4.5%)'],
-                datasets: [{
-                    data: [85, 4],
-                    backgroundColor: [muted, gold],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: tickColor, padding: 16, font: { size: 12 } }
-                    }
-                }
-            }
-        });
+                    document.getElementById('h2-m-n-t2').textContent = d.n_tier2_debut != null ? d.n_tier2_debut : '—';
+                    document.getElementById('h2-m-rate').textContent = d.promotion_rate_pct != null ? d.promotion_rate_pct.toFixed(1) + '%' : '—';
+                    document.getElementById('h2-m-median').textContent =
+                        d.median_seasons_to_tier1 != null && !isNaN(d.median_seasons_to_tier1)
+                            ? String(d.median_seasons_to_tier1)
+                            : '—';
+                    document.getElementById('h2-m-within2').textContent =
+                        d.pct_promoted_within_2_seasons != null
+                            ? d.pct_promoted_within_2_seasons.toFixed(0) + '% of promoted'
+                            : '—';
 
-        // Bar — seasons until promotion
-        makeChart('timeChart', {
-            type: 'bar',
-            data: {
-                labels: ['1 season','2 seasons','3','4','5','6 seasons','7 seasons'],
-                datasets: [{
-                    label: 'Players promoted',
-                    data: [1, 1, 0, 0, 0, 1, 1],
-                    backgroundColor: gold,
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: {
-                        grid: { color: gridColor },
-                        ticks: { color: tickColor, autoSkip: false, maxRotation: 30 },
-                        title: { display: true, text: 'Seasons until promotion', color: tickColor, font: { size: 11 } }
-                    },
-                    y: {
-                        grid: { color: gridColor },
-                        ticks: { color: tickColor, stepSize: 1, precision: 0 },
-                        min: 0, max: 2,
-                        title: { display: true, text: 'Players', color: tickColor, font: { size: 11 } }
-                    }
-                }
-            }
-        });
+                    var never = d.n_never_t1 != null ? d.n_never_t1 : (d.n_tier2_debut - d.n_promoted_to_tier1);
+                    var prom = d.n_promoted_to_tier1 != null ? d.n_promoted_to_tier1 : 0;
+                    var n2 = d.n_tier2_debut != null ? d.n_tier2_debut : 0;
+                    var rate = d.promotion_rate_pct != null ? d.promotion_rate_pct.toFixed(1) : '—';
+                    var med = d.median_seasons_to_tier1 != null ? d.median_seasons_to_tier1 : '—';
+                    var w2 = d.pct_promoted_within_2_seasons != null ? d.pct_promoted_within_2_seasons.toFixed(0) : '—';
+                    document.getElementById('h2-key-finding').textContent =
+                        'Among ' + n2 + ' players with a Tier-2-mapped debut year in this panel, ' + prom +
+                        ' (' + rate + '%) later appeared in at least one Tier-1-mapped league. ' +
+                        (prom > 0
+                            ? 'Among those promoted, the median calendar-year gap from debut to first Tier 1 season was ' + med +
+                              '; ' + w2 + '% of promoted players reached Tier 1 within two years of debut (including same-year promotions as 0).'
+                            : 'No Tier-1 promotions were observed in this cohort under the current map.');
 
-        // Bar — league promotion rate
-        makeChart('leagueChart', {
-            type: 'bar',
-            data: {
-                labels: ['LCK', 'TCL', 'LCS'],
-                datasets: [{
-                    label: 'Promotion rate %',
-                    data: [50.0, 50.0, 2.4],
-                    backgroundColor: [gold, gold, blue],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
-                    y: {
-                        grid: { color: gridColor },
-                        ticks: { color: tickColor, callback: v => v + '%' },
-                        min: 0, max: 60,
-                        title: { display: true, text: 'Promotion rate %', color: tickColor, font: { size: 11 } }
-                    }
-                }
-            }
-        });
+                    var rows = d.n_roster_rows != null ? d.n_roster_rows : '—';
+                    document.getElementById('h2-limitations').textContent =
+                        'Coverage is whatever Leaguepedia returned for the pull behind this file (' + rows +
+                        ' roster rows). Tier labels depend on pattern matching; international one-offs (MSI, Worlds) map to Tier 1 in the current file and can affect “first Tier 1” timing. Starter/substitute status is not available from this Cargo query.';
 
-        // Bar — role promotion rate
-        makeChart('roleChart', {
-            type: 'bar',
-            data: {
-                labels: ['Support', 'Jungle', 'Top', 'Mid', 'Bot'],
-                datasets: [{
-                    label: 'Promotion rate %',
-                    data: [10.5, 8.0, 0, 0, 0],
-                    backgroundColor: [gold, gold, muted, muted, muted],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
-                    y: {
-                        grid: { color: gridColor },
-                        ticks: { color: tickColor, callback: v => v + '%' },
-                        min: 0, max: 15,
-                        title: { display: true, text: 'Promotion rate %', color: tickColor, font: { size: 11 } }
+                    var pt = document.getElementById('h2-promoted-body');
+                    pt.innerHTML = '';
+                    if (d.promoted_players && d.promoted_players.length) {
+                        d.promoted_players.forEach(function (p) {
+                            var tr = document.createElement('tr');
+                            var y = p.seasons_taken;
+                            var ydisp = (y === 0 || y === '0') ? 'Same year' : String(y);
+                            tr.innerHTML =
+                                '<td>' + p.player + '</td>' +
+                                '<td>' + (p.league || '') + '</td>' +
+                                '<td>' + (p.debut_season_label || '') + '</td>' +
+                                '<td>' + (p.first_t1_label || '') + '</td>' +
+                                '<td>' + ydisp + '</td>' +
+                                '<td>' + (p.tier_path || '') + '</td>';
+                            pt.appendChild(tr);
+                        });
+                    } else {
+                        pt.innerHTML = '<tr><td colspan="6">No promoted players in this cohort.</td></tr>';
                     }
-                }
-            }
-        });
 
-        // Grouped bar — performance comparison
-        makeChart('perfChart', {
-            type: 'bar',
-            data: {
-                labels: ['KDA', 'Win Rate %', 'CSM *'],
-                datasets: [
-                    {
-                        label: 'Promoted (avg T2 seasons)',
-                        data: [3.99, 49.51, 3.19],
-                        backgroundColor: gold,
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Never promoted (avg)',
-                        data: [2.72, 35.02, 6.14],
-                        backgroundColor: blue,
-                        borderRadius: 4
+                    var lb = document.getElementById('h2-league-body');
+                    lb.innerHTML = '';
+                    if (d.league_table && d.league_table.length) {
+                        d.league_table.forEach(function (r) {
+                            var tr = document.createElement('tr');
+                            tr.innerHTML =
+                                '<td style="text-align:left;">' + (r.league_short || r.league) + '</td>' +
+                                '<td>' + r.n + '</td>' +
+                                '<td>' + r.promoted + '</td>' +
+                                '<td>' + fmtPct(r.rate_pct) + '</td>';
+                            lb.appendChild(tr);
+                        });
+                    } else {
+                        lb.innerHTML = '<tr><td colspan="4">No league breakdown available.</td></tr>';
                     }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: tickColor, padding: 16, font: { size: 12 } }
+
+                    var rb = document.getElementById('h2-role-body');
+                    rb.innerHTML = '';
+                    if (d.role_table && d.role_table.length) {
+                        d.role_table.forEach(function (r) {
+                            var tr = document.createElement('tr');
+                            tr.innerHTML =
+                                '<td style="text-align:left;">' + r.role + '</td>' +
+                                '<td>' + r.n + '</td>' +
+                                '<td>' + r.promoted + '</td>' +
+                                '<td>' + fmtPct(r.rate_pct) + '</td>';
+                            rb.appendChild(tr);
+                        });
+                    } else {
+                        rb.innerHTML = '<tr><td colspan="4">No role breakdown (roster roles missing).</td></tr>';
                     }
-                },
-                scales: {
-                    x: { grid: { color: gridColor }, ticks: { color: tickColor } },
-                    y: {
-                        grid: { color: gridColor },
-                        ticks: { color: tickColor },
-                        title: { display: true, text: 'Value', color: tickColor, font: { size: 11 } }
-                    }
-                }
-            }
+
+                    var ml = document.getElementById('h2-methodology-list');
+                    ml.innerHTML = '';
+                    (d.methodology_notes || []).forEach(function (note) {
+                        var li = document.createElement('li');
+                        li.textContent = note;
+                        ml.appendChild(li);
+                    });
+
+                    var imp = document.getElementById('h2-implications');
+                    imp.innerHTML = '';
+                    var pctNever = n2 > 0 ? ((never / n2) * 100).toFixed(1) : '—';
+                    var bullets = [
+                        pctNever + '% of Tier-2 debuts never show a Tier-1-mapped season in this panel — consistent with a “majority do not reach Tier 1” story, subject to coverage and mapping error.',
+                        prom > 0
+                            ? 'Among promoted players, ' + w2 + '% reached Tier 1 within two calendar years of their Tier-2 debut (0 = same calendar year).'
+                            : 'No promotions in this cohort; rerun with a broader roster pull before interpreting league or role differentials.',
+                        'League and role bars condition on ≥2 Tier-2 debuts per bucket; sparse buckets should be read cautiously.',
+                        'Merge game-level stats before reviving performance comparisons from earlier drafts.'
+                    ];
+                    bullets.forEach(function (t) {
+                        var li = document.createElement('li');
+                        li.textContent = t;
+                        imp.appendChild(li);
+                    });
+                })
+                .catch(function () {
+                    document.getElementById('h2-key-finding').textContent =
+                        'Could not load /js/h2_summary.json. Run python src/analysis/h2_figures.py from the repo root.';
+                    document.getElementById('h2-limitations').textContent =
+                        'Summary JSON missing — generate it with the figure script after building the panel.';
+                });
         });
     </script>
 </body>
