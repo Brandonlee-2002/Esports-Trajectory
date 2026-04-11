@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 2: Tier Transitions | Esports Trajectory</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -79,28 +80,27 @@
             <p>
                 Cohort: players whose <strong>debut calendar year</strong> maps to a Tier 2 league under
                 <code>data/h2/h2_league_tier_map.csv</code>. “Reached Tier 1” means at least one later year appears in a Tier-1-mapped league.
-                Figures are rendered by <code>src/analysis/h2_figures.py</code> into <code>reports/</code> and copied to site assets.
+                <strong>Charts below are interactive</strong> (zoom/pan/hover via the Plotly toolbar). Static PNGs for print are available under each chart.
+                Regenerate data and PNGs with <code>src/analysis/h2_figures.py</code> after updating the roster panel.
             </p>
 
-            <div class="chart-row">
-                <div>
+            <div class="h2-chart-row h2-chart-row--two">
+                <div class="h2-plot-card">
                     <p class="chart-title">Tier 2 debut — career outcomes</p>
-                    <div class="chart-container">
-                        <img id="h2-fig-outcomes" src="../assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes pie chart"
-                             style="width:100%;max-width:520px;display:block;margin:0 auto;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p><p>Run <code>python src/analysis/h2_figures.py</code> after building the panel.</p></div>
-                    </div>
+                    <div id="h2-plot-outcomes" class="h2-plot-host" aria-label="Interactive pie chart of Tier 2 outcomes"></div>
+                    <details class="h2-static-fallback">
+                        <summary>Static PNG (print)</summary>
+                        <img src="../assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes static chart" style="max-width:100%;height:auto;">
+                    </details>
                 </div>
-                <div>
+                <div class="h2-plot-card">
                     <p class="chart-title">Years from Tier 2 debut to first Tier 1 season</p>
                     <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Among promoted players only (calendar-year difference; 0 = same year)</p>
-                    <div class="chart-container">
-                        <img id="h2-fig-time" src="../assets/figures/h2_fig2_seasons_to_tier1.png" alt="Histogram of seasons to Tier 1"
-                             style="width:100%;max-width:520px;display:block;margin:0 auto;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
-                    </div>
+                    <div id="h2-plot-time" class="h2-plot-host" aria-label="Interactive bar chart of years to Tier 1"></div>
+                    <details class="h2-static-fallback">
+                        <summary>Static PNG (print)</summary>
+                        <img src="../assets/figures/h2_fig2_seasons_to_tier1.png" alt="Time to Tier 1 static chart" style="max-width:100%;height:auto;">
+                    </details>
                 </div>
             </div>
 
@@ -129,32 +129,31 @@
                 <strong>EU Masters</strong> / <strong>EMEA Masters</strong> = European amateur circuit,
                 <strong>LFL</strong> = French regional league, <strong>LDL</strong> = China developmental,
                 <strong>LEC</strong> = LoL EMEA Championship, <strong>LCS</strong> = League Championship Series (North America),
-                <strong>Prime League</strong> = German-speaking regional circuit).</p>
+                <strong>Prime League</strong> = German-speaking regional circuit).
+                <strong>Player</strong> = in-game / Leaguepedia competitor name from the roster pull (Cargo <code>Player</code>), not a synthetic id.</p>
         </section>
 
         <!-- Promotion Rates by League & Role -->
         <section class="section">
             <h2>Promotion rates by league &amp; role</h2>
-            <p>Among Tier-2 debuts only. League and role charts include groups with at least two players (bar charts); the table lists the top leagues by sample size from the current JSON export.</p>
+            <p>Among Tier-2 debuts only. League and role charts include groups with at least two players; the table lists the top leagues by sample size from the current summary.</p>
 
-            <div class="chart-row">
-                <div>
+            <div class="h2-chart-row h2-chart-row--two">
+                <div class="h2-plot-card">
                     <p class="chart-title">Promotion rate by debut league</p>
-                    <div class="chart-container">
-                        <img id="h2-fig-league" src="../assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion rate by league"
-                             style="width:100%;max-width:560px;display:block;margin:0 auto;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
-                    </div>
+                    <div id="h2-plot-league" class="h2-plot-host" aria-label="Interactive horizontal bar chart by league"></div>
+                    <details class="h2-static-fallback">
+                        <summary>Static PNG (print)</summary>
+                        <img src="../assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion by league static chart" style="max-width:100%;height:auto;">
+                    </details>
                 </div>
-                <div>
+                <div class="h2-plot-card">
                     <p class="chart-title">Promotion rate by debut role</p>
-                    <div class="chart-container">
-                        <img id="h2-fig-role" src="../assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion rate by role"
-                             style="width:100%;max-width:560px;display:block;margin:0 auto;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
-                    </div>
+                    <div id="h2-plot-role" class="h2-plot-host" aria-label="Interactive bar chart by role"></div>
+                    <details class="h2-static-fallback">
+                        <summary>Static PNG (print)</summary>
+                        <img src="../assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion by role static chart" style="max-width:100%;height:auto;">
+                    </details>
                 </div>
             </div>
 
@@ -252,6 +251,182 @@
                 var d = new Date(iso);
                 return isNaN(d.getTime()) ? iso : d.toLocaleString();
             } catch (e) { return iso; }
+        }
+        function h2PlotlyPurge(id) {
+            var el = document.getElementById(id);
+            if (el && typeof Plotly !== 'undefined') {
+                try { Plotly.purge(el); } catch (e) { /* ignore */ }
+            }
+        }
+        function renderH2Plots(d) {
+            if (typeof Plotly === 'undefined') {
+                ['h2-plot-outcomes', 'h2-plot-time', 'h2-plot-league', 'h2-plot-role'].forEach(function (id) {
+                    var el = document.getElementById(id);
+                    if (el) {
+                        el.innerHTML = '<p style="padding:1.25rem;text-align:center;color:var(--text-light);">Chart library did not load. Expand “Static PNG” below each chart or check your connection.</p>';
+                    }
+                });
+                return;
+            }
+            var GOLD = '#d4a74a';
+            var BLUE = '#5b8bd4';
+            var MUTED = '#94a3b8';
+            var TEXT = '#64748b';
+            var baseFont = { family: 'Segoe UI, Roboto, sans-serif', size: 13, color: TEXT };
+            var never = d.n_never_t1 != null ? d.n_never_t1 : (d.n_tier2_debut - d.n_promoted_to_tier1);
+            var prom = d.n_promoted_to_tier1 != null ? d.n_promoted_to_tier1 : 0;
+            var total = never + prom;
+
+            h2PlotlyPurge('h2-plot-outcomes');
+            if (total <= 0) {
+                Plotly.newPlot('h2-plot-outcomes', [], {
+                    annotations: [{
+                        text: 'No Tier-2 debut cohort to chart',
+                        xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
+                        font: { size: 14, color: TEXT }
+                    }],
+                    xaxis: { visible: false }, yaxis: { visible: false },
+                    margin: { t: 24, b: 24, l: 24, r: 24 },
+                    paper_bgcolor: '#ffffff', height: 400
+                }, { staticPlot: true, displayModeBar: false });
+            } else {
+                var pctN = (100 * never / total).toFixed(1);
+                var pctP = (100 * prom / total).toFixed(1);
+                Plotly.newPlot('h2-plot-outcomes', [{
+                    type: 'pie',
+                    hole: 0.45,
+                    labels: ['Never reached Tier 1 (' + pctN + '%)', 'Promoted to Tier 1 (' + pctP + '%)'],
+                    values: [never, prom],
+                    marker: { colors: [MUTED, GOLD], line: { color: '#ffffff', width: 2 } },
+                    textinfo: 'label+value',
+                    hovertemplate: '%{label}<br>%{value} players<extra></extra>'
+                }], {
+                    margin: { t: 28, b: 28, l: 28, r: 28 },
+                    showlegend: true,
+                    legend: { orientation: 'h', y: -0.08, font: baseFont },
+                    font: baseFont,
+                    paper_bgcolor: '#ffffff',
+                    height: 520
+                }, { responsive: true, displayModeBar: true });
+            }
+
+            h2PlotlyPurge('h2-plot-time');
+            var th = d.time_histogram || {};
+            var keys = Object.keys(th).map(Number).filter(function (x) { return !isNaN(x); }).sort(function (a, b) { return a - b; });
+            if (!keys.length || prom === 0) {
+                Plotly.newPlot('h2-plot-time', [], {
+                    annotations: [{
+                        text: prom === 0 ? 'No promotions in cohort' : 'No timing data',
+                        xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
+                        font: { size: 14, color: TEXT }
+                    }],
+                    xaxis: { visible: false }, yaxis: { visible: false },
+                    margin: { t: 24, b: 24, l: 24, r: 24 },
+                    paper_bgcolor: '#ffffff', height: 400
+                }, { staticPlot: true, displayModeBar: false });
+            } else {
+                var xlab = keys.map(function (k) { return k === 1 ? '1 year' : k + ' years'; });
+                var yval = keys.map(function (k) { return th[k]; });
+                Plotly.newPlot('h2-plot-time', [{
+                    type: 'bar',
+                    x: xlab,
+                    y: yval,
+                    marker: { color: GOLD, line: { color: '#fff', width: 1 } },
+                    text: yval,
+                    textposition: 'outside',
+                    hovertemplate: '%{x}<br>%{y} players<extra></extra>'
+                }], {
+                    yaxis: { title: 'Players', zeroline: true, gridcolor: '#e2e8f0', dtick: 1 },
+                    xaxis: { title: 'Calendar years from Tier 2 debut to first Tier 1' },
+                    margin: { t: 36, b: 64, l: 56, r: 28 },
+                    font: baseFont,
+                    paper_bgcolor: '#ffffff',
+                    plot_bgcolor: '#fafafa',
+                    height: 520
+                }, { responsive: true, displayModeBar: true });
+            }
+
+            h2PlotlyPurge('h2-plot-league');
+            var lt = (d.league_table || []).filter(function (r) { return r.n >= 2; });
+            lt.sort(function (a, b) { return b.n - a.n; });
+            lt = lt.slice(0, 16);
+            var leagueH = Math.min(720, Math.max(400, lt.length * 38 + 140));
+            if (!lt.length) {
+                Plotly.newPlot('h2-plot-league', [], {
+                    annotations: [{
+                        text: 'No leagues with ≥2 Tier-2 debuts',
+                        xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
+                        font: { size: 14, color: TEXT }
+                    }],
+                    xaxis: { visible: false }, yaxis: { visible: false },
+                    margin: { t: 24, b: 24, l: 24, r: 24 },
+                    paper_bgcolor: '#ffffff', height: 360
+                }, { staticPlot: true, displayModeBar: false });
+            } else {
+                var llabels = lt.map(function (r) { return r.league_short || r.league; });
+                var lrates = lt.map(function (r) { return r.rate_pct; });
+                var lcolors = lt.map(function (r) { return r.promoted > 0 ? GOLD : BLUE; });
+                var lhover = lt.map(function (r) {
+                    return 'T2 debuts: ' + r.n + '<br>Promoted: ' + r.promoted;
+                });
+                Plotly.newPlot('h2-plot-league', [{
+                    type: 'bar',
+                    orientation: 'h',
+                    y: llabels,
+                    x: lrates,
+                    marker: { color: lcolors },
+                    text: lrates.map(function (v) { return (typeof v === 'number' ? v.toFixed(1) : v) + '%'; }),
+                    textposition: 'outside',
+                    hovertext: lhover,
+                    hovertemplate: '%{y}<br>Rate: %{x:.1f}%<br>%{hovertext}<extra></extra>'
+                }], {
+                    xaxis: { title: 'Promotion rate (%)', zeroline: true, gridcolor: '#e2e8f0' },
+                    yaxis: { automargin: true },
+                    margin: { t: 28, b: 52, l: 120, r: 56 },
+                    font: baseFont,
+                    paper_bgcolor: '#ffffff',
+                    plot_bgcolor: '#fafafa',
+                    height: leagueH
+                }, { responsive: true, displayModeBar: true });
+            }
+
+            h2PlotlyPurge('h2-plot-role');
+            var rt = (d.role_table || []).filter(function (r) { return r.n >= 2; });
+            rt.sort(function (a, b) { return b.rate_pct - a.rate_pct; });
+            if (!rt.length) {
+                Plotly.newPlot('h2-plot-role', [], {
+                    annotations: [{
+                        text: 'No roles with ≥2 Tier-2 debuts',
+                        xref: 'paper', yref: 'paper', x: 0.5, y: 0.5, showarrow: false,
+                        font: { size: 14, color: TEXT }
+                    }],
+                    xaxis: { visible: false }, yaxis: { visible: false },
+                    margin: { t: 24, b: 24, l: 24, r: 24 },
+                    paper_bgcolor: '#ffffff', height: 360
+                }, { staticPlot: true, displayModeBar: false });
+            } else {
+                Plotly.newPlot('h2-plot-role', [{
+                    type: 'bar',
+                    x: rt.map(function (r) { return r.role; }),
+                    y: rt.map(function (r) { return r.rate_pct; }),
+                    marker: {
+                        color: rt.map(function (r) { return r.rate_pct > 0 ? GOLD : MUTED; }),
+                        line: { color: '#fff', width: 1 }
+                    },
+                    text: rt.map(function (r) { return r.rate_pct.toFixed(1) + '%'; }),
+                    textposition: 'outside',
+                    hovertemplate: '%{x}<br>%{y:.1f}%<br>n=%{customdata[0]}, promoted=%{customdata[1]}<extra></extra>',
+                    customdata: rt.map(function (r) { return [r.n, r.promoted]; })
+                }], {
+                    yaxis: { title: 'Promotion rate (%)', zeroline: true, gridcolor: '#e2e8f0' },
+                    xaxis: { title: 'Debut role' },
+                    margin: { t: 36, b: 56, l: 56, r: 32 },
+                    font: baseFont,
+                    paper_bgcolor: '#ffffff',
+                    plot_bgcolor: '#fafafa',
+                    height: 520
+                }, { responsive: true, displayModeBar: true });
+            }
         }
         function applyH2Summary(d) {
                     document.getElementById('h2-generated').textContent = 'Generated ' + fmtDate(d.generated_at);
@@ -373,18 +548,12 @@
                         imp.appendChild(li);
                     });
 
+                    renderH2Plots(d);
+
                     var bust = d.generated_at ? new Date(d.generated_at).getTime() : Date.now();
-                    var figs = [
-                        ['h2-fig-outcomes', '../assets/figures/h2_fig1_tier2_outcomes.png'],
-                        ['h2-fig-time', '../assets/figures/h2_fig2_seasons_to_tier1.png'],
-                        ['h2-fig-league', '../assets/figures/h2_fig3_promotion_by_league.png'],
-                        ['h2-fig-role', '../assets/figures/h2_fig4_promotion_by_role.png']
-                    ];
-                    figs.forEach(function (pair) {
-                        var el = document.getElementById(pair[0]);
-                        if (el) {
-                            el.src = pair[1] + '?v=' + bust;
-                        }
+                    document.querySelectorAll('.h2-static-fallback img').forEach(function (img) {
+                        var base = img.getAttribute('src').split('?')[0];
+                        img.src = base + '?v=' + bust;
                     });
         }
         function h2SummaryFailed() {

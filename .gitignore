@@ -93,6 +93,7 @@ data/stages/__pycache__/
 
 # Large files
 *.csv
+!tests/fixtures/h2_roster_panel_fixture.csv
 *.xlsx
 *.db
 *.sqlite

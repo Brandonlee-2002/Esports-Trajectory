@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-11T09:02:05.028147+00:00",
+  "generated_at": "2026-04-11T09:20:44.205371+00:00",
   "roster_source": "tests/fixtures/h2_roster_panel_fixture.csv",
   "cohort": "Players whose first observed year is in a Tier 2 league (2016\u20132025 panel)",
   "n_roster_rows": 44,
@@ -51,7 +51,7 @@
   },
   "promoted_players": [
     {
-      "player": "p20",
+      "player": "Blazleon",
       "league": "LFL",
       "debut_season_label": "S10",
       "first_t1_label": "S10",
@@ -59,15 +59,7 @@
       "tier_path": "T2 \u2192 T1"
     },
     {
-      "player": "p17",
-      "league": "LFL",
-      "debut_season_label": "S9",
-      "first_t1_label": "S10",
-      "seasons_taken": 1,
-      "tier_path": "T2 \u2192 T1"
-    },
-    {
-      "player": "p19",
+      "player": "AquaFlash",
       "league": "NA Academy",
       "debut_season_label": "S8",
       "first_t1_label": "S9",
@@ -75,7 +67,7 @@
       "tier_path": "T2 \u2192 T1"
     },
     {
-      "player": "p25",
+      "player": "DuskArrow",
       "league": "EU Masters",
       "debut_season_label": "S10",
       "first_t1_label": "S11",
@@ -83,7 +75,15 @@
       "tier_path": "T2 \u2192 T1"
     },
     {
-      "player": "p16",
+      "player": "SolarWind",
+      "league": "LFL",
+      "debut_season_label": "S9",
+      "first_t1_label": "S10",
+      "seasons_taken": 1,
+      "tier_path": "T2 \u2192 T1"
+    },
+    {
+      "player": "LunarJet",
       "league": "EU Masters",
       "debut_season_label": "S8",
       "first_t1_label": "S11",
@@ -91,15 +91,7 @@
       "tier_path": "T2 \u2192 T1"
     },
     {
-      "player": "p18",
-      "league": "EU Masters",
-      "debut_season_label": "S9",
-      "first_t1_label": "S12",
-      "seasons_taken": 3,
-      "tier_path": "T2 \u2192 T1"
-    },
-    {
-      "player": "p23",
+      "player": "NovaThorn",
       "league": "NA Academy",
       "debut_season_label": "S9",
       "first_t1_label": "S12",
@@ -107,7 +99,7 @@
       "tier_path": "T2 \u2192 T1"
     },
     {
-      "player": "p24",
+      "player": "SilkWarden",
       "league": "LDL",
       "debut_season_label": "S8",
       "first_t1_label": "S11",
@@ -115,7 +107,15 @@
       "tier_path": "T2 \u2192 T1"
     },
     {
-      "player": "p21",
+      "player": "TerraWisp",
+      "league": "EU Masters",
+      "debut_season_label": "S9",
+      "first_t1_label": "S12",
+      "seasons_taken": 3,
+      "tier_path": "T2 \u2192 T1"
+    },
+    {
+      "player": "GaleMint",
       "league": "Prime League",
       "debut_season_label": "S9",
       "first_t1_label": "S13",

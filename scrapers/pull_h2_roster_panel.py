@@ -4,6 +4,8 @@ Pull h2_roster_panel.csv from Leaguepedia Cargo via mwrogue (one calendar year p
 Output columns (source of truth for Hypothesis 2 roster rows):
   player, team, role, league, year, split, is_starter
 
+The ``player`` value is the Leaguepedia Cargo ``Player`` field (competitor / in-game page name), not an internal id.
+
 Run ``src/analysis/build_h2_panel.py`` on this CSV + ``data/h2/h2_league_tier_map.csv`` to get
 player-level: debut_season, debut_tier (from debut year only), first_tier1_season,
 seasons_to_promotion, censored (see that script).
