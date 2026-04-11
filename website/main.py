@@ -50,7 +50,12 @@ def app(environ, start_response):
             ctype = "text/html; charset=utf-8"
         elif ctype.startswith("text/"):
             ctype = f"{ctype}; charset=utf-8"
-        start_response("200 OK", [("Content-Type", ctype)])
+        headers = [("Content-Type", ctype)]
+        # Avoid stale charts when static handlers fall through to this app (match short app.yaml figure TTL).
+        fp = str(filepath).replace("\\", "/").lower()
+        if fp.endswith(".png") and "/assets/figures/" in fp:
+            headers.append(("Cache-Control", "public, max-age=300"))
+        start_response("200 OK", headers)
         return [data]
 
     start_response("404 Not Found", [("Content-Type", "text/plain; charset=utf-8")])

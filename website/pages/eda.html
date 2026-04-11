@@ -58,6 +58,15 @@
                     <tr><td>peak_tier</td><td>integer</td><td>Highest tier reached</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>KDA</strong> = kills + assists ÷ deaths (performance ratio);
+                <strong>ADC</strong> = attack damage carry (bottom-lane marksman role);
+                <strong>LCK</strong> = LoL Champions Korea;
+                <strong>LPL</strong> = League of Legends Pro League (China);
+                <strong>LEC</strong> = LoL EMEA Championship (Europe/MENA);
+                <strong>LCS</strong> = League Championship Series (North America);
+                <strong>PCS</strong> = Pacific Championship Series;
+                <strong>Tier 1 / Tier 2</strong> = top-flight vs developmental/regional competitive level in our coding scheme.</p>
 
             <h3>Dataset Shape</h3>
             <div class="metrics-grid">
@@ -121,6 +130,8 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>KDA</strong> = kills + assists ÷ deaths. Percentages are share of rows in the processed dataset.</p>
 
             <h3>Duplicate Check</h3>
             <div class="summary-box">
@@ -184,6 +195,9 @@
                     <tr><td colspan="5">Loading...</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>Mean / Median / Std Dev</strong> = average, 50th percentile, and standard deviation of career length in seasons.
+                Region codes: <strong>LCK</strong> = Korea; <strong>LPL</strong> = China; <strong>LEC</strong> = EMEA; <strong>LCS</strong> = North America; <strong>PCS</strong> = Pacific; others as labeled in the table.</p>
 
             <h3>Career Length by Role (n=<span id="role-n">--</span> players with known role)</h3>
             <table class="stats-table">
@@ -200,6 +214,8 @@
                     <tr><td colspan="5">Loading...</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>Top / Jungle / Mid / ADC / Support</strong> = standard five League of Legends positions (ADC = attack damage carry, bot lane).</p>
 
             <h3>Correlation Matrix</h3>
             <table class="stats-table">
@@ -256,6 +272,9 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>Career Length</strong> = seasons in dataset; <strong>Num Teams / Num Regions</strong> = counts of distinct teams and regions;
+                <strong>Starting Tier</strong> = 1 = Tier 1 debut, 2 = Tier 2 debut; <strong>Start Year</strong> = first professional year. Entries are Pearson correlation coefficients.</p>
             <p><em>Key correlations: Negative correlation between career start year and career length (-0.278) 
             suggests players who started earlier have longer careers (expected due to observation window). 
             Moderate positive correlation between num_teams and num_regions (0.477) indicates players who 
@@ -391,6 +410,9 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>LCK</strong> = LoL Champions Korea; <strong>PCS</strong> = Pacific Championship Series;
+                <strong>Mean / Median</strong> = average and 50th percentile of career length in seasons; <strong>Skewness</strong> = asymmetry of the distribution.</p>
         </section>
     </main>
 

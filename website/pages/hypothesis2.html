@@ -86,7 +86,7 @@
                 <div>
                     <p class="chart-title">Tier 2 debut — career outcomes</p>
                     <div class="chart-container">
-                        <img src="../assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes pie chart"
+                        <img id="h2-fig-outcomes" src="../assets/figures/h2_fig1_tier2_outcomes.png" alt="Tier 2 outcomes pie chart"
                              style="width:100%;max-width:520px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p><p>Run <code>python src/analysis/h2_figures.py</code> after building the panel.</p></div>
@@ -96,7 +96,7 @@
                     <p class="chart-title">Years from Tier 2 debut to first Tier 1 season</p>
                     <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Among promoted players only (calendar-year difference; 0 = same year)</p>
                     <div class="chart-container">
-                        <img src="../assets/figures/h2_fig2_seasons_to_tier1.png" alt="Histogram of seasons to Tier 1"
+                        <img id="h2-fig-time" src="../assets/figures/h2_fig2_seasons_to_tier1.png" alt="Histogram of seasons to Tier 1"
                              style="width:100%;max-width:520px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
@@ -120,6 +120,16 @@
                     <tr><td colspan="6">Loading…</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>T1</strong> = Tier 1 (top-flight professional leagues as mapped in our tier file);
+                <strong>T2</strong> = Tier 2 (developmental, academy, or regional leagues);
+                <strong>S#</strong> = Riot season index (e.g. S6 ≈ 2016 through S15 ≈ 2025).
+                <strong>Years to T1</strong> = calendar years from debut year to first Tier 1 year (0 = same calendar year).
+                League cells are Leaguepedia-style names (e.g. <strong>NA Academy</strong> = North American academy,
+                <strong>EU Masters</strong> / <strong>EMEA Masters</strong> = European amateur circuit,
+                <strong>LFL</strong> = French regional league, <strong>LDL</strong> = China developmental,
+                <strong>LEC</strong> = LoL EMEA Championship, <strong>LCS</strong> = League Championship Series (North America),
+                <strong>Prime League</strong> = German-speaking regional circuit).</p>
         </section>
 
         <!-- Promotion Rates by League & Role -->
@@ -131,7 +141,7 @@
                 <div>
                     <p class="chart-title">Promotion rate by debut league</p>
                     <div class="chart-container">
-                        <img src="../assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion rate by league"
+                        <img id="h2-fig-league" src="../assets/figures/h2_fig3_promotion_by_league.png" alt="Promotion rate by league"
                              style="width:100%;max-width:560px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
@@ -140,7 +150,7 @@
                 <div>
                     <p class="chart-title">Promotion rate by debut role</p>
                     <div class="chart-container">
-                        <img src="../assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion rate by role"
+                        <img id="h2-fig-role" src="../assets/figures/h2_fig4_promotion_by_role.png" alt="Promotion rate by role"
                              style="width:100%;max-width:560px;display:block;margin:0 auto;"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="placeholder-box" style="display:none;"><p><strong>Figure missing</strong></p></div>
@@ -161,6 +171,7 @@
                     <tr><td colspan="4">Loading…</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Note:</strong> League names match Leaguepedia tournament/league strings. For expanded abbreviations (e.g. <strong>LCS</strong>, <strong>LEC</strong>, <strong>LFL</strong>, <strong>LDL</strong>), see the <strong>Abbreviations</strong> note under the promoted players table above.</p>
 
             <h3 style="margin:1.25rem 0 0.5rem;">By debut role</h3>
             <table class="stats-table">
@@ -176,6 +187,12 @@
                     <tr><td colspan="4">Loading…</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>T2 debuts</strong> = players whose first calendar year in the panel maps to a Tier-2 league.
+                <strong>Promoted</strong> = later played at least one Tier-1-mapped league.
+                <strong>Promotion rate</strong> = promoted ÷ T2 debuts in that row.
+                Roles: <strong>Top</strong> = top lane; <strong>Jungle</strong>; <strong>Mid</strong> = mid lane;
+                <strong>Bot</strong> / <strong>ADC</strong> = bottom lane marksman; <strong>Support</strong>.</p>
         </section>
 
         <!-- Methodology -->
@@ -354,6 +371,20 @@
                         var li = document.createElement('li');
                         li.textContent = t;
                         imp.appendChild(li);
+                    });
+
+                    var bust = d.generated_at ? new Date(d.generated_at).getTime() : Date.now();
+                    var figs = [
+                        ['h2-fig-outcomes', '../assets/figures/h2_fig1_tier2_outcomes.png'],
+                        ['h2-fig-time', '../assets/figures/h2_fig2_seasons_to_tier1.png'],
+                        ['h2-fig-league', '../assets/figures/h2_fig3_promotion_by_league.png'],
+                        ['h2-fig-role', '../assets/figures/h2_fig4_promotion_by_role.png']
+                    ];
+                    figs.forEach(function (pair) {
+                        var el = document.getElementById(pair[0]);
+                        if (el) {
+                            el.src = pair[1] + '?v=' + bust;
+                        }
                     });
         }
         function h2SummaryFailed() {
