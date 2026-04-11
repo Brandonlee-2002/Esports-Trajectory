@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 3: Regional Differences | Esports Trajectory</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <style>
         .chart-wrapper {
@@ -25,11 +25,11 @@
 <body>
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="eda.html">EDA</a></li>
-            <li><a href="hypothesis1.html">Hypothesis 1</a></li>
-            <li><a href="hypothesis2.html">Hypothesis 2</a></li>
-            <li><a href="hypothesis3.html" class="active">Hypothesis 3</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/pages/eda.html">EDA</a></li>
+            <li><a href="/pages/hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="/pages/hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="/pages/hypothesis3.html" class="active">Hypothesis 3</a></li>
         </ul>
     </nav>
 
@@ -74,14 +74,14 @@
                     career length (Kruskal-Wallis H = 74.27, p &lt; 0.0001). LCK players have the longest
                     average careers at 3.34 seasons, followed by LEC (2.80) and LPL (2.55). LCS has the
                     shortest major league average at just 1.63 seasons. The East vs. West gap is statistically
-                    significant (p = 0.020), partially supporting the hypothesis — however, LEC outperforms
+                    significant (p = 0.020), partially supporting the hypothesis ΓÇö however, LEC outperforms
                     LPL, meaning the East/West divide is not as clean as predicted. LCK's advantage is
                     significant against every other major league.
                 </p>
             </div>
 
             <div class="next-steps">
-                <h3>⚠ Data Limitation</h3>
+                <h3>ΓÜá Data Limitation</h3>
                 <p>
                     Coverage is 57% of all player-seasons. LCS is notably underrepresented (83 players vs.
                     the expected ~200+), which may compress its career length estimate. Results for LCS
@@ -171,7 +171,7 @@
         <section class="section">
             <h2>Statistical Significance</h2>
             <p>
-                Pairwise Mann-Whitney U tests (two-sided, α = 0.05) between all major leagues.
+                Pairwise Mann-Whitney U tests (two-sided, ╬▒ = 0.05) between all major leagues.
                 The overall Kruskal-Wallis test confirms at least one league differs significantly
                 (H = 74.27, p &lt; 0.0001).
             </p>
@@ -204,15 +204,15 @@
                 <tbody>
                     <tr>
                         <td>LCK vs LPL</td><td>3.34</td><td>2.55</td>
-                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0000</td><td class="sig-yes">Yes Γ£ô</td>
                     </tr>
                     <tr>
                         <td>LCK vs LEC</td><td>3.34</td><td>2.80</td>
-                        <td>0.0145</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0145</td><td class="sig-yes">Yes Γ£ô</td>
                     </tr>
                     <tr>
                         <td>LCK vs LCS</td><td>3.34</td><td>1.63</td>
-                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0000</td><td class="sig-yes">Yes Γ£ô</td>
                     </tr>
                     <tr>
                         <td>LPL vs LEC</td><td>2.55</td><td>2.80</td>
@@ -220,15 +220,15 @@
                     </tr>
                     <tr>
                         <td>LPL vs LCS</td><td>2.55</td><td>1.63</td>
-                        <td>0.0008</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0008</td><td class="sig-yes">Yes Γ£ô</td>
                     </tr>
                     <tr>
                         <td>LEC vs LCS</td><td>2.80</td><td>1.63</td>
-                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0000</td><td class="sig-yes">Yes Γ£ô</td>
                     </tr>
                     <tr>
                         <td>East vs West (combined)</td><td>2.85</td><td>2.44</td>
-                        <td>0.0200</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0200</td><td class="sig-yes">Yes Γ£ô</td>
                     </tr>
                 </tbody>
             </table>
@@ -303,7 +303,7 @@
                 <ul>
                     <li>The East vs. West career length gap is statistically significant (p = 0.020), providing partial support for the hypothesis.</li>
                     <li>LCK has the longest career length of any major league (3.34 seasons) and is significantly longer than LPL, LEC, and LCS individually.</li>
-                    <li>LCS has the shortest major league career at 1.63 seasons — more than 2 seasons shorter than LCK on average.</li>
+                    <li>LCS has the shortest major league career at 1.63 seasons ΓÇö more than 2 seasons shorter than LCK on average.</li>
                     <li>60 of the 157 players with 5+ season careers come from LCK (38%), despite LCK not having the most players.</li>
                     <li>The overall Kruskal-Wallis test (H = 74.27, p &lt; 0.0001) confirms that regional differences in career length are highly significant across all leagues.</li>
                 </ul>
@@ -313,18 +313,18 @@
                 <h3>Nuance: LEC Outperforms LPL</h3>
                 <ul>
                     <li>Contrary to the hypothesis, LEC (West, 2.80) has a longer average career than LPL (East, 2.55), and the difference is not statistically significant (p = 0.123).</li>
-                    <li>This suggests the East/West framing oversimplifies — LCK specifically has unique structural advantages (established franchising, strong fan support, longer organizational history) rather than Eastern leagues as a whole.</li>
-                    <li>LPL's large player pool (334 players — the largest in the dataset) may create higher turnover as more talent competes for spots, shortening average careers.</li>
+                    <li>This suggests the East/West framing oversimplifies ΓÇö LCK specifically has unique structural advantages (established franchising, strong fan support, longer organizational history) rather than Eastern leagues as a whole.</li>
+                    <li>LPL's large player pool (334 players ΓÇö the largest in the dataset) may create higher turnover as more talent competes for spots, shortening average careers.</li>
                 </ul>
             </div>
 
             <div class="next-steps">
                 <h3>Next Steps &amp; Limitations</h3>
                 <ul>
-                    <li>LCS sample (83 players) is likely underrepresented due to missing Leaguepedia data — re-run after full fetch completes.</li>
+                    <li>LCS sample (83 players) is likely underrepresented due to missing Leaguepedia data ΓÇö re-run after full fetch completes.</li>
                     <li>Control for confounding variables: debut era, role, and starting tier all correlate with career length.</li>
                     <li>Investigate whether career length trends within each region are changing over time (e.g., has LCS improved?)</li>
-                    <li>Analyze import players — many LCK/LPL players are from the same country, which may inflate regional averages.</li>
+                    <li>Analyze import players ΓÇö many LCK/LPL players are from the same country, which may inflate regional averages.</li>
                 </ul>
             </div>
         </section>

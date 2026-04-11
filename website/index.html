@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esports Career Trajectory Analysis</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="pages/eda.html">EDA</a></li>
-            <li><a href="pages/hypothesis1.html">Hypothesis 1</a></li>
-            <li><a href="pages/hypothesis2.html">Hypothesis 2</a></li>
-            <li><a href="pages/hypothesis3.html">Hypothesis 3</a></li>
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="/pages/eda.html">EDA</a></li>
+            <li><a href="/pages/hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="/pages/hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="/pages/hypothesis3.html">Hypothesis 3</a></li>
         </ul>
     </nav>
 
@@ -122,8 +122,8 @@
         <p>Data sourced from <a href="https://lol.fandom.com" target="_blank">Leaguepedia</a></p>
     </footer>
 
-    <script src="js/data.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/data.js"></script>
+    <script src="/js/main.js"></script>
     <script>
         (function () {
             function applySummary(s) {
@@ -144,8 +144,7 @@
             }
 
             function loadHomeMetrics() {
-                var url = new URL('js/eda_data.json', window.location.href).href;
-                fetch(url)
+                fetch('/js/eda_data.json')
                     .then(function (response) {
                         if (!response.ok) throw new Error('EDA fetch failed: ' + response.status);
                         return response.json();
@@ -156,14 +155,12 @@
                     })
                     .catch(function (err) {
                         console.warn('Homepage EDA metrics (using fallback if available):', err);
-                        // file:// often blocks fetch; local preview still shows sample numbers from data.js
                         if (typeof SAMPLE_DATA !== 'undefined' && SAMPLE_DATA.summary) {
                             applySummary(SAMPLE_DATA.summary);
                         }
                     });
             }
 
-            // If DOMContentLoaded already fired (late script / fragments), still run.
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', loadHomeMetrics);
             } else {

@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exploratory Data Analysis | Esports Trajectory</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="eda.html" class="active">EDA</a></li>
-            <li><a href="hypothesis1.html">Hypothesis 1</a></li>
-            <li><a href="hypothesis2.html">Hypothesis 2</a></li>
-            <li><a href="hypothesis3.html">Hypothesis 3</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/pages/eda.html" class="active">EDA</a></li>
+            <li><a href="/pages/hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="/pages/hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="/pages/hypothesis3.html">Hypothesis 3</a></li>
         </ul>
     </nav>
 
@@ -268,7 +268,7 @@
             
             <h3>Career Length Distribution</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig1_career_distribution.png" 
+                <img src="/assets/figures/eda_fig1_career_distribution.png" 
                      alt="Career Length Distribution" style="width: 100%; max-width: 800px;">
             </div>
             <p><strong>Observation:</strong> Right-skewed distribution with most careers lasting 1-3 seasons. 
@@ -277,7 +277,7 @@
 
             <h3>Regional Career Length Comparison</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig3_regional_analysis.png" 
+                <img src="/assets/figures/eda_fig3_regional_analysis.png" 
                      alt="Regional Analysis" style="width: 100%; max-width: 100%;"
                      onerror="this.style.display='none';">
             </div>
@@ -287,7 +287,7 @@
 
             <h3>Role-Based Career Length</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig4_role_analysis.png" 
+                <img src="/assets/figures/eda_fig4_role_analysis.png" 
                      alt="Role Analysis" style="width: 100%; max-width: 800px;"
                      onerror="this.style.display='none';">
             </div>
@@ -297,7 +297,7 @@
 
             <h3>Temporal Trends</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig5_temporal_trends.png" 
+                <img src="/assets/figures/eda_fig5_temporal_trends.png" 
                      alt="Temporal Trends" style="width: 100%; max-width: 100%;">
             </div>
             <p><strong>Observation:</strong> Left panel shows player entry rates by season. Right panel shows 
@@ -400,7 +400,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('../js/eda_data.json')
+            fetch('/js/eda_data.json')
                 .then(response => response.json())
                 .then(data => {
                     // Summary stats
