@@ -1,0 +1,183 @@
+{
+  "generated_at": "2026-04-25T03:01:25.944176+00:00",
+  "used_sample_data": true,
+  "n_players": 500,
+  "volatility_vs_survival": [
+    {
+      "bucket": "Stable (0-1 changes)",
+      "n_players": 150,
+      "avg_career_years": 2.1,
+      "median_career_years": 1.51,
+      "pct_survived_5y": 6.7,
+      "pct_early_exit_2y": 62.0,
+      "avg_team_changes_proxy": 0.71
+    },
+    {
+      "bucket": "Moderate (2 changes)",
+      "n_players": 117,
+      "avg_career_years": 1.93,
+      "median_career_years": 1.44,
+      "pct_survived_5y": 3.4,
+      "pct_early_exit_2y": 60.7,
+      "avg_team_changes_proxy": 2.0
+    },
+    {
+      "bucket": "High (3+ changes)",
+      "n_players": 233,
+      "avg_career_years": 2.14,
+      "median_career_years": 1.52,
+      "pct_survived_5y": 8.2,
+      "pct_early_exit_2y": 65.2,
+      "avg_team_changes_proxy": 3.84
+    }
+  ],
+  "cohort_volatility": [
+    {
+      "career_start_year": 2013,
+      "n_players": 39,
+      "avg_team_changes_proxy": 2.46,
+      "pct_early_exit_2y": 64.1,
+      "avg_career_years": 2.22
+    },
+    {
+      "career_start_year": 2014,
+      "n_players": 55,
+      "avg_team_changes_proxy": 2.62,
+      "pct_early_exit_2y": 61.8,
+      "avg_career_years": 2.13
+    },
+    {
+      "career_start_year": 2015,
+      "n_players": 41,
+      "avg_team_changes_proxy": 2.2,
+      "pct_early_exit_2y": 61.0,
+      "avg_career_years": 1.8
+    },
+    {
+      "career_start_year": 2016,
+      "n_players": 46,
+      "avg_team_changes_proxy": 2.3,
+      "pct_early_exit_2y": 54.3,
+      "avg_career_years": 2.37
+    },
+    {
+      "career_start_year": 2017,
+      "n_players": 50,
+      "avg_team_changes_proxy": 2.62,
+      "pct_early_exit_2y": 74.0,
+      "avg_career_years": 1.71
+    },
+    {
+      "career_start_year": 2018,
+      "n_players": 48,
+      "avg_team_changes_proxy": 2.33,
+      "pct_early_exit_2y": 66.7,
+      "avg_career_years": 2.07
+    },
+    {
+      "career_start_year": 2019,
+      "n_players": 44,
+      "avg_team_changes_proxy": 2.48,
+      "pct_early_exit_2y": 61.4,
+      "avg_career_years": 2.15
+    },
+    {
+      "career_start_year": 2020,
+      "n_players": 29,
+      "avg_team_changes_proxy": 2.83,
+      "pct_early_exit_2y": 55.2,
+      "avg_career_years": 2.26
+    },
+    {
+      "career_start_year": 2021,
+      "n_players": 46,
+      "avg_team_changes_proxy": 2.37,
+      "pct_early_exit_2y": 65.2,
+      "avg_career_years": 2.04
+    },
+    {
+      "career_start_year": 2022,
+      "n_players": 60,
+      "avg_team_changes_proxy": 2.63,
+      "pct_early_exit_2y": 61.7,
+      "avg_career_years": 2.2
+    },
+    {
+      "career_start_year": 2023,
+      "n_players": 42,
+      "avg_team_changes_proxy": 2.31,
+      "pct_early_exit_2y": 66.7,
+      "avg_career_years": 1.95
+    }
+  ],
+  "trend_summary": {
+    "slope_team_changes_per_year": 0.0066,
+    "slope_early_exit_rate_per_year": 0.0013,
+    "interpretation": "Positive slopes imply newer cohorts show more volatility/churn; negative slopes imply the opposite."
+  },
+  "logit_models": {
+    "survived_5y": {
+      "method": "linear_probability_fallback",
+      "n_obs": 500,
+      "pseudo_r2": null,
+      "aic": null,
+      "r2": 0.00015652295091328483,
+      "coefficients": {
+        "const": {
+          "coef": 1.5364974149533053,
+          "p_value": null,
+          "odds_ratio": null
+        },
+        "team_changes_proxy": {
+          "coef": 0.0013293534095760813,
+          "p_value": null,
+          "odds_ratio": null
+        },
+        "starting_tier": {
+          "coef": 0.0009113081798807891,
+          "p_value": null,
+          "odds_ratio": null
+        },
+        "career_start_year": {
+          "coef": -0.0007310604830375546,
+          "p_value": null,
+          "odds_ratio": null
+        }
+      }
+    },
+    "early_exit_2y": {
+      "method": "linear_probability_fallback",
+      "n_obs": 500,
+      "pseudo_r2": null,
+      "aic": null,
+      "r2": 0.0010566424471574187,
+      "coefficients": {
+        "const": {
+          "coef": -2.325196429822052,
+          "p_value": null,
+          "odds_ratio": null
+        },
+        "team_changes_proxy": {
+          "coef": 0.008279604447079585,
+          "p_value": null,
+          "odds_ratio": null
+        },
+        "starting_tier": {
+          "coef": -0.015284111558987908,
+          "p_value": null,
+          "odds_ratio": null
+        },
+        "career_start_year": {
+          "coef": 0.0014678720367889884,
+          "p_value": null,
+          "odds_ratio": null
+        }
+      }
+    }
+  },
+  "notes": [
+    "Team changes proxy uses num_teams - 1 from career-level aggregates.",
+    "This is a structural proxy and not exact first-3-season transaction history.",
+    "For stricter early-career stability, replace with season-level roster movement features."
+  ]
+}
