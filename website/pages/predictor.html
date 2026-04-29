@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Predictor | Esports Trajectory</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <style>
+        /* ── Predictor layout ── */
+        .predictor-card {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary-light) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .predictor-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        @media (max-width: 640px) {
+            .predictor-grid { grid-template-columns: 1fr; }
+        }
+        .field-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .field-group select,
+        .field-group input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+            appearance: none;
+            cursor: pointer;
+        }
+        .field-group select:focus,
+        .field-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(91,139,212,0.15);
+        }
+        .predict-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .predict-btn:hover  { background-color: var(--primary-dark); }
+        .predict-btn:disabled { background-color: var(--border-color); cursor: not-allowed; }
+
+        /* ── Result cards ── */
+        .result-section { display: none; }
+        .result-section.visible { display: block; }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+        @media (max-width: 600px) { .result-grid { grid-template-columns: 1fr 1fr; } }
+        .result-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .result-box .val {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        .result-box .lbl {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.2rem;
+        }
+        .confidence-badge {
+            display: inline-block;
+            padding: 0.2rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .conf-high   { background: #d4edda; color: #155724; }
+        .conf-medium { background: #fff3cd; color: #856404; }
+        .conf-low    { background: #f8d7da; color: #721c24; }
+
+        /* ── Survival chart ── */
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        /* ── Interpretation box ── */
+        .interp-box {
+            background: var(--secondary-light);
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 4px;
+            padding: 1rem 1.25rem;
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        /* ── Status / error ── */
+        .status-msg {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            min-height: 1.2rem;
+        }
+        .status-msg.error { color: #c0392b; }
+        .status-msg.loading { color: var(--primary-color); }
+
+        /* ── Comparison table ── */
+        .compare-section { margin-top: 2rem; }
+        #compareList { list-style: none; padding: 0; }
+        #compareList li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        #compareList li:last-child { border-bottom: none; }
+        .compare-bar-wrap { flex: 1; margin: 0 1rem; }
+        .compare-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: var(--primary-color);
+            transition: width 0.4s ease;
+        }
+        .add-compare-btn {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.35rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            transition: all 0.2s;
+        }
+        .add-compare-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="eda.html">EDA</a></li>
+            <li><a href="hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="hypothesis3.html">Hypothesis 3</a></li>
+            <li><a href="predictor.html" class="active">Career Predictor</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+
+        <div class="hypothesis-header">
+            <h1>Career Longevity Predictor</h1>
+            <p class="hypothesis-text">
+                Enter a player profile below to predict their expected career length using our
+                trained <strong>Cox Proportional Hazards</strong> and
+                <strong>Negative Binomial Regression</strong> models, built from 992 players
+                across Seasons 6–15.
+            </p>
+        </div>
+
+        <!-- Input form -->
+        <section class="section">
+            <h2>Player Profile</h2>
+
+            <div class="predictor-card">
+                <div class="predictor-grid">
+                    <div class="field-group">
+                        <label for="league">League</label>
+                        <select id="league">
+                            <option value="LCK">LCK (Korea)</option>
+                            <option value="LPL">LPL (China)</option>
+                            <option value="LEC">LEC (Europe)</option>
+                            <option value="LCS" selected>LCS (North America)</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="role">Role</label>
+                        <select id="role">
+                            <option value="Top">Top</option>
+                            <option value="Jungle">Jungle</option>
+                            <option value="Mid" selected>Mid</option>
+                            <option value="Bot">Bot</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="debut">Debut Season</label>
+                        <select id="debut">
+                            <option value="6">Season 6 (2016)</option>
+                            <option value="7">Season 7 (2017)</option>
+                            <option value="8">Season 8 (2018)</option>
+                            <option value="9">Season 9 (2019)</option>
+                            <option value="10">Season 10 (2020)</option>
+                            <option value="11">Season 11 (2021)</option>
+                            <option value="12" selected>Season 12 (2022)</option>
+                            <option value="13">Season 13 (2023)</option>
+                            <option value="14">Season 14 (2024)</option>
+                            <option value="15">Season 15 (2025)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="predict-btn" id="predictBtn" onclick="runPrediction()">
+                    Predict Career
+                </button>
+                <p class="status-msg" id="statusMsg"></p>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section class="section result-section" id="resultSection">
+            <h2>
+                Prediction Results
+                <span class="confidence-badge" id="confBadge"></span>
+            </h2>
+
+            <div class="result-grid">
+                <div class="result-box">
+                    <div class="val" id="resSeasons">—</div>
+                    <div class="lbl">Predicted Career Length</div>
+                </div>
+                <div class="result-box">
+                    <div class="val" id="resSurvival50">—</div>
+                    <div class="lbl">50% Survival Season</div>
+                </div>
+                <div class="result-box">
+                    <div class="val" id="resSurvival3">—</div>
+                    <div class="lbl">P(career ≥ 3 seasons)</div>
+                </div>
+            </div>
+
+            <div class="interp-box" id="interpBox"></div>
+
+            <!-- Survival curve -->
+            <h3 style="margin:1.5rem 0 0.5rem;">Survival Probability by Season</h3>
+            <p style="font-size:0.875rem;color:var(--text-light);">
+                Probability that this player profile still has an active career after each season.
+            </p>
+            <div class="chart-container chart-wrapper">
+                <canvas id="survivalChart"></canvas>
+            </div>
+
+            <!-- Add to comparison -->
+            <button class="add-compare-btn" onclick="addToComparison()">
+                + Add to Comparison
+            </button>
+        </section>
+
+        <!-- Comparison section -->
+        <section class="section compare-section" id="compareSection" style="display:none;">
+            <h2>Profile Comparison</h2>
+            <p>Side-by-side comparison of predicted career lengths for different player profiles.</p>
+            <ul id="compareList"></ul>
+            <button class="add-compare-btn" onclick="clearComparison()"
+                    style="border-color:#c0392b;color:#c0392b;margin-top:0.5rem;">
+                Clear All
+            </button>
+        </section>
+
+        <!-- Model info -->
+        <section class="section">
+            <h2>About the Models</h2>
+            <div class="summary-box">
+                <h3>How it works</h3>
+                <p>
+                    Two models are used in combination. The <strong>Negative Binomial Regression</strong>
+                    predicts expected career length as a count, accounting for the overdispersed
+                    distribution of career lengths. The <strong>Cox Proportional Hazards model</strong>
+                    estimates the probability of a career still being active after each season,
+                    controlling for league, role, and debut era simultaneously.
+                </p>
+                <p style="margin-bottom:0;">
+                    Both models were trained on 803 players from LCK, LPL, LEC, and LCS across
+                    Seasons 6–15, with right-censoring applied to players still active in S15.
+                    The inference service runs on <strong>Google Cloud Run</strong> and responds
+                    in real time.
+                </p>
+            </div>
+
+            <div class="next-steps">
+                <h3>Limitations</h3>
+                <ul>
+                    <li>Models are trained on 57% data coverage — LCS predictions have lower confidence due to smaller sample size (n=83).</li>
+                    <li>Debut era is a strong confounder: early-era players had more seasons available, inflating their predicted lengths.</li>
+                    <li>Individual performance metrics (KDA, GPM) are not yet included as features — only structural variables are used.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
+    </footer>
+
+    <script>
+        // ── Replace this with your Cloud Run URL after deploying ────────────
+        const API_BASE = 'https://esports-inference-743593551906.us-west1.run.app';
+        // ────────────────────────────────────────────────────────────────────
+
+        let survivalChart = null;
+        let lastResult    = null;
+        let comparisons   = [];
+
+        const gridColor = 'rgba(0,0,0,0.06)';
+        const tickColor = '#64748b';
+        const gold      = '#d4a74a';
+        const blue      = '#5b8bd4';
+
+        function setStatus(msg, type = '') {
+            const el = document.getElementById('statusMsg');
+            el.textContent = msg;
+            el.className   = `status-msg ${type}`;
+        }
+
+        async function runPrediction() {
+            const league = document.getElementById('league').value;
+            const role   = document.getElementById('role').value;
+            const debut  = parseInt(document.getElementById('debut').value);
+            const btn    = document.getElementById('predictBtn');
+
+            btn.disabled = true;
+            setStatus('Calling inference service…', 'loading');
+
+            try {
+                const res = await fetch(`${API_BASE}/predict`, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ league, role, debut }),
+                });
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                lastResult = { league, role, debut, data };
+
+                displayResults(data);
+                setStatus('');
+            } catch (err) {
+                setStatus(`Error: ${err.message}. Is the inference service deployed?`, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function displayResults(data) {
+            // Show results section
+            const section = document.getElementById('resultSection');
+            section.classList.add('visible');
+
+            // Stat cards
+            document.getElementById('resSeasons').textContent =
+                data.predicted_seasons + ' seasons';
+            document.getElementById('resSurvival50').textContent =
+                'Season ' + data.survival_50pct;
+            const sv3 = data.survival_probs['3'] ?? '—';
+            document.getElementById('resSurvival3').textContent =
+                sv3 !== '—' ? (sv3 * 100).toFixed(1) + '%' : '—';
+
+            // Confidence badge
+            const badge = document.getElementById('confBadge');
+            badge.textContent = data.confidence.toUpperCase();
+            badge.className   = `confidence-badge conf-${data.confidence}`;
+
+            // Interpretation
+            document.getElementById('interpBox').textContent = data.interpretation;
+
+            // Survival chart
+            const labels = Object.keys(data.survival_probs).map(t => `S${t}`);
+            const values = Object.values(data.survival_probs).map(v => +(v * 100).toFixed(1));
+
+            if (survivalChart) survivalChart.destroy();
+
+            survivalChart = new Chart(document.getElementById('survivalChart'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Survival probability (%)',
+                        data:  values,
+                        borderColor:     gold,
+                        backgroundColor: 'rgba(212,167,74,0.1)',
+                        pointBackgroundColor: gold,
+                        pointRadius:  5,
+                        fill:    true,
+                        tension: 0.3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => ` ${ctx.parsed.y}% chance still active`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: gridColor },
+                            ticks: { color: tickColor },
+                            title: { display: true, text: 'Season', color: tickColor, font: { size: 11 } }
+                        },
+                        y: {
+                            grid: { color: gridColor },
+                            ticks: { color: tickColor, callback: v => v + '%' },
+                            min: 0, max: 100,
+                            title: { display: true, text: 'Survival probability', color: tickColor, font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function addToComparison() {
+            if (!lastResult) return;
+            const { league, role, debut, data } = lastResult;
+            const label = `${league} / ${role} / S${debut}`;
+
+            // Avoid duplicates
+            if (comparisons.find(c => c.label === label)) return;
+
+            comparisons.push({ label, seasons: data.predicted_seasons });
+            renderComparison();
+            document.getElementById('compareSection').style.display = 'block';
+        }
+
+        function renderComparison() {
+            const max  = Math.max(...comparisons.map(c => c.seasons));
+            const list = document.getElementById('compareList');
+            list.innerHTML = comparisons.map(c => `
+                <li>
+                    <span style="min-width:180px;font-weight:500;">${c.label}</span>
+                    <div class="compare-bar-wrap">
+                        <div class="compare-bar"
+                             style="width:${(c.seasons / max * 100).toFixed(0)}%"></div>
+                    </div>
+                    <span style="min-width:80px;text-align:right;font-weight:600;color:var(--primary-dark);">
+                        ${c.seasons} seasons
+                    </span>
+                </li>
+            `).join('');
+        }
+
+        function clearComparison() {
+            comparisons = [];
+            document.getElementById('compareList').innerHTML = '';
+            document.getElementById('compareSection').style.display = 'none';
+        }
+
+        // Allow Enter key to trigger prediction
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') runPrediction();
+        });
+    </script>
+</body>
+</html>

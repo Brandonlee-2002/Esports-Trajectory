@@ -6,6 +6,8 @@ requests>=2.31.0
 beautifulsoup4>=4.12.0
 lxml>=4.9.0
 mwclient>=0.10.1  # MediaWiki API client for Leaguepedia
+mwrogue>=0.1.5  # Leaguepedia Cargo (scrapers/pull_h2_roster_panel.py)
+mwparserfromhell>=0.6.0
 
 # Data Processing
 pandas>=2.1.0

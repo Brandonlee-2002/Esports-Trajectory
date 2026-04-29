@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypothesis 3: Regional Differences | Esports Trajectory</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <style>
         .chart-wrapper {
@@ -25,11 +25,20 @@
 <body>
     <nav class="navbar">
         <ul class="nav-links">
+<<<<<<< HEAD
             <li><a href="../index.html">Home</a></li>
             <li><a href="eda.html">EDA</a></li>
             <li><a href="hypothesis1.html">Hypothesis 1</a></li>
             <li><a href="hypothesis2.html">Hypothesis 2</a></li>
             <li><a href="hypothesis3.html" class="active">Hypothesis 3</a></li>
+            <li><a href="predictor.html">Career Predictor</a></li>
+=======
+            <li><a href="/">Home</a></li>
+            <li><a href="/pages/eda.html">EDA</a></li>
+            <li><a href="/pages/hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="/pages/hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="/pages/hypothesis3.html" class="active">Hypothesis 3</a></li>
+>>>>>>> f9c7461306c56e8b40d9b43c23abfb72550737a4
         </ul>
     </nav>
 
@@ -81,7 +90,7 @@
             </div>
 
             <div class="next-steps">
-                <h3>⚠ Data Limitation</h3>
+                <h3>Data limitation</h3>
                 <p>
                     Coverage is 57% of all player-seasons. LCS is notably underrepresented (83 players vs.
                     the expected ~200+), which may compress its career length estimate. Results for LCS
@@ -165,13 +174,20 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>LCK</strong> = LoL Champions Korea; <strong>LPL</strong> = League of Legends Pro League (China);
+                <strong>LEC</strong> = LoL EMEA Championship; <strong>LCS</strong> = League Championship Series (North America);
+                <strong>LMS</strong> = League of Legends Master Series (historical TW/HK/MO); <strong>PCS</strong> = Pacific Championship Series;
+                <strong>OCE</strong> = Oceania circuit; <strong>VCS</strong> = Vietnam Championship Series; <strong>TCL</strong> = Turkish Championship League;
+                <strong>LLA</strong> = Liga Latinoamerica. <strong>East / West / Other</strong> = geographic grouping used for this table (East = LCK+LPL; West = LEC+LCS).
+                <strong>Mean / Median / Std Dev</strong> = average, 50th percentile, standard deviation of career length in seasons; <strong>75th Pctile</strong> = 75th percentile.</p>
         </section>
 
         <!-- Statistical Tests -->
         <section class="section">
             <h2>Statistical Significance</h2>
             <p>
-                Pairwise Mann-Whitney U tests (two-sided, α = 0.05) between all major leagues.
+                Pairwise Mann-Whitney U tests (two-sided, alpha = 0.05) between all major leagues.
                 The overall Kruskal-Wallis test confirms at least one league differs significantly
                 (H = 74.27, p &lt; 0.0001).
             </p>
@@ -204,15 +220,15 @@
                 <tbody>
                     <tr>
                         <td>LCK vs LPL</td><td>3.34</td><td>2.55</td>
-                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0000</td><td class="sig-yes">Yes</td>
                     </tr>
                     <tr>
                         <td>LCK vs LEC</td><td>3.34</td><td>2.80</td>
-                        <td>0.0145</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0145</td><td class="sig-yes">Yes</td>
                     </tr>
                     <tr>
                         <td>LCK vs LCS</td><td>3.34</td><td>1.63</td>
-                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0000</td><td class="sig-yes">Yes</td>
                     </tr>
                     <tr>
                         <td>LPL vs LEC</td><td>2.55</td><td>2.80</td>
@@ -220,18 +236,22 @@
                     </tr>
                     <tr>
                         <td>LPL vs LCS</td><td>2.55</td><td>1.63</td>
-                        <td>0.0008</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0008</td><td class="sig-yes">Yes</td>
                     </tr>
                     <tr>
                         <td>LEC vs LCS</td><td>2.80</td><td>1.63</td>
-                        <td>0.0000</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0000</td><td class="sig-yes">Yes</td>
                     </tr>
                     <tr>
                         <td>East vs West (combined)</td><td>2.85</td><td>2.44</td>
-                        <td>0.0200</td><td class="sig-yes">Yes ✓</td>
+                        <td>0.0200</td><td class="sig-yes">Yes</td>
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>p-value</strong> = probability of a difference this large under the null (two-sided Mann-Whitney U); we use alpha = 0.05.
+                <strong>League 1 Mean / League 2 Mean</strong> = mean career length in seasons for each group.
+                <strong>East vs West (combined)</strong> pools East (LCK + LPL) vs West (LEC + LCS). League codes as in the career-by-league table above.</p>
         </section>
 
         <!-- Era Analysis -->
@@ -287,6 +307,10 @@
                     <tr><td>FoFo</td><td>LPL</td><td>9</td><td>S6</td><td>S14</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>LCK / LEC / LPL</strong> as in the league table above.
+                <strong>Career Seasons</strong> = count of seasons with a pro appearance in the dataset window.
+                <strong>S6–S15</strong> = competitive season indices (~2016–2025); <strong>Debut</strong> = first season listed; <strong>Last Season</strong> = last season listed.</p>
 
             <p class="chart-title" style="margin-top:1.5rem;">Veteran Players (7+) by League</p>
             <div class="chart-container chart-wrapper-sm" style="max-width:500px;margin:0 auto;">

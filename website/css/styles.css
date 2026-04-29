@@ -266,9 +266,54 @@ body {
     margin: 1.5rem 0;
 }
 
+/* Hypothesis 2 — large interactive Plotly charts */
+.h2-chart-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+@media (min-width: 1100px) {
+    .h2-chart-row.h2-chart-row--two {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.h2-plot-card {
+    width: 100%;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 0.5rem 0.25rem;
+    box-sizing: border-box;
+}
+
+.h2-plot-host {
+    width: 100%;
+    min-height: 440px;
+    /* Height comes from Plotly layout (taller when many league bars). */
+}
+
+.h2-static-fallback {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 0.35rem;
+}
+
+.h2-static-fallback summary {
+    cursor: pointer;
+    user-select: none;
+}
+
 @media (max-width: 768px) {
     .chart-row {
         grid-template-columns: 1fr;
+    }
+
+    .h2-plot-host {
+        min-height: 380px;
     }
 }
 
@@ -302,6 +347,20 @@ body {
 .stats-table td:first-child {
     text-align: left;
     font-weight: 500;
+}
+
+/* Footnote-style abbreviations under tables */
+.table-footnote {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin: 0.35rem 0 1.25rem;
+    line-height: 1.5;
+    max-width: 52rem;
+}
+
+.table-footnote strong.footnote-label {
+    color: var(--text-color);
+    font-weight: 600;
 }
 
 /* Next Steps Section */

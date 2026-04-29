@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exploratory Data Analysis | Esports Trajectory</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="eda.html" class="active">EDA</a></li>
-            <li><a href="hypothesis1.html">Hypothesis 1</a></li>
-            <li><a href="hypothesis2.html">Hypothesis 2</a></li>
-            <li><a href="hypothesis3.html">Hypothesis 3</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/pages/eda.html" class="active">EDA</a></li>
+            <li><a href="/pages/hypothesis1.html">Hypothesis 1</a></li>
+            <li><a href="/pages/hypothesis2.html">Hypothesis 2</a></li>
+            <li><a href="/pages/hypothesis3.html">Hypothesis 3</a></li>
         </ul>
     </nav>
 
@@ -58,6 +58,15 @@
                     <tr><td>peak_tier</td><td>integer</td><td>Highest tier reached</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>KDA</strong> = kills + assists ÷ deaths (performance ratio);
+                <strong>ADC</strong> = attack damage carry (bottom-lane marksman role);
+                <strong>LCK</strong> = LoL Champions Korea;
+                <strong>LPL</strong> = League of Legends Pro League (China);
+                <strong>LEC</strong> = LoL EMEA Championship (Europe/MENA);
+                <strong>LCS</strong> = League Championship Series (North America);
+                <strong>PCS</strong> = Pacific Championship Series;
+                <strong>Tier 1 / Tier 2</strong> = top-flight vs developmental/regional competitive level in our coding scheme.</p>
 
             <h3>Dataset Shape</h3>
             <div class="metrics-grid">
@@ -121,6 +130,8 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>KDA</strong> = kills + assists ÷ deaths. Percentages are share of rows in the processed dataset.</p>
 
             <h3>Duplicate Check</h3>
             <div class="summary-box">
@@ -184,6 +195,9 @@
                     <tr><td colspan="5">Loading...</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>Mean / Median / Std Dev</strong> = average, 50th percentile, and standard deviation of career length in seasons.
+                Region codes: <strong>LCK</strong> = Korea; <strong>LPL</strong> = China; <strong>LEC</strong> = EMEA; <strong>LCS</strong> = North America; <strong>PCS</strong> = Pacific; others as labeled in the table.</p>
 
             <h3>Career Length by Role (n=<span id="role-n">--</span> players with known role)</h3>
             <table class="stats-table">
@@ -200,6 +214,8 @@
                     <tr><td colspan="5">Loading...</td></tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>Top / Jungle / Mid / ADC / Support</strong> = standard five League of Legends positions (ADC = attack damage carry, bot lane).</p>
 
             <h3>Correlation Matrix</h3>
             <table class="stats-table">
@@ -256,6 +272,9 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>Career Length</strong> = seasons in dataset; <strong>Num Teams / Num Regions</strong> = counts of distinct teams and regions;
+                <strong>Starting Tier</strong> = 1 = Tier 1 debut, 2 = Tier 2 debut; <strong>Start Year</strong> = first professional year. Entries are Pearson correlation coefficients.</p>
             <p><em>Key correlations: Negative correlation between career start year and career length (-0.278) 
             suggests players who started earlier have longer careers (expected due to observation window). 
             Moderate positive correlation between num_teams and num_regions (0.477) indicates players who 
@@ -268,7 +287,7 @@
             
             <h3>Career Length Distribution</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig1_career_distribution.png" 
+                <img src="/assets/figures/eda_fig1_career_distribution.png" 
                      alt="Career Length Distribution" style="width: 100%; max-width: 800px;">
             </div>
             <p><strong>Observation:</strong> Right-skewed distribution with most careers lasting 1-3 seasons. 
@@ -277,7 +296,7 @@
 
             <h3>Regional Career Length Comparison</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig3_regional_analysis.png" 
+                <img src="/assets/figures/eda_fig3_regional_analysis.png" 
                      alt="Regional Analysis" style="width: 100%; max-width: 100%;"
                      onerror="this.style.display='none';">
             </div>
@@ -287,7 +306,7 @@
 
             <h3>Role-Based Career Length</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig4_role_analysis.png" 
+                <img src="/assets/figures/eda_fig4_role_analysis.png" 
                      alt="Role Analysis" style="width: 100%; max-width: 800px;"
                      onerror="this.style.display='none';">
             </div>
@@ -297,7 +316,7 @@
 
             <h3>Temporal Trends</h3>
             <div class="chart-container">
-                <img src="../assets/figures/eda_fig5_temporal_trends.png" 
+                <img src="/assets/figures/eda_fig5_temporal_trends.png" 
                      alt="Temporal Trends" style="width: 100%; max-width: 100%;">
             </div>
             <p><strong>Observation:</strong> Left panel shows player entry rates by season. Right panel shows 
@@ -352,6 +371,63 @@
             </div>
         </section>
 
+        <section class="section">
+            <h2>Stability and Cohort Volatility Snapshot</h2>
+            <p>
+                This section adds a structural proxy analysis requested for final presentation readiness:
+                team-change volatility versus career survival, plus cohort churn trends by debut year.
+            </p>
+
+            <h3>Volatility vs Career Survival</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Volatility bucket</th>
+                        <th>Players</th>
+                        <th>Avg career (years)</th>
+                        <th>Median career</th>
+                        <th>Survived 5+ years</th>
+                        <th>Early exit (<=2 years)</th>
+                    </tr>
+                </thead>
+                <tbody id="stability-volatility-body">
+                    <tr><td colspan="6">Loading...</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Cohort Churn Trend</h3>
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Debut Year</th>
+                        <th>Players</th>
+                        <th>Avg team changes (proxy)</th>
+                        <th>Early exit (<=2 years)</th>
+                        <th>Avg career (years)</th>
+                    </tr>
+                </thead>
+                <tbody id="stability-cohort-body">
+                    <tr><td colspan="5">Loading...</td></tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <h4>Model-based predictor check</h4>
+                <p id="stability-model-note">
+                    Loading predictor summary...
+                </p>
+            </div>
+            <div class="next-steps">
+                <h3>Presentation Talk Track (Use in Final Demo)</h3>
+                <ul id="stability-talk-track">
+                    <li>Loading interpretation guidance...</li>
+                </ul>
+            </div>
+            <p class="table-footnote"><strong class="footnote-label">Notes:</strong>
+                Team-change volatility here uses a career-level proxy (<strong>num_teams - 1</strong>) from the processed dataset.
+                It is useful for structural directionality, but not yet a strict first-3-seasons transaction count.</p>
+        </section>
+
         <!-- Major Results Summary -->
         <section class="section">
             <h2>Major EDA Results Summary</h2>
@@ -391,6 +467,9 @@
                     </tr>
                 </tbody>
             </table>
+            <p class="table-footnote"><strong class="footnote-label">Abbreviations:</strong>
+                <strong>LCK</strong> = LoL Champions Korea; <strong>PCS</strong> = Pacific Championship Series;
+                <strong>Mean / Median</strong> = average and 50th percentile of career length in seasons; <strong>Skewness</strong> = asymmetry of the distribution.</p>
         </section>
     </main>
 
@@ -400,7 +479,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('../js/eda_data.json')
+            fetch('/js/eda_data.json')
                 .then(response => response.json())
                 .then(data => {
                     // Summary stats
@@ -458,6 +537,130 @@
                     }
                 })
                 .catch(err => console.log('Data not available:', err));
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/js/stability_cohort_summary.json')
+                .then(response => response.json())
+                .then(data => {
+                    const volBody = document.getElementById('stability-volatility-body');
+                    const cohortBody = document.getElementById('stability-cohort-body');
+                    const modelNote = document.getElementById('stability-model-note');
+                    const talkTrack = document.getElementById('stability-talk-track');
+
+                    if (volBody) {
+                        volBody.innerHTML = '';
+                        (data.volatility_vs_survival || []).forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML =
+                                '<td style="text-align:left;">' + row.bucket + '</td>' +
+                                '<td>' + row.n_players + '</td>' +
+                                '<td>' + row.avg_career_years.toFixed(2) + '</td>' +
+                                '<td>' + row.median_career_years.toFixed(2) + '</td>' +
+                                '<td>' + row.pct_survived_5y.toFixed(1) + '%</td>' +
+                                '<td>' + row.pct_early_exit_2y.toFixed(1) + '%</td>';
+                            volBody.appendChild(tr);
+                        });
+                    }
+
+                    if (cohortBody) {
+                        cohortBody.innerHTML = '';
+                        (data.cohort_volatility || []).forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML =
+                                '<td>' + row.career_start_year + '</td>' +
+                                '<td>' + row.n_players + '</td>' +
+                                '<td>' + row.avg_team_changes_proxy.toFixed(2) + '</td>' +
+                                '<td>' + row.pct_early_exit_2y.toFixed(1) + '%</td>' +
+                                '<td>' + row.avg_career_years.toFixed(2) + '</td>';
+                            cohortBody.appendChild(tr);
+                        });
+                    }
+
+                    if (modelNote && data.logit_models && data.logit_models.survived_5y) {
+                        const m = data.logit_models.survived_5y;
+                        const c = m.coefficients || {};
+                        const team = c.team_changes_proxy;
+                        const tier = c.starting_tier;
+                        const year = c.career_start_year;
+                        modelNote.textContent =
+                            'Predictor model (survived >=5 years, n=' + m.n_obs +
+                            ') shows directional effects for team changes proxy, starting tier, and debut year. ' +
+                            'Interpret coefficients cautiously due to aggregate-feature limitations and censoring.';
+                        if (team && tier && year && team.odds_ratio != null && tier.odds_ratio != null && year.odds_ratio != null) {
+                            modelNote.textContent +=
+                                ' Odds ratios: team_changes=' + team.odds_ratio.toFixed(2) +
+                                ', starting_tier=' + tier.odds_ratio.toFixed(2) +
+                                ', start_year=' + year.odds_ratio.toFixed(2) + '.';
+                        } else if (team && tier && year) {
+                            modelNote.textContent +=
+                                ' Fallback linear model coefficients: team_changes=' + team.coef.toFixed(3) +
+                                ', starting_tier=' + tier.coef.toFixed(3) +
+                                ', start_year=' + year.coef.toFixed(3) + '.';
+                        }
+                    }
+
+                    if (talkTrack) {
+                        talkTrack.innerHTML = '';
+                        const rows = data.volatility_vs_survival || [];
+                        const trend = data.trend_summary || {};
+                        const sampleFlag = !!data.used_sample_data;
+
+                        const stable = rows.find(r => r.bucket === 'Stable (0-1 changes)');
+                        const high = rows.find(r => r.bucket === 'High (3+ changes)');
+                        const bullets = [];
+
+                        if (sampleFlag) {
+                            bullets.push('This block currently uses SAMPLE/FALLBACK data, not your full processed dataset. Re-run the pipeline on local processed CSVs before final numbers are presented.');
+                        } else {
+                            bullets.push('These values are pulled from your processed dataset and can be cited as current project estimates.');
+                        }
+
+                        if (stable && high) {
+                            bullets.push(
+                                'Compare stable vs high-volatility buckets directly: early-exit and 5+ year survival rates provide the cleanest narrative for roster-stability effects.'
+                            );
+                        } else {
+                            bullets.push(
+                                'Use the volatility bucket table to discuss whether higher team-change exposure aligns with weaker survival outcomes.'
+                            );
+                        }
+
+                        if (typeof trend.slope_early_exit_rate_per_year === 'number') {
+                            const direction = trend.slope_early_exit_rate_per_year > 0 ? 'upward' : 'downward';
+                            bullets.push(
+                                'Cohort trend summary indicates an ' + direction + ' direction in early-exit rates for newer debut cohorts (slope=' +
+                                trend.slope_early_exit_rate_per_year.toFixed(4) + ' per year).'
+                            );
+                        }
+
+                        bullets.push(
+                            'Method caveat to say out loud: this is a structural proxy (num_teams - 1), not exact first-3-season transfers, so interpret as directional evidence.'
+                        );
+
+                        bullets.forEach(text => {
+                            const li = document.createElement('li');
+                            li.textContent = text;
+                            talkTrack.appendChild(li);
+                        });
+                    }
+                })
+                .catch(err => {
+                    const modelNote = document.getElementById('stability-model-note');
+                    const talkTrack = document.getElementById('stability-talk-track');
+                    if (modelNote) {
+                        modelNote.textContent =
+                            'Stability/cohort JSON not found yet. Run: python src/analysis/stability_cohort_analysis.py';
+                    }
+                    if (talkTrack) {
+                        talkTrack.innerHTML = '';
+                        const li = document.createElement('li');
+                        li.textContent =
+                            'Stability/cohort summary not loaded yet. Generate it with: python src/analysis/stability_cohort_analysis.py';
+                        talkTrack.appendChild(li);
+                    }
+                    console.log('Stability/cohort summary not available:', err);
+                });
         });
     </script>
 </body>
