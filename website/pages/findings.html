@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Major Findings | Esports Trajectory</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="objective.html">Objective</a></li>
+            <li><a href="methods.html">Methods</a></li>
+            <li><a href="findings.html" class="active">Findings</a></li>
+            <li><a href="eda.html">EDA</a></li>
+            <li><a href="hypothesis1.html">H1</a></li>
+            <li><a href="hypothesis2.html">H2</a></li>
+            <li><a href="hypothesis3.html">H3</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <div class="hypothesis-header">
+            <h1>Major Findings</h1>
+            <p class="hypothesis-text">
+                This page consolidates the main results from EDA, hypothesis testing, and modeling
+                into one rubric-focused summary with linked evidence.
+            </p>
+        </div>
+
+        <section class="section">
+            <h2>Top Results</h2>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <span class="metric-value">~2</span>
+                    <span class="metric-label">Median Career Length (Seasons)</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">37.5%</span>
+                    <span class="metric-label">Tier 2 Debuts Reaching Tier 1 (current panel)</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value">LCK</span>
+                    <span class="metric-label">Longest Observed Regional Careers</span>
+                </div>
+                <div class="metric-box">
+                    <span class="metric-value" id="cloud-feature-value">Loading...</span>
+                    <span class="metric-label" id="cloud-feature-label">Cloud DB featured metric</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Cloud Database Featured Insight</h2>
+            <div class="summary-box">
+                <h3 id="cloud-finding-title">Loading featured finding...</h3>
+                <p id="cloud-finding-summary">
+                    Fetching insight from Firestore document <code>dashboard/major_findings</code>.
+                </p>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0;" id="cloud-finding-source">
+                    Source: pending
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Finding 1: Career Lengths Are Right-Skewed</h2>
+            <div class="chart-container">
+                <img src="/assets/figures/eda_fig1_career_distribution.png"
+                     alt="Career distribution figure"
+                     style="width: 100%; max-width: 100%;"
+                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run `python src/analysis/eda.py` to regenerate.</p></div>';">
+            </div>
+            <p>
+                Most professional careers concentrate in short durations, while a smaller set of players
+                form a long right tail of durable multi-season careers. This supports a high-turnover
+                structure in pro play.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Finding 2: Tier 2 Promotion Is Limited and Time-Sensitive</h2>
+            <div class="chart-container">
+                <img src="/assets/figures/h2_fig1_tier2_outcomes.png"
+                     alt="Tier 2 outcomes figure"
+                     style="width: 100%; max-width: 100%;"
+                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run `python src/analysis/h2_figures.py` to regenerate.</p></div>';">
+            </div>
+            <p>
+                In the current roster panel, a minority of Tier 2 debuts reach a Tier 1 league, and
+                successful transitions often happen early in a player's timeline. This indicates a narrow
+                development window for promotion.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Finding 3: Regional Differences Are Statistically Meaningful</h2>
+            <div class="chart-container">
+                <img src="/assets/figures/eda_fig3_regional_analysis.png"
+                     alt="Regional analysis figure"
+                     style="width: 100%; max-width: 100%;"
+                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run `python src/analysis/eda.py` to regenerate.</p></div>';">
+            </div>
+            <p>
+                Career length differs by league context. Current tests indicate significant cross-region
+                differences, with LCK generally leading in observed longevity and LCS showing shorter
+                average durations in the available sample.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Finding 4: Non-Trivial Predictive Modeling Is Operational</h2>
+            <div class="summary-box">
+                <h3>Production predictor</h3>
+                <p>
+                    The site includes a model-backed predictor page connected to a Cloud Run inference API.
+                    It returns expected career length plus survival probabilities from Cox and Negative
+                    Binomial models, not just static visualization outputs.
+                </p>
+            </div>
+            <p>
+                Try it on the <a href="predictor.html">Career Predictor page</a> to generate interactive,
+                profile-specific predictions.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Interpretation and Caveats</h2>
+            <div class="next-steps">
+                <h3>How to read these results</h3>
+                <ul>
+                    <li>Some estimates are sensitive to incomplete coverage in certain regions.</li>
+                    <li>Tier mappings are rule-based and may require periodic refinement.</li>
+                    <li>Recent cohorts are right-censored; younger careers are still unfolding.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>CS163 Senior Capstone Project | Esports Career Trajectory Analysis</p>
+    </footer>
+    <script>
+        (function () {
+            function applyCloudFinding(payload) {
+                if (!payload || !payload.finding) return;
+                var finding = payload.finding;
+                var titleEl = document.getElementById('cloud-finding-title');
+                var summaryEl = document.getElementById('cloud-finding-summary');
+                var srcEl = document.getElementById('cloud-finding-source');
+                var valueEl = document.getElementById('cloud-feature-value');
+                var labelEl = document.getElementById('cloud-feature-label');
+
+                if (titleEl) titleEl.textContent = finding.title || 'Featured finding';
+                if (summaryEl) summaryEl.textContent = finding.summary || '';
+                if (valueEl) valueEl.textContent = finding.value || '--';
+                if (labelEl) labelEl.textContent = finding.metric_label || 'Cloud DB featured metric';
+                if (srcEl) srcEl.textContent = 'Source: ' + (payload.source || 'unknown');
+            }
+
+            fetch('/api/featured-finding')
+                .then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(applyCloudFinding)
+                .catch(function () {
+                    var srcEl = document.getElementById('cloud-finding-source');
+                    if (srcEl) srcEl.textContent = 'Source: unavailable';
+                });
+        })();
+    </script>
+</body>
+</html>

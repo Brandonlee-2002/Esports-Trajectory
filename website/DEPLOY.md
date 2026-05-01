@@ -51,7 +51,8 @@ If it **still** fails with the same `app-engine-tmp/build-cache` DENIED line, th
 ### 3) Redeploy
 
 ```cmd
-cd "C:\Users\pixls\cs163 - senior cap\Esports-Trajectory\website"
+git clone https://github.com/Brandonlee-2002/Esports-Trajectory.git
+cd Esports-Trajectory\website
 gcloud app deploy --project=esport-trajectories
 ```
 
@@ -103,7 +104,8 @@ You’ll get a `https://YOUR_PROJECT.web.app` URL.
 From `website/`:
 
 ```cmd
-cd "C:\Users\pixls\cs163 - senior cap\Esports-Trajectory\website"
+git clone https://github.com/Brandonlee-2002/Esports-Trajectory.git
+cd Esports-Trajectory\website
 gcloud app deploy --project=esport-trajectories --no-cache
 ```
 

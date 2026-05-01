@@ -20,10 +20,16 @@ website/
 │   ├── charts.js           # Chart utility functions
 │   └── main.js             # Main JavaScript
 ├── pages/
+│   ├── eda.html            # Exploratory data analysis
 │   ├── hypothesis1.html    # Career Length Analysis
 │   ├── hypothesis2.html    # Tier Transition Analysis
-│   └── hypothesis3.html    # Regional Differences Analysis
-└── assets/                 # Images and other assets
+│   ├── hypothesis3.html    # Regional Differences Analysis
+│   ├── objective.html      # Project objective + goals + data sources
+│   ├── methods.html        # Analytical methods and technical references
+│   └── findings.html       # Consolidated major findings + cloud insight
+├── reports/
+│   └── figures/            # EDA PNGs (copy of repo `reports/`; run `python src/analysis/eda.py`)
+└── assets/                 # Optional extra assets
 ```
 
 ## Running Locally
@@ -68,7 +74,8 @@ If Cloud Build keeps failing with only “step 2 … non-zero status: 1”, see 
 **Windows (project path has spaces — always quote it):**
 
 ```powershell
-cd "C:\Users\pixls\cs163 - senior cap\Esports-Trajectory\website"
+git clone https://github.com/Brandonlee-2002/Esports-Trajectory.git
+cd ".\Esports-Trajectory\website"
 gcloud app deploy
 ```
 
@@ -81,7 +88,7 @@ If you see **“The system cannot find the path specified”**:
 
 After deploy, open the URL shown (e.g. `https://YOUR-PROJECT-ID.uc.r.appspot.com`).
 
-**Cloud Build fails (e.g. step 2, `python_*_lightweight` builder):** App Engine still needs a small Python process when you use static handlers. This folder uses **`runtime: python310`**, an explicit **`entrypoint`** (`gunicorn … main:app`), **`main.py`** as a tiny stdlib WSGI app, and **`requirements.txt`** with only **`gunicorn`**. If deploy still fails, open the Cloud Build log link and search for the first `ERROR` line (often `pip` or permissions).
+**Cloud Build fails (e.g. step 2, `python_*_lightweight` builder):** App Engine still needs a small Python process when you use static handlers. This folder uses **`runtime: python312`**, an explicit **`entrypoint`** (`gunicorn … main:app`), **`main.py`** as a tiny stdlib WSGI app, and **`requirements.txt`** with only **`gunicorn`**. If deploy still fails, open the Cloud Build log link, expand the failed step, and search for the first `ERROR` / `pip` line (often `pip` or permissions).
 
 #### Auto-deploy on git push (GitHub Actions)
 
@@ -90,6 +97,27 @@ On pushes to `main` that change files under `website/`, [.github/workflows/deplo
 **Repository admin:** add **`GCP_PROJECT_ID`** and **`GCP_SA_KEY`** under **Settings → Secrets and variables → Actions** (see workflow file comments for IAM). Without these, the workflow will not authenticate.
 
 Optional: manually run **Actions → Deploy website to App Engine → Run workflow**.
+
+## Cloud DB-backed feature (Firestore)
+
+`/api/featured-finding` in `main.py` reads a Firestore document and the page
+`pages/findings.html` displays it under **Cloud Database Featured Insight**.
+
+- Default document path: `dashboard/major_findings`
+- Configurable with env vars:
+  - `FIRESTORE_FEATURED_COLLECTION`
+  - `FIRESTORE_FEATURED_DOC`
+
+Example seed command:
+
+```bash
+gcloud firestore documents update dashboard/major_findings \
+  --project=YOUR_PROJECT_ID \
+  --set=title="Tier 2 promotion is limited",summary="Only a minority of Tier 2 debuts reach Tier 1 in the current panel.",value="37.5%",metric_label="Tier 2 to Tier 1 promotion rate"
+```
+
+If Firestore is not configured, the endpoint returns a local fallback payload so
+the page still renders.
 
 ## Theme
 

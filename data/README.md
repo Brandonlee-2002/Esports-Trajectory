@@ -39,7 +39,9 @@ data/
         ↓
       eda.py
         ↓
-   reports/*.png + website/js/eda_data.json
+   reports/*.png (canonical) + website/js/eda_data.json
+        ↓
+   website/reports/figures/*.png (copied for App Engine static hosting)
 ```
 
 ## Files

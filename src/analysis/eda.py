@@ -360,8 +360,10 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
     print("="*60)
     
     WEBSITE_PATH = Path(__file__).parent.parent.parent / 'website'
-    ASSETS_PATH = WEBSITE_PATH / 'assets' / 'figures'
-    ASSETS_PATH.mkdir(parents=True, exist_ok=True)
+    # Deploy bundle: App Engine serves /reports from website/reports (see app.yaml).
+    # Canonical figures live in repo root reports/; copy here after each EDA run.
+    DEPLOY_FIGURES_PATH = WEBSITE_PATH / 'reports' / 'figures'
+    DEPLOY_FIGURES_PATH.mkdir(parents=True, exist_ok=True)
     
     # Filter to known regions/roles
     known_region_df = df[df['primary_region'] != 'Unknown']
@@ -423,6 +425,7 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
     # Copy figures to website assets
     figure_files = [
         'eda_fig1_career_distribution.png',
+        'eda_fig2_tier_transitions.png',
         'eda_fig3_regional_analysis.png',
         'eda_fig4_role_analysis.png',
         'eda_fig5_temporal_trends.png'
@@ -431,9 +434,9 @@ def export_to_dashboard(df, region_stats, promo_rate, tier2_df, reports_path):
     for fig_file in figure_files:
         src = reports_path / fig_file
         if src.exists():
-            dst = ASSETS_PATH / fig_file
+            dst = DEPLOY_FIGURES_PATH / fig_file
             shutil.copy2(src, dst)
-            print(f"Copied: {fig_file} -> website/assets/figures/")
+            print(f"Copied: {fig_file} -> website/reports/figures/")
     
     print("\nDashboard data updated!")
 
