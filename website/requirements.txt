@@ -1,4 +1,4 @@
 # Only dependency needed to run main:app (stdlib WSGI in main.py)
 # gunicorn 22+ has wheels for Python 3.12 on Linux (App Engine build)
 gunicorn>=22.0.0,<24
-google-cloud-firestore>=2.16.0
+google-cloud-datastore>=2.20.0

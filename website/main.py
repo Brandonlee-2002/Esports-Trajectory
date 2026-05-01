@@ -13,9 +13,9 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 try:
-    from google.cloud import firestore
+    from google.cloud import datastore
 except Exception:  # pragma: no cover - optional local dependency
-    firestore = None
+    datastore = None
 
 _ROOT = Path(__file__).resolve().parent
 _FALLBACK_FINDING: Dict[str, Any] = {
@@ -62,17 +62,18 @@ def _json_response(
     return [body]
 
 
-def _load_featured_finding_from_firestore() -> Optional[Dict[str, Any]]:
-    if firestore is None:
+def _load_featured_finding_from_datastore() -> Optional[Dict[str, Any]]:
+    if datastore is None:
         return None
 
-    collection = os.environ.get("FIRESTORE_FEATURED_COLLECTION", "dashboard")
-    document = os.environ.get("FIRESTORE_FEATURED_DOC", "major_findings")
-    client = firestore.Client()
-    snap = client.collection(collection).document(document).get()
-    if not snap.exists:
+    kind = os.environ.get("DATASTORE_FEATURED_KIND", "dashboard")
+    name = os.environ.get("DATASTORE_FEATURED_NAME", "major_findings")
+    client = datastore.Client()
+    key = client.key(kind, name)
+    entity = client.get(key)
+    if entity is None:
         return None
-    data = snap.to_dict() or {}
+    data = dict(entity)
     return {
         "title": str(data.get("title") or _FALLBACK_FINDING["title"]),
         "summary": str(data.get("summary") or _FALLBACK_FINDING["summary"]),
@@ -95,12 +96,12 @@ def app(environ, start_response):
 
     if path == "/api/featured-finding":
         try:
-            finding = _load_featured_finding_from_firestore()
+            finding = _load_featured_finding_from_datastore()
             if finding is not None:
                 return _json_response(
                     start_response,
                     "200 OK",
-                    {"source": "firestore", "finding": finding},
+                    {"source": "datastore", "finding": finding},
                     cache_control="public, max-age=60",
                 )
             return _json_response(
@@ -116,7 +117,7 @@ def app(environ, start_response):
                 {
                     "source": "fallback",
                     "finding": _FALLBACK_FINDING,
-                    "error": f"firestore_unavailable: {exc}",
+                    "error": f"datastore_unavailable: {exc}",
                 },
                 cache_control="public, max-age=60",
             )

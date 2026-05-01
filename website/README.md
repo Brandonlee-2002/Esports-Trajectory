@@ -98,25 +98,36 @@ On pushes to `main` that change files under `website/`, [.github/workflows/deplo
 
 Optional: manually run **Actions → Deploy website to App Engine → Run workflow**.
 
-## Cloud DB-backed feature (Firestore)
+## Cloud DB-backed feature (Datastore mode)
 
-`/api/featured-finding` in `main.py` reads a Firestore document and the page
+`/api/featured-finding` in `main.py` reads a Datastore entity and the page
 `pages/findings.html` displays it under **Cloud Database Featured Insight**.
 
-- Default document path: `dashboard/major_findings`
+- Default entity key: Kind `dashboard`, Name `major_findings`
 - Configurable with env vars:
-  - `FIRESTORE_FEATURED_COLLECTION`
-  - `FIRESTORE_FEATURED_DOC`
+  - `DATASTORE_FEATURED_KIND`
+  - `DATASTORE_FEATURED_NAME`
 
-Example seed command:
+Example seed script:
 
 ```bash
-gcloud firestore documents update dashboard/major_findings \
-  --project=YOUR_PROJECT_ID \
-  --set=title="Tier 2 promotion is limited",summary="Only a minority of Tier 2 debuts reach Tier 1 in the current panel.",value="37.5%",metric_label="Tier 2 to Tier 1 promotion rate"
+python3 - <<'PY'
+from google.cloud import datastore
+client = datastore.Client(project="YOUR_PROJECT_ID")
+key = client.key("dashboard", "major_findings")
+entity = datastore.Entity(key=key)
+entity.update({
+    "title": "Tier 2 promotion is limited",
+    "summary": "Only a minority of Tier 2 debuts reach Tier 1 in the current panel.",
+    "value": "37.5%",
+    "metric_label": "Tier 2 to Tier 1 promotion rate",
+})
+client.put(entity)
+print("Wrote dashboard/major_findings")
+PY
 ```
 
-If Firestore is not configured, the endpoint returns a local fallback payload so
+If Datastore is not configured, the endpoint returns a local fallback payload so
 the page still renders.
 
 ## Theme
