@@ -45,12 +45,18 @@ body {
     margin: 0 auto;
 }
 
+.nav-links li {
+    flex: 0 0 auto;
+}
+
 .nav-links a {
+    display: inline-block;
     text-decoration: none;
     color: var(--text-color);
-    padding: 0.5rem 1.25rem;
+    padding: 0.5rem 1rem;
     border-radius: 6px;
     font-weight: 500;
+    white-space: nowrap;
     transition: all 0.2s;
 }
 
