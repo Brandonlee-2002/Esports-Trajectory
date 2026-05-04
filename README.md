@@ -118,8 +118,19 @@ The project flow from data collection to deployment:
 1. **Frontend website** (`website/`) is deployed to **Google App Engine**.
 2. Website calls:
    - **Cloud Run inference API** (`inference/app.py`) for model predictions.
-   - **App Engine API endpoint** (`/api/featured-finding`) for Firestore-backed featured insight.
-3. App Engine endpoint reads from **Firestore** for dynamic dashboard content.
+   - **App Engine API endpoint** (`/api/featured-finding`) for cloud-stored featured insight.
+3. App Engine endpoint reads from **Datastore mode** for dynamic dashboard content.
+
+### Simple System Diagram
+
+```mermaid
+flowchart LR
+    A[User Browser] --> B[Website on App Engine]
+    B --> C[Cloud Run Inference API]
+    C --> D[(Models in inference/models)]
+    B --> E[/api/featured-finding in App Engine]
+    E --> F[(Cloud Datastore: dashboard/major_findings)]
+```
 
 ### Scalability Notes
 
@@ -129,7 +140,7 @@ The project flow from data collection to deployment:
 - **Cloud Run inference**:
   - Containerized deployment with Gunicorn workers/threads for concurrent requests.
   - Stateless API design allows horizontal scaling.
-- **Firestore-backed feature**:
+- **Datastore-backed feature**:
   - Read-light dashboard payload (single document fetch) is cheap and scalable.
   - Endpoint returns cached/fallback response to avoid page failure when unavailable.
 
@@ -140,6 +151,7 @@ Inference service code is located in:
 - Docker config: `inference/Dockerfile`
 - API server: `inference/app.py`
 - Model artifacts: `inference/models/`
+- Analysis/modeling scripts used in this repo: `src/analysis/`
 
 ### Purpose
 
@@ -160,13 +172,13 @@ Provide real-time estimates of expected career length and survival probabilities
 
 ## Cloud Data Storage
 
-At least part of dashboard content is stored in **Google Firestore**:
+At least part of dashboard content is stored in **Google Cloud Datastore (Datastore mode)**:
 
-- Collection/document (default): `dashboard/major_findings`
+- Kind/name key (default): `dashboard/major_findings`
 - Read by App Engine endpoint: `GET /api/featured-finding` in `website/main.py`
 - Rendered on website page: `website/pages/findings.html` under "Cloud Database Featured Insight"
 
-This feature includes a fallback payload when Firestore is not configured, so the page stays functional.
+This feature includes a fallback payload when Datastore is unavailable, so the page stays functional.
 
 ## Major Findings (Current)
 
