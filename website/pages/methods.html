@@ -3,41 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytical Methods | Esports Trajectory</title>
+    <title>Project Objective &amp; Analytical Methods | Esports Trajectory</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="objective.html">Objective</a></li>
-            <li><a href="methods.html" class="active">Methods</a></li>
-            <li><a href="findings.html">Findings</a></li>
-            <li><a href="eda.html">EDA</a></li>
-            <li><a href="hypothesis1.html">H1</a></li>
-            <li><a href="hypothesis2.html">H2</a></li>
-            <li><a href="hypothesis3.html">H3</a></li>
+            <li><a href="../index.html">Home Overview</a></li>
+            <li><a href="methods.html" class="active">Objective/Methods</a></li>
+            <li><a href="findings.html">Major Findings</a></li>
+            <li><a href="hypothesis2.html">Interactive Chart</a></li>
+            <li><a href="predictor.html">Predictor (Cloud Run)</a></li>
+            <li><a href="findings.html#cloud-db-proof">Cloud DB Proof</a></li>
         </ul>
     </nav>
 
     <main class="container">
         <div class="hypothesis-header">
-            <h1>Analytical Methods</h1>
+            <h1>Project Objective &amp; Analytical Methods</h1>
             <p class="hypothesis-text">
-                Our analysis combines descriptive statistics, nonparametric hypothesis testing,
-                survival modeling, and count regression to characterize and predict player career length.
+                This page combines what we are trying to learn (objectives) with how we analyze the data
+                (methods), so presentation navigation stays consistent across the site.
             </p>
         </div>
 
         <section class="section">
+            <h2>Project Objective</h2>
+            <p>
+                This project studies professional League of Legends career trajectories to understand
+                how long careers typically last, how players transition from Tier 2 to Tier 1 leagues,
+                and which structural factors are associated with longer career longevity.
+            </p>
+
+            <h3>Main goals</h3>
+            <ol>
+                <li>Estimate the typical career length distribution for pro players from Seasons 6-15.</li>
+                <li>Measure Tier 2 to Tier 1 transition rates and timing.</li>
+                <li>Compare career outcomes across major regions (LCK, LPL, LEC, LCS).</li>
+                <li>Provide an interpretable prediction service for expected career length.</li>
+            </ol>
+
+            <h3>Research questions</h3>
+            <ul>
+                <li>What is the typical length of a professional LoL career?</li>
+                <li>How often do Tier 2 debuts reach Tier 1 leagues?</li>
+                <li>Which regions show stronger long-career retention patterns?</li>
+                <li>How do role, debut era, and league context change expected longevity?</li>
+            </ul>
+
+            <h3>Data sources</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>What it provides</th>
+                        <th>How it is used</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Leaguepedia</td>
+                        <td>Player histories, roster and league records</td>
+                        <td>Career timelines and tier transition mapping</td>
+                    </tr>
+                    <tr>
+                        <td>Games of Legends (gol.gg)</td>
+                        <td>Season-level player performance metrics</td>
+                        <td>Career aggregates and model features</td>
+                    </tr>
+                    <tr>
+                        <td>Liquipedia</td>
+                        <td>Tournament context and roster references</td>
+                        <td>Supplementary validation and cross-checks</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Expected impact</h3>
+            <div class="implications-box">
+                <h3>Why this matters</h3>
+                <ul>
+                    <li><strong>Players:</strong> better expectations for career planning.</li>
+                    <li><strong>Teams:</strong> data-informed scouting and roster development.</li>
+                    <li><strong>Leagues:</strong> clearer understanding of development pipeline outcomes.</li>
+                    <li><strong>Researchers:</strong> reproducible baseline for esports career studies.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
             <h2>Pipeline Overview</h2>
             <ol>
-                <li><strong>Data collection:</strong> scrape and export player-season / roster records.</li>
-                <li><strong>Data cleaning:</strong> standardize league names, roles, and season mapping.</li>
-                <li><strong>Feature engineering:</strong> derive career length, debut era, and tier transitions.</li>
-                <li><strong>EDA:</strong> summarize distributions, missingness, and cohort patterns.</li>
-                <li><strong>Hypothesis tests:</strong> compare regions and transition outcomes.</li>
-                <li><strong>Modeling:</strong> train Cox and Negative Binomial models.</li>
+                <li>
+                    <strong>Data collection.</strong>
+                    We collected publicly available esports records using scripts in <code>scrapers/</code>,
+                    including roster and league history needed to reconstruct career timelines.
+                </li>
+                <li>
+                    <strong>Data cleaning.</strong>
+                    We standardized player identifiers, league strings, roles, and season ranges so different
+                    sources can be joined consistently into analysis-ready tables.
+                </li>
+                <li>
+                    <strong>Feature engineering.</strong>
+                    We derived career-level outcomes such as career length, debut era indicators, and tier
+                    transition flags from the cleaned timeline data.
+                </li>
+                <li>
+                    <strong>Exploratory analysis.</strong>
+                    We summarized distributions, missingness patterns, and cohort structure to guide modeling
+                    choices and to sanity-check coverage before hypothesis testing.
+                </li>
+                <li>
+                    <strong>Hypothesis testing and cohort analysis.</strong>
+                    We compared groups using nonparametric tests where appropriate and built Tier 2 cohort
+                    summaries to quantify promotion outcomes and timing.
+                </li>
+                <li>
+                    <strong>Modeling and deployment.</strong>
+                    We trained survival and count models for career longevity, packaged them for inference, and
+                    published results through the website with interactive charts and a live predictor API.
+                </li>
             </ol>
         </section>
 
@@ -55,27 +141,27 @@
                     <tr>
                         <td>EDA (distribution + cohort summaries)</td>
                         <td>Understand baseline structure and data quality</td>
-                        <td>`pages/eda.html` and EDA figures</td>
+                        <td><code>pages/eda.html</code> (supporting) and generated figures</td>
                     </tr>
                     <tr>
                         <td>Kruskal-Wallis + Mann-Whitney U</td>
                         <td>Compare career lengths across leagues</td>
-                        <td>`pages/hypothesis3.html`</td>
+                        <td>Summarized on <code>pages/findings.html</code></td>
                     </tr>
                     <tr>
                         <td>Tier transition cohort analysis</td>
                         <td>Measure Tier 2 to Tier 1 promotion rates/timing</td>
-                        <td>`pages/hypothesis2.html`</td>
+                        <td><code>pages/hypothesis2.html</code> (interactive) and <code>pages/findings.html</code></td>
                     </tr>
                     <tr>
                         <td>Cox Proportional Hazards</td>
                         <td>Estimate survival probability over seasons</td>
-                        <td>Inference API and `pages/predictor.html`</td>
+                        <td>Inference API and <code>pages/predictor.html</code></td>
                     </tr>
                     <tr>
                         <td>Negative Binomial Regression</td>
                         <td>Predict expected career length (count outcome)</td>
-                        <td>Inference API and `pages/predictor.html`</td>
+                        <td>Inference API and <code>pages/predictor.html</code></td>
                     </tr>
                 </tbody>
             </table>

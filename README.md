@@ -176,7 +176,7 @@ At least part of dashboard content is stored in **Google Cloud Datastore (Datast
 
 - Kind/name key (default): `dashboard/major_findings`
 - Read by App Engine endpoint: `GET /api/featured-finding` in `website/main.py`
-- Rendered on website page: `website/pages/findings.html` under "Cloud Database Featured Insight"
+- Rendered on website page: `website/pages/findings.html` under **Cloud DB Proof**
 
 This feature includes a fallback payload when Datastore is unavailable, so the page stays functional.
 

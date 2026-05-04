@@ -9,14 +9,12 @@
 <body>
     <nav class="navbar">
         <ul class="nav-links">
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="objective.html">Objective</a></li>
-            <li><a href="methods.html">Methods</a></li>
-            <li><a href="findings.html" class="active">Findings</a></li>
-            <li><a href="eda.html">EDA</a></li>
-            <li><a href="hypothesis1.html">H1</a></li>
-            <li><a href="hypothesis2.html">H2</a></li>
-            <li><a href="hypothesis3.html">H3</a></li>
+            <li><a href="../index.html">Home Overview</a></li>
+            <li><a href="methods.html">Objective/Methods</a></li>
+            <li><a href="findings.html" class="active">Major Findings</a></li>
+            <li><a href="hypothesis2.html">Interactive Chart</a></li>
+            <li><a href="predictor.html">Predictor (Cloud Run)</a></li>
+            <li><a href="findings.html#cloud-db-proof">Cloud DB Proof</a></li>
         </ul>
     </nav>
 
@@ -24,8 +22,8 @@
         <div class="hypothesis-header">
             <h1>Major Findings</h1>
             <p class="hypothesis-text">
-                This page consolidates the main results from EDA, hypothesis testing, and modeling
-                into one rubric-focused summary with linked evidence.
+                This page consolidates hypothesis-linked results, supporting figures, and deployment-backed
+                evidence (Cloud Run + cloud database) in one presentation-friendly flow.
             </p>
         </div>
 
@@ -45,83 +43,76 @@
                     <span class="metric-label">Longest Observed Regional Careers</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-value" id="cloud-feature-value">Loading...</span>
+                    <span class="metric-value" id="cloud-feature-value">—</span>
                     <span class="metric-label" id="cloud-feature-label">Cloud DB featured metric</span>
                 </div>
             </div>
+            <p class="table-footnote" style="margin-top:0.75rem;">
+                The cloud metric card is populated from <code>/api/featured-finding</code> (Datastore-backed in production).
+            </p>
         </section>
 
         <section class="section">
-            <h2>Cloud Database Featured Insight</h2>
-            <div class="summary-box">
-                <h3 id="cloud-finding-title">Loading featured finding...</h3>
-                <p id="cloud-finding-summary">
-                    Fetching insight from Firestore document <code>dashboard/major_findings</code>.
-                </p>
-                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0;" id="cloud-finding-source">
-                    Source: pending
-                </p>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Finding 1: Career Lengths Are Right-Skewed</h2>
+            <h2>Finding 1: What is the typical length of a professional League of Legends career, and how does it compare to traditional sports?</h2>
             <div class="chart-container">
                 <img src="/assets/figures/eda_fig1_career_distribution.png"
                      alt="Career distribution figure"
                      style="width: 100%; max-width: 100%;"
-                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run `python src/analysis/eda.py` to regenerate.</p></div>';">
+                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run <code>python src/analysis/eda.py</code> to regenerate.</p></div>';">
             </div>
             <p>
-                Most professional careers concentrate in short durations, while a smaller set of players
-                form a long right tail of durable multi-season careers. This supports a high-turnover
-                structure in pro play.
+                Career lengths are strongly right-skewed: most players have short careers (often 1–3 seasons),
+                while a smaller group sustains multi-season longevity. This pattern is consistent with a
+                high-turnover competitive environment where roster spots are scarce.
             </p>
         </section>
 
         <section class="section">
-            <h2>Finding 2: Tier 2 Promotion Is Limited and Time-Sensitive</h2>
+            <h2>Finding 2: How often do players successfully transition from Tier 2 developmental leagues to Tier 1 professional play?</h2>
             <div class="chart-container">
                 <img src="/assets/figures/h2_fig1_tier2_outcomes.png"
                      alt="Tier 2 outcomes figure"
                      style="width: 100%; max-width: 100%;"
-                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run `python src/analysis/h2_figures.py` to regenerate.</p></div>';">
+                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run <code>python src/analysis/h2_figures.py</code> to regenerate.</p></div>';">
             </div>
             <p>
-                In the current roster panel, a minority of Tier 2 debuts reach a Tier 1 league, and
-                successful transitions often happen early in a player's timeline. This indicates a narrow
-                development window for promotion.
+                In the current Tier 2 debut panel, promotion to Tier 1 is not guaranteed for most players.
+                Among those who do promote, timing tends to cluster early, which supports a “narrow window”
+                interpretation for developmental pathways.
+            </p>
+            <p>
+                For the interactive Plotly version used in presentation, open
+                <a href="hypothesis2.html">Interactive Chart</a>.
             </p>
         </section>
 
         <section class="section">
-            <h2>Finding 3: Regional Differences Are Statistically Meaningful</h2>
+            <h2>Finding 3: Do career lengths and development patterns differ significantly across competitive regions?</h2>
             <div class="chart-container">
                 <img src="/assets/figures/eda_fig3_regional_analysis.png"
                      alt="Regional analysis figure"
                      style="width: 100%; max-width: 100%;"
-                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run `python src/analysis/eda.py` to regenerate.</p></div>';">
+                     onerror="this.parentElement.innerHTML='<div class=&quot;placeholder-box&quot;><p><strong>Figure not available</strong></p><p>Run <code>python src/analysis/eda.py</code> to regenerate.</p></div>';">
             </div>
             <p>
-                Career length differs by league context. Current tests indicate significant cross-region
-                differences, with LCK generally leading in observed longevity and LCS showing shorter
-                average durations in the available sample.
+                Regional differences are meaningful in the current sample: LCK tends to show the longest
+                observed average careers among major leagues, while LCS shows shorter averages in the
+                available coverage. These gaps should still be interpreted alongside missingness and cohort effects.
             </p>
         </section>
 
         <section class="section">
-            <h2>Finding 4: Non-Trivial Predictive Modeling Is Operational</h2>
+            <h2>Finding 4: Non-trivial predictive modeling is operational (Cloud Run)</h2>
             <div class="summary-box">
                 <h3>Production predictor</h3>
                 <p>
-                    The site includes a model-backed predictor page connected to a Cloud Run inference API.
-                    It returns expected career length plus survival probabilities from Cox and Negative
-                    Binomial models, not just static visualization outputs.
+                    The website includes a model-backed predictor connected to a Cloud Run inference API.
+                    It returns expected career length plus survival probabilities from Cox and Negative Binomial
+                    models, not only static charts.
                 </p>
             </div>
             <p>
-                Try it on the <a href="predictor.html">Career Predictor page</a> to generate interactive,
-                profile-specific predictions.
+                Open <a href="predictor.html">Predictor (Cloud Run)</a> for the live demo interaction.
             </p>
         </section>
 
@@ -135,6 +126,23 @@
                     <li>Recent cohorts are right-censored; younger careers are still unfolding.</li>
                 </ul>
             </div>
+        </section>
+
+        <section class="section" id="cloud-db-proof">
+            <h2>Cloud DB Proof</h2>
+            <div class="summary-box">
+                <h3 id="cloud-finding-title">Loading featured finding...</h3>
+                <p id="cloud-finding-summary">
+                    Fetching insight from Datastore entity <code>dashboard/major_findings</code>.
+                </p>
+                <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:0;" id="cloud-finding-source">
+                    Source: pending
+                </p>
+            </div>
+            <p class="table-footnote" style="margin-top:0.75rem;">
+                Proof command (should show <code>"source":"datastore"</code> in production):
+                <code>curl -s https://esport-trajectories.wl.r.appspot.com/api/featured-finding</code>
+            </p>
         </section>
     </main>
 
