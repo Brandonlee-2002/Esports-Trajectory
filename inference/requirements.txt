@@ -6,3 +6,6 @@ numpy==1.26.4
 lifelines==0.29.0
 statsmodels==0.14.2
 scipy==1.13.1
+scikit-learn>=1.4.0
+lifelines>=0.29.0
+statsmodels>=0.14.0

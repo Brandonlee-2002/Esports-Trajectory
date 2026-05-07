@@ -98,6 +98,7 @@ data/stages/__pycache__/
 *.db
 *.sqlite
 player*
+inference/models/*.pkl
 
 # Keep processed data in version control if small enough
 # Uncomment below to exclude processed data

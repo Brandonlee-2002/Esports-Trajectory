@@ -153,6 +153,23 @@ Inference service code is located in:
 - Model artifacts: `inference/models/`
 - Analysis/modeling scripts used in this repo: `src/analysis/`
 
+### Training the Models
+
+Before deploying, generate the model `.pkl` files by running:
+
+```bash
+DATA_DIR=./data OUTPUT_DIR=./inference/models python train_model.py
+```
+
+This trains the Random Forest (MAE=0.60, R²=0.87) and Cox Proportional Hazards (C-index=0.61) models on your season CSVs and saves them to `inference/models/`. The `.pkl` files are excluded from version control via `.gitignore` — `train_model.py` is the source of truth for the models.
+
+Then build and deploy:
+
+```bash
+cd inference
+gcloud run deploy esports-inference --source . --region us-west1 --allow-unauthenticated
+```
+
 ### Purpose
 
 Provide real-time estimates of expected career length and survival probabilities for a player profile.
